@@ -1,0 +1,134 @@
+
+<!--start sidebar -->
+<aside class="sidebar-wrapper">
+  <div class="iconmenu"> 
+    <div class="nav-toggle-box">
+      <div class="nav-toggle-icon"><i class="bi bi-list"></i></div>
+    </div>
+    <ul class="nav nav-pills flex-column">
+      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboards">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-dashboards" type="button"><i class="bi bi-house-door-fill"></i></button>
+      </li>
+      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Markets">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-markets" type="button"><i class="bi bi-graph-up"></i></button>
+      </li>
+      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Analysis">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-analysis" type="button"><i class="bi bi-bar-chart"></i></button>
+      </li>
+      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Alerts">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-alerts" type="button"><i class="bi bi-bell"></i></button>
+      </li>
+      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="News">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-news" type="button"><i class="bi bi-newspaper"></i></button>
+      </li>
+      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Application">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-application" type="button"><i class="bi bi-grid-fill"></i></button>
+      </li>
+    </ul>
+  </div>
+  <div class="textmenu">
+    <div class="brand-logo">
+      <img src="assets/images/logo-lunar.png" width="140" alt="LunarCapital"/>
+    </div>
+    <div class="tab-content">
+      <div class="tab-pane fade" id="pills-dashboards">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-0">Dashboards</h5>
+            </div>                    
+          </div>
+          <a href="{% url 'copilot' %}" class="list-group-item"><i class="bi bi-house-door"></i> Market Overview</a>                 
+          <a href="{% url 'advanced_overview' %}" class="list-group-item"><i class="bi bi-house"></i> Advanced Overview</a>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-markets">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-0">Markets</h5>
+            </div>                    
+          </div>
+          <a href="markets-forex.html" class="list-group-item"><i class="bi bi-currency-exchange"></i> Forex</a>
+          <a href="markets-indices.html" class="list-group-item"><i class="bi bi-clipboard-data"></i> Indices</a>
+          <a href="markets-commodities.html" class="list-group-item"><i class="bi bi-bar-chart"></i> Commodities</a>
+          <a href="markets-crypto.html" class="list-group-item"><i class="bi bi-currency-bitcoin"></i> Cryptocurrency</a>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-analysis">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-0">Analysis</h5>
+            </div>                   
+          </div>
+          <a href="analysis-technical.html" class="list-group-item"><i class="bi bi-graph-up"></i> Technical Analysis</a>
+          <a href="analysis-sentiment.html" class="list-group-item"><i class="bi bi-people"></i> Market Sentiment</a>
+          <a href="analysis-correlation.html" class="list-group-item"><i class="bi bi-shuffle"></i> Correlation Matrix</a>
+          <a href="analysis-backtest.html" class="list-group-item"><i class="bi bi-arrow-repeat"></i> Strategy Tester</a>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-alerts">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-0">Alerts</h5>
+            </div>                   
+          </div>
+          <a href="alerts-my.html" class="list-group-item"><i class="bi bi-bell"></i> My Alerts</a>
+          <a href="alerts-create.html" class="list-group-item"><i class="bi bi-plus-circle"></i> Create Alert</a>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-news">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-0">News</h5>
+            </div>                   
+          </div>
+          <a href="news-market.html" class="list-group-item"><i class="bi bi-newspaper"></i> Market News</a>
+          <a href="news-economic.html" class="list-group-item"><i class="bi bi-graph-up"></i> Economic News</a>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-calendar">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-0">Economic Calendar</h5>
+            </div>                   
+          </div>
+          <a href="calendar-view.html" class="list-group-item"><i class="bi bi-calendar-event"></i> View Calendar</a>
+          <a href="calendar-subscribe.html" class="list-group-item"><i class="bi bi-bell"></i> Event Alerts</a>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-journal">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-0">Trading Journal</h5>
+            </div>                   
+          </div>
+          <a href="journal-entries.html" class="list-group-item"><i class="bi bi-journal-text"></i> Analysis Log</a>
+          <a href="journal-stats.html" class="list-group-item"><i class="bi bi-bar-chart"></i> Performance Stats</a>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-application">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-0">Application</h5>
+            </div>                    
+          </div>
+          <a href="app-emailbox.html" class="list-group-item"><i class="bi bi-journal-text"></i> Trading Journal</a>
+          <a href="app-chat-box.html" class="list-group-item"><i class="bi bi-chat-left-text"></i> Konnekt</a>
+          <a href="app-file-manager.html" class="list-group-item"><i class="bi bi-calendar-event"></i> Economic Calendar</a>
+          <a href="app-to-do.html" class="list-group-item"><i class="bi bi-check2-square"></i> Todo List</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+<!--end sidebar -->
+
+
+

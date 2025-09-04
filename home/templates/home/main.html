@@ -1,0 +1,498 @@
+{% load static %}
+
+<!doctype html>
+<html class="h-100" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+  <meta name="description" content="Lunar Capital: Advanced trading co-pilot dashboard that reduces cognitive load and enhances decision-making for financial traders">
+  <meta name="author" content="pkibuka@milky-way.space">
+  <meta name="generator" content="Eleventy v2.0.0">
+  <meta name="HandheldFriendly" content="true">
+  <title>Lunar Capital - Trading Co-Pilot Dashboard</title>
+  <link rel="stylesheet" href="{% static 'home/css/theme.min.css' %}">
+
+  <style>
+    /* inter-300 - latin */
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 300;
+      font-display: swap;
+      src: local(''),
+        url("{% static 'home/fonts/inter-v12-latin-300.woff2' %}") format('woff2'),
+        url("{% static 'home/fonts/inter-v12-latin-300.woff' %}") format('woff');
+    }
+
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: local(''),
+        url("{% static 'home/fonts/inter-v12-latin-500.woff2' %}") format('woff2'),
+        url("{% static 'home/fonts/inter-v12-latin-500.woff' %}") format('woff');
+    }
+
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: local(''),
+        url("{% static 'home/fonts/inter-v12-latin-700.woff2' %}") format('woff2'),
+        url("{% static 'home/fonts/inter-v12-latin-700.woff' %}") format('woff');
+    }
+  </style>
+
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#navScroll">
+
+  <nav id="navScroll" class="navbar navbar-expand-lg navbar-light fixed-top" tabindex="0">
+    <div class="container">
+      <a class="navbar-brand pe-4 fs-4" href="/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 14 14"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7.013 9c3 0 5.713-2 5.713-5.083M7.013 5c-3 0-5.739 2-5.739 5.083"/><path d="M5 7a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/><path d="M8.739 7.989C10.239 5.39 9.863 2.042 7.193.5M5.274 5.989c-1.5 2.598-1.137 5.97 1.533 7.511"/><path d="M8.726 5.989c-1.5-2.598-4.589-3.947-7.259-2.406m3.794 4.406c1.5 2.598 4.602 3.97 7.272 2.428"/></g></svg>
+        <span class="ms-1 fw-bolder">Lunar Capital</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'copilot' %}">Co-Pilot Dash</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#services">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#aboutus">How It Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#numbers">Performance</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#testimonials">Testimonials</a>
+          </li>
+        </ul>
+        <a href="#signup" data-splitbee-event="Click Signup" aria-label="Sign up for Lunar Capital"
+          class="link-dark pb-1 link-fancy me-2">
+          Sign Up Free <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-arrow-right ms-1" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="w-100 overflow-hidden bg-gray-100" id="top">
+      <div class="container position-relative">
+        <div class="col-12 col-lg-8 mt-0 h-100 position-absolute top-0 end-0 bg-cover" data-aos="fade-left"
+          style="background-image: url({% static 'home/img/img2.jpg' %});">
+        </div>
+        <div class="row">
+          <div class="col-lg-7 py-vh-6 position-relative" data-aos="fade-right">
+            <h1 class="display-1 fw-bold mt-5">Your Trading Co-Pilot</h1>
+            <p class="lead">Reduce cognitive load, eliminate missed opportunities, and make data-driven decisions with our intelligent trading dashboard that provides context, not just data.</p>
+            <a href="#signup" class="btn btn-dark btn-xl shadow me-3 rounded-0 my-5">Start Free Trial</a>
+            <a href="#demo" class="btn btn-outline-dark btn-xl shadow rounded-0 my-5">Watch Demo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="py-vh-5 w-100 overflow-hidden" id="services">
+      <div class="container">
+        <div class="row d-flex justify-content-end">
+          <div class="col-lg-8" data-aos="fade-down">
+            <h2 class="display-6">Transform how you interact with market data through our powerful features</h2>
+          </div>
+        </div>
+        <div class="row d-flex align-items-center">
+          <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <span class="h5 fw-lighter">01.</span>
+            <h3 class="py-5 border-top border-dark">Dynamic Market Intelligence</h3>
+            <p>Get real-time, narrative market summaries instead of raw data tables. Our system analyzes price action, volume, and correlations to deliver contextual insights like "EURUSD testing weekly highs with 150% volume increase."</p>
+            <a href="#market-intelligence" class="link-fancy">Learn more</a>
+          </div>
+
+          <div class="col-md-6 col-lg-4 py-vh-4 pb-0" data-aos="fade-up" data-aos-delay="400">
+            <span class="h5 fw-lighter">02.</span>
+            <h3 class="py-5 border-top border-dark">Advanced Alert System</h3>
+            <p>Create complex multi-condition alerts with our IFTTT engine. Get notified when specific market conditions occur, with actions ranging from mobile notifications to chart highlighting and custom sounds.</p>
+            <a href="#alerts" class="link-fancy">Learn more</a>
+          </div>
+
+          <div class="col-md-6 col-lg-4 py-vh-6 pb-0" data-aos="fade-up" data-aos-delay="600">
+            <span class="h5 fw-lighter">03.</span>
+            <h3 class="py-5 border-top border-dark">Trade Logic Validation</h3>
+            <p>Test your trading ideas instantly against historical data. Input your strategy (e.g., "Buy at 50EMA bounce") and get immediate statistics on win rate and average P/L for that specific setup.</p>
+            <a href="#validation" class="link-fancy">Learn more</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="py-vh-4 bg-gray-100 w-100 overflow-hidden" id="aboutus">
+      <div class="container">
+        <div class="row d-flex justify-content-between align-items-center">
+          <div class="col-lg-6">
+            <div class="row gx-5 d-flex">
+              <div class="col-md-11">
+                <div class="shadow ratio ratio-16x9 rounded bg-cover bp-center align-self-end" data-aos="fade-right"
+                  style="background-image: url({% static 'home/img/webp/dashboard-feature1.webp' %});--bs-aspect-ratio: 50%;">
+                </div>
+              </div>
+              <div class="col-md-5 offset-md-1">
+                <div class="shadow ratio ratio-1x1 rounded bg-cover mt-5 bp-center float-end" data-aos="fade-up"
+                  style="background-image: url({% static 'home/img/webp/dashboard-feature2.webp' %});">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="col-12 shadow ratio rounded bg-cover mt-5 bp-center" data-aos="fade-left"
+                  style="background-image: url({% static 'home/img/webp/dashboard-feature3.webp' %});--bs-aspect-ratio: 150%;">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <h3 class="py-5 border-top border-dark" data-aos="fade-left">Designed by traders, for traders</h3>
+            <p data-aos="fade-left" data-aos-delay="200">Lunar Capital was born from my own frustration with information overload in trading. I've spent years developing a solution that synthesizes market data into actionable intelligence, reducing cognitive load while enhancing decision-making capabilities.</p>
+            <p data-aos="fade-left" data-aos-delay="400">My mission is to help traders focus on strategy rather than data gathering, using advanced technology to provide context and validation for every trading decision.</p>
+            <p>
+              <a href="#mission" class="link-fancy link-dark" data-aos="fade-left" data-aos-delay="600">Our story</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="py-vh-5 w-100 overflow-hidden" id="numbers">
+      <div class="container">
+        <div class="row d-flex justify-content-between align-items-center">
+          <div class="col-lg-5">
+            <h3 class="py-5 border-top border-dark" data-aos="fade-right">Quantifiable results</h3>
+          </div>
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-12">
+                <h2 class="display-6 mb-5" data-aos="fade-down">Traders using Lunar Capital report significant improvements in their trading performance</h2>
+              </div>
+              <div class="col-lg-6" data-aos="fade-up">
+                <div class="display-1 fw-bold py-4">42%</div>
+                <p class="text-black-50">Average reduction in missed trading opportunities by using our contextual alert system and market intelligence features.</p>
+              </div>
+              <div class="col-lg-6" data-aos="fade-up">
+                <div class="display-1 fw-bold py-4">3.5x</div>
+                <p class="text-black-50">Faster decision-making reported by our users, thanks to synthesized market data and reduced cognitive load.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container py-vh-4 w-100 overflow-hidden">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-lg-5">
+          <h3 class="py-5 border-top border-dark" data-aos="fade-right">What professional traders say</h3>
+        </div>
+        <div class="col-md-7" data-aos="fade-left">
+          <blockquote>
+            <div class="fs-4 my-3 fw-light pt-4 border-bottom pb-3">Lunar Capital has transformed how I approach the markets. The contextual insights and validation tools have significantly improved my win rate while reducing the stress of monitoring multiple screens. It's like having a trading partner who never sleeps."</div>
+            <img src="{% static 'home/img/webp/trader1.webp' %}" width="64" height="64" class="img-fluid rounded-circle me-3" alt="Professional trader"
+              data-aos="fade">
+            <span><span class="fw-bold">Michael Chen,</span>
+              Head of Trading, Horizon Capital</span>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+
+    <div class="py-vh-6 bg-gray-900 text-light w-100 overflow-hidden" id="workwithus">
+      <div class="container">
+        <div class="row d-flex justify-content-center">
+          <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-8 text-center" data-aos="fade">
+              <p class="text-secondary lead">Ready to transform your trading?</p>
+              <h2 class="display-6 mb-5">Join thousands of traders who have elevated their performance with Lunar Capital. Start your free 14-day trial today.</h2>
+            </div>
+            <div class="col-12">
+              <a href="#signup" class="btn btn-warning btn-xl shadow me-3 mt-4" data-aos="fade-down">Start Free Trial</a>
+              <a href="#demo" class="btn btn-outline-light btn-xl shadow mt-4" data-aos="fade-down">Watch Demo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-light w-100 overflow-hidden" id="testimonials">
+      <div class="container py-vh-6">
+        <div class="row d-flex justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8 text-center">
+            <h2 class="display-6">Trusted by professional traders worldwide</h2>
+            <p class="lead">Our users range from independent retail traders to institutional trading desks at major financial firms.</p>
+          </div>
+          <div class="col-12 mt-4">
+            <div class="row row-cols-1 row-cols-md-2 g-5 d-flex align-items-center">
+
+              <div class="col-12 col-lg-6 col-xl-4" data-aos="fade-right">
+                <div class="card p-4 mt-3 border-0">
+                  <div class="card-body">
+                    <div class="text-dark py-2 fs-3">
+                      <!-- 5 star rating SVG -->
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                      </svg>
+                      <!-- Repeat 4 more times for 5 stars -->
+                    </div>
+                    <blockquote class="blockquote">
+                      <p>"The alert system alone is worth the subscription. I no longer miss key market movements because I'm overwhelmed with data. The multi-condition alerts have saved me thousands in potential missed opportunities."</p>
+                    </blockquote>
+                    <div class="d-flex justify-content-between border-top pt-3">
+                      <div>
+                        <span class="h6 fw-5">Sarah Johnson</span><br>
+                        <small class="text-muted">Forex Trader, 8 years experience</small>
+                      </div>
+                      <img src="{% static 'home/img/webp/trader2.webp' %}" width="48" height="48" class="rounded-circle" alt="Sarah Johnson"
+                        data-aos="fade">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-6 col-xl-4">
+                <div class="card p-4 shadow mt-3 border-0" data-aos="fade-down">
+                  <div class="card-body">
+                    <div class="text-dark py-2 fs-3">
+                      <!-- 5 star rating SVG -->
+                    </div>
+                    <blockquote class="blockquote">
+                      <p>"As someone who trades multiple instruments across different sessions, the session heatmap and volatility indicators have been game-changing. I can instantly see when markets are most active and plan my trading day accordingly."</p>
+                    </blockquote>
+                    <div class="d-flex justify-content-between border-top pt-3">
+                      <p class="card-text">
+                        <span class="h6 fw-5">James Wilson</span><br>
+                        <small class="text-muted">Portfolio Manager, Equity Derivatives</small>
+                      </p>
+                      <img src="{% static 'home/img/webp/trader3.webp' %}" width="48" height="48" class="rounded-circle" alt="James Wilson"
+                        data-aos="fade">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-6 col-xl-4">
+                <div class="card p-4 mt-3 border-0" data-aos="fade-left">
+                  <div class="card-body">
+                    <div class="text-dark py-2 fs-3">
+                      <!-- 4.5 star rating SVG -->
+                    </div>
+                    <blockquote class="blockquote">
+                      <p>"The trade validation feature has helped me avoid numerous poor setups. Being able to quickly check how a specific strategy has performed historically has improved my discipline and profitability significantly."</p>
+                    </blockquote>
+                    <div class="d-flex justify-content-between border-top pt-3">
+                      <p class="card-text">
+                        <span class="h6 fw-5">Robert Kim</span><br>
+                        <small class="text-muted">Swing Trader, Cryptocurrencies</small>
+                      </p>
+                      <img src="{% static 'home/img/webp/trader4.webp' %}" width="48" height="48" class="rounded-circle" alt="Robert Kim"
+                        data-aos="fade">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="small py-vh-3 w-100 overflow-hidden" id="features">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-4 border-end" data-aos="fade-up">
+            <div class="d-flex">
+              <div class="col-md-3 flex-fill pt-3 pe-3 pe-md-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
+                </svg>
+              </div>
+              <div class="col-md-9 flex-fill">
+                <h3 class="h5 my-2">Real-time Market Data</h3>
+                <p>Access streaming market data from multiple global exchanges with millisecond latency and built-in redundancy for uninterrupted trading.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 border-end" data-aos="fade-up" data-aos-delay="200">
+            <div class="d-flex">
+              <div class="col-md-3 flex-fill pt-3 pt-3 pe-3 pe-md-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                  <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                </svg>
+              </div>
+              <div class="col-md-9 flex-fill">
+                <h3 class="h5 my-2">Advanced Alert System</h3>
+                <p>Create complex multi-condition alerts with our intuitive IFTTT engine. Receive notifications via mobile, desktop, or email when your specific criteria are met.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+            <div class="d-flex">
+              <div class="col-md-3 flex-fill pt-3 pt-3 pe-3 pe-md-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-shield-check" viewBox="0 0 16 16">
+                  <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.566-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+                  <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+              </div>
+              <div class="col-md-9 flex-fill">
+                <h3 class="h5 my-2">Trade Validation</h3>
+                <p>Test your trading ideas against historical data before risking capital. Our validation engine provides statistical insights to improve your strategy success rate.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container py-vh-3 border-top" id="signup" data-aos="fade" data-aos-delay="200">
+      <div class="row d-flex justify-content-center">
+        <div class="col-12 col-lg-8 text-center">
+          <h3 class="fs-2 fw-light">Ready to transform your trading?<span class="fw-bold">
+              Start your free trial today</span>
+          </h3>
+        </div>
+        <div class="col-12 col-lg-8 text-center">
+          <div class="row">
+            <div class="grouped-inputs border bg-light p-2">
+              <div class="row">
+                <div class="col">
+                  <form class="form-floating">
+                    <input type="email" class="form-control p-3" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">Email address</label>
+                  </form>
+                </div>
+                <div class="col-auto">
+                  <a href="#" class="btn btn-dark py-3 px-5">Get Started</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="container small border-top">
+      <div class="row py-5 d-flex justify-content-between">
+
+        <div class="col-12 col-lg-6 col-xl-3 border-end p-5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-stars"
+            viewbox="0 0 16 16">
+            <path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828l.645-1.937zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.734 1.734 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.734 1.734 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.734 1.734 0 0 0 3.407 2.31l.387-1.162zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L10.863.1z"/>
+          </svg>
+          <address class="text-secondary mt-3">
+            <strong>Lunar Capital</strong><br>
+            A product of milky-way.space<br>
+            Nyeri, NY<br>
+            <abbr title="Email">E:</abbr>
+            pkibuka@milky-way.space
+          </address>
+        </div>
+        <div class="col-12 col-lg-6 col-xl-3 border-end p-5">
+          <h3 class="h6 mb-3">Product</h3>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" aria-current="page" href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" href="#pricing">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" href="#api">API</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" href="#documentation">Documentation</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-12 col-lg-6 col-xl-3 border-end p-5">
+          <h3 class="h6 mb-3">Company</h3>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" aria-current="page" href="#about">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" href="#blog">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" href="#careers">Careers</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" href="#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-12 col-lg-6 col-xl-3 p-5">
+          <h3 class="h6 mb-3">Legal</h3>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" aria-current="page" href="#privacy">Privacy Policy</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" href="#terms">Terms of Service</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" href="#security">Security</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-secondary ps-0" href="#compliance">Compliance</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container text-center py-3 small">© 2023 Lunar Capital by <a href="https://milky-way.space" class="link-fancy"
+        target="_blank">milky-way.space</a>. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="{% static 'home/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'home/js/aos.js' %}"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+    });
+  </script>
+
+  <script>
+    let scrollpos = window.scrollY;
+    const header = document.querySelector(".navbar");
+    const header_height = header.offsetHeight;
+
+    const add_class_on_scroll = () => header.classList.add("scrolled", "shadow-sm");
+    const remove_class_on_scroll = () => header.classList.remove("scrolled", "shadow-sm");
+
+    window.addEventListener('scroll', function () {
+      scrollpos = window.scrollY;
+
+      if (scrollpos >= header_height) { add_class_on_scroll(); }
+      else { remove_class_on_scroll(); }
+    })
+  </script>
+
+</body>
+
+</html>
