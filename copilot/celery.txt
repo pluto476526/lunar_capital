@@ -1,0 +1,6 @@
+# Terminal 1: Start Celery worker
+celery -A copilot worker -l info
+
+# Terminal 2: Start Celery Beat scheduler
+celery -A copilot beat -l info
+

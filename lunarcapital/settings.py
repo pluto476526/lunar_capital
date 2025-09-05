@@ -31,6 +31,30 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 
 # API Keys
 TWELVE_DATA_API_KEY = config("TWELVE_DATA_API_KEY", default="")
+POLYGON_API_KEY = config("POLYGON_API_KEY", default="")
+
+
+# Fx Config
+TD_FX_PAIRS = config("TD_FX_PAIRS")
+TD_FX_INTERVAL = config("TD_FX_INTERVAL")
+TD_FX_OUTPUT_SIZE = config("TD_FX_OUTPUT_SIZE")
+
+POLYGON_FX_PAIRS = config("POLYGON_FX_PAIRS")
+POLYGON_FX_TIMESPAN = config("POLYGON_FX_TIMESPAN")
+POLYGON_FX_LIMIT = config("POLYGON_FX_LIMIT")
+
+POLYGON_STOCK_SYMBOLS = config("POLYGON_STOCK_SYMBOLS")
+POLYGON_CRYPTO_SYMBOLS = config("POLYGON_CRYPTO_SYMBOLS")
+POLYGON_STOCK_LIMIT = config("POLYGON_STOCK_LIMIT")
+POLYGON_CRYPTO_LIMIT = config("POLYGON_CRYPTO_LIMIT")
+
+
+# News API Configuration
+NEWS_API_KEY=""
+NEWS_API_URL=""
+
+
+
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +62,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +73,7 @@ INSTALLED_APPS = [
     "home.apps.HomeConfig",
     "accounts.apps.AccountsConfig",
     "copilot.apps.CopilotConfig",
+    "data_factory.apps.DataFactoryConfig",
 ]
 
 MIDDLEWARE = [
@@ -76,8 +103,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'lunarcapital.wsgi.application'
 
+WSGI_APPLICATION = 'lunarcapital.wsgi.application'
+ASGI_APPLICATION = 'lunarcapital.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
