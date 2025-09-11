@@ -1,0 +1,44 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en" class="light-theme">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <link href="{% static 'copilot/css/bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'copilot/css/bootstrap-extended.css' %}" rel="stylesheet" />
+  <link href="{% static 'copilot/css/style.css' %}" rel="stylesheet" />
+  <link href="{% static 'copilot/css/icons.css' %}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+  <!-- loader-->
+	<link href="{% static 'copilot/css/pace.min.css' %}" rel="stylesheet" />
+
+  <title>Lunar Capital - Intra Day Trading Dashboard</title>
+</head>
+
+<body>
+
+  <!--start wrapper-->
+  <div class="wrapper">
+    
+       <!--start content-->
+       
+       {% block main %}
+       {% endblock %}
+
+       <!--end page main-->
+
+  </div>
+  <!--end wrapper-->
+  
+  <script src="{% static 'copilot/js/jquery.min.js' %}"></script>
+  <script src="{% static 'copilot/js/pace.min.js' %}"></script>
+
+  
+</body>
+
+</html>

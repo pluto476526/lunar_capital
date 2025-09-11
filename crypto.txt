@@ -1,0 +1,39 @@
+Key Crypto-Specific Metrics Included
+
+    Market Status Card: Shows overall crypto market sentiment (Bullish/Bearish/Neutral)
+
+    Fear & Greed Index: Replaces volatility with crypto-specific sentiment indicator
+
+    Total Market Cap: Tracks the entire cryptocurrency market capitalization
+
+    Bitcoin Dominance: Shows BTC's percentage of total crypto market cap
+
+    24h Trading Volume: Total trading volume across all cryptocurrencies
+
+    Market Cap Distribution: Breakdown of Bitcoin, Ethereum, and Altcoin market share
+
+    Top Movers: Lists best and worst performing cryptocurrencies
+
+    Asset Details: Technical analysis for individual cryptocurrencies when selected
+
+Additional Crypto Metrics to Calculate
+
+To make this dashboard even more insightful, consider calculating these crypto-specific metrics:
+
+    Altcoin Season Index: Measures whether altcoins are outperforming Bitcoin
+
+    Stablecoin Dominance: Tracks the percentage of trading volume in stablecoins
+
+    Exchange Flows: Measures inflows/outflows from exchanges (indicator of buying/selling pressure)
+
+    MVRV Ratio: Market Value to Realized Value ratio (indicates if assets are over/undervalued)
+
+    Network Activity: On-chain metrics like active addresses, transaction volume
+
+    Social Sentiment: Analysis of social media mentions and sentiment
+
+    DeFi Metrics: Total Value Locked (TVL) across different protocols and chains
+
+    Funding Rates: Perpetual swap market funding rates across exchanges
+
+This cryptocurrency dashboard provides traders with a comprehensive overview of the crypto market while maintaining the original styling and structure of your template. Users can click on any cryptocurrency to view detailed analysis, making it both informative and interactive.

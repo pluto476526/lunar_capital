@@ -23,7 +23,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-n=-7s4czcl7qejh%2%@j&ik5jck7b$yx2jr4%w12ylee3&cm_)'
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -32,28 +31,51 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 # API Keys
 TWELVE_DATA_API_KEY = config("TWELVE_DATA_API_KEY", default="")
 POLYGON_API_KEY = config("POLYGON_API_KEY", default="")
+NEWS_API_KEY = config("NEWS_API_KEY")
+GROQ_API_KEY = config("GROQ_API_KEY")
+GROQ_MODEL = "llama-3.3-70b-versatile"
+
+# FunFeatures Settings
+FUN_FEATURES_LLM_ENABLED = True
+FUN_FEATURES_FALLBACK_PROBABILITY = 0.3  # 30% chance of using fallback content
 
 
 # Fx Config
-TD_FX_PAIRS = config("TD_FX_PAIRS")
 TD_FX_INTERVAL = config("TD_FX_INTERVAL")
 TD_FX_OUTPUT_SIZE = config("TD_FX_OUTPUT_SIZE")
 
-POLYGON_FX_PAIRS = config("POLYGON_FX_PAIRS")
+
 POLYGON_FX_TIMESPAN = config("POLYGON_FX_TIMESPAN")
 POLYGON_FX_LIMIT = config("POLYGON_FX_LIMIT")
-
-POLYGON_STOCK_SYMBOLS = config("POLYGON_STOCK_SYMBOLS")
-POLYGON_CRYPTO_SYMBOLS = config("POLYGON_CRYPTO_SYMBOLS")
 POLYGON_STOCK_LIMIT = config("POLYGON_STOCK_LIMIT")
 POLYGON_CRYPTO_LIMIT = config("POLYGON_CRYPTO_LIMIT")
 
+STOCK_SYMBOLS = config("STOCK_SYMBOLS")
+CRYPTO_SYMBOLS = config("CRYPTO_SYMBOLS")
+FX_PAIRS = config("FX_PAIRS")
 
-# News API Configuration
-NEWS_API_KEY=""
-NEWS_API_URL=""
+MARKET_DATA_CACHE_TIMEOUT = 300
+
+# Redis Configuration
+REDIS_URL = "redis://127.0.0.1:6379/0"
+METRICS_CACHE_TTL = 300  # 5 minutes
 
 
+MAJOR_INDICES = {
+    "^GSPC": "S&P 500",
+    "^DJI": "Dow Jones Industrial Average",
+    "^IXIC": "Nasdaq Composite",
+    "^RUT": "Russell 2000",
+    "^FTSE": "FTSE 100"
+}
+
+
+SECTORS = {
+    'XLK': 'Technology', 'XLV': 'Healthcare', 'XLF': 'Financials',
+    'XLE': 'Energy', 'XLY': 'Consumer Discretionary', 'XLP': 'Consumer Staples',
+    'XLI': 'Industrials', 'XLU': 'Utilities', 'XLRE': 'Real Estate',
+    'XLB': 'Materials', 'XLC': 'Communications'
+}
 
 
 ALLOWED_HOSTS = []
