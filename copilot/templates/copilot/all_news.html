@@ -1,0 +1,156 @@
+{% extends 'copilot/main.html' %}
+{% load static %}
+{% include 'copilot/sidebar.html' %}
+{% block main %}
+
+
+
+<!--start content-->
+<main class="page-content">
+
+<div class="card">
+<div class="card-body">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h5 class="card-title mb-0">Latest Market News</h5>
+        <small class="text-muted">Curated from trusted financial sources</small>
+      </div>
+      <div>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-outline-primary btn-sm active">All</button>
+          <button type="button" class="btn btn-outline-primary btn-sm">Stocks</button>
+          <button type="button" class="btn btn-outline-primary btn-sm">Crypto</button>
+          <button type="button" class="btn btn-outline-primary btn-sm">Forex</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured News Article -->
+    <div class="card mb-4 border-primary">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-2">
+          <span class="badge bg-danger me-2">Breaking</span>
+          <small class="text-muted">Just now</small>
+        </div>
+        <h5 class="card-title">Fed Holds Rates Steady, Signals Possible Cuts Later This Year</h5>
+        <p class="card-text">The Federal Reserve maintained interest rates at current levels but indicated potential rate cuts in the coming months amid improving inflation data and economic stability.</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center">
+            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 30px; height: 30px;">
+              <i class="bi bi-person-fill text-muted"></i>
+            </div>
+            <small class="text-muted">Michael Johnson</small>
+          </div>
+          <small class="text-muted">Financial Times • 10 minutes ago</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- News Article 1 -->
+      <div class="col-lg-6 mb-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge bg-success me-2">Stocks</span>
+              <small class="text-muted">2 hours ago</small>
+            </div>
+            <h6 class="card-title">NVIDIA Exceeds Q4 Expectations with Strong Data Center Growth</h6>
+            <p class="card-text small">The chipmaker reported earnings of $4.02 per share, beating estimates of $3.92, driven by continued demand for AI processors.</p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div class="d-flex align-items-center">
+                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px;">
+                  <i class="bi bi-person-fill text-muted small"></i>
+                </div>
+                <small class="text-muted">Sarah Chen</small>
+              </div>
+              <small class="text-muted">Bloomberg</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- News Article 2 -->
+      <div class="col-lg-6 mb-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge bg-warning me-2">Crypto</span>
+              <small class="text-muted">4 hours ago</small>
+            </div>
+            <h6 class="card-title">Bitcoin Surpasses $60K Amid Increased Institutional Adoption</h6>
+            <p class="card-text small">The cryptocurrency reached its highest level since November 2021 as new ETF approvals drive mainstream investor interest.</p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div class="d-flex align-items-center">
+                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px;">
+                  <i class="bi bi-person-fill text-muted small"></i>
+                </div>
+                <small class="text-muted">David Martinez</small>
+              </div>
+              <small class="text-muted">CoinDesk</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- News Article 3 -->
+      <div class="col-lg-6 mb-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge bg-info me-2">Forex</span>
+              <small class="text-muted">6 hours ago</small>
+            </div>
+            <h6 class="card-title">EUR/USD Volatility Increases Ahead of ECB Policy Decision</h6>
+            <p class="card-text small">The currency pair fluctuated within a 100-pip range as traders positioned for potential policy changes from the European Central Bank.</p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div class="d-flex align-items-center">
+                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px;">
+                  <i class="bi bi-person-fill text-muted small"></i>
+                </div>
+                <small class="text-muted">James Wilson</small>
+              </div>
+              <small class="text-muted">Reuters</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- News Article 4 -->
+      <div class="col-lg-6 mb-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge bg-primary me-2">Economy</span>
+              <small class="text-muted">Yesterday</small>
+            </div>
+            <h6 class="card-title">Jobless Claims Fall to 8-Month Low, Signaling Labor Market Strength</h6>
+            <p class="card-text small">Initial claims for state unemployment benefits dropped 12,000 to a seasonally adjusted 201,000 for the week ended February 10.</p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div class="d-flex align-items-center">
+                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px;">
+                  <i class="bi bi-person-fill text-muted small"></i>
+                </div>
+                <small class="text-muted">Emily Roberts</small>
+              </div>
+              <small class="text-muted">Wall Street Journal</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load More Button -->
+    <div class="d-grid gap-2 mt-3">
+      <button class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-down me-2"></i>Load More News
+      </button>
+    </div>
+  </div>
+</div>
+
+</main>
+<!--end page main-->
+
+{% endblock %}

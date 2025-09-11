@@ -1,0 +1,745 @@
+{% extends 'copilot/main.html' %}
+{% block main %}
+
+<!--start content-->
+<main class="page-content">
+    
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="ps-3">EUR/USD - Comprehensive Forex Analysis & Trading Intelligence</div>
+        <div class="ms-auto">
+            <span class="market-status status-open text-success">LONDON SESSION OPEN</span>
+        </div>
+    </div>
+    <!--end breadcrumb-->
+
+    
+    <div class="row">
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0">EUR/USD Overview</h4>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="javascript:;">View Historical Data</a></li>
+                                <li><a class="dropdown-item" href="javascript:;">Compare with other pairs</a></li>
+                                <li><a class="dropdown-item" href="javascript:;">Set Price Alerts</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-3 row-cols-xxl-3 g-3">
+                        <div class="col">
+                            <div class="card radius-10 bg-tiffany mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-currency-exchange"></i>
+                                    </div>
+                                    <h3 class="text-white">1.0873</h3>
+                                    <p class="mb-0 text-white">Current Price</p>
+                                    <small class="text-white positive-change">+0.29%</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 bg-danger mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-arrow-left-right"></i>
+                                    </div>
+                                    <h3 class="text-white">0.0088</h3>
+                                    <p class="mb-0 text-white">Daily Range</p>
+                                    <small class="text-white">88 pips</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 bg-success mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-lightning-charge"></i>
+                                    </div>
+                                    <h3 class="text-white">0.7</h3>
+                                    <p class="mb-0 text-white">Volatility Index</p>
+                                    <small class="text-white">Low</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 bg-dark mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-graph-up-arrow"></i>
+                                    </div>
+                                    <h3 class="text-white">1.31</h3>
+                                    <p class="mb-0 text-white">Range Ratio</p>
+                                    <small class="text-white">Above Average</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 bg-purple mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-bar-chart"></i>
+                                    </div>
+                                    <h3 class="text-white">50.25</h3>
+                                    <p class="mb-0 text-white">EUR Strength</p>
+                                    <small class="text-white">Neutral</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 bg-orange mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-bullseye"></i>
+                                    </div>
+                                    <h3 class="text-white">1.1662</h3>
+                                    <p class="mb-0 text-white">Pivot Point</p>
+                                    <small class="text-white">Key Level</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bid/Ask Spread -->
+                    <div class="mt-4">
+                        <h6 class="mb-3">Live Spread & Liquidity</h6>
+                        <div class="row row-cols-2 row-cols-md-4 g-3">
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Bid Price</small>
+                                    <strong>1.0871</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Ask Price</small>
+                                    <strong>1.0875</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Spread</small>
+                                    <strong>0.4 pips</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Liquidity</small>
+                                    <strong>High</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">EUR/USD Performance</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="javascript:;">View Details</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Export Data</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Technical Analysis</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="chart1"></div>
+                    
+                    <!-- Support & Resistance Levels -->
+                    <div class="mt-4">
+                        <h6 class="mb-3">Key Support & Resistance Levels</h6>
+                        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 g-2">
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center bg-light-danger">
+                                    <small class="text-muted d-block">Resistance 3</small>
+                                    <strong>1.0950</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center bg-light-warning">
+                                    <small class="text-muted d-block">Resistance 2</small>
+                                    <strong>1.0910</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center bg-light-warning">
+                                    <small class="text-muted d-block">Resistance 1</small>
+                                    <strong>1.0885</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center bg-light">
+                                    <small class="text-muted d-block">Pivot Point</small>
+                                    <strong>1.0862</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center bg-light-success">
+                                    <small class="text-muted d-block">Support 1</small>
+                                    <strong>1.0835</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center bg-light-success">
+                                    <small class="text-muted d-block">Support 2</small>
+                                    <strong>1.0810</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end row-->
+
+    <div class="row">
+        <div class="col-12 col-lg-12 col-xl-12 col-xxl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Market Correlation & Sentiment</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="javascript:;">View Details</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Export Data</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-lg-flex align-items-center justify-content-center gap-4">
+                        <div id="chart3"></div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-circle-fill text-primary me-1"></i> USD/CHF: <span class="me-1">-0.89</span></li>
+                            <li class="list-group-item"><i class="bi bi-circle-fill text-danger me-1"></i> GBP/USD: <span class="me-1">0.76</span></li>
+                            <li class="list-group-item"><i class="bi bi-circle-fill text-success me-1"></i> Gold: <span class="me-1">-0.45</span></li>
+                            <li class="list-group-item"><i class="bi bi-circle-fill text-orange me-1"></i> DXY: <span class="me-1">-0.92</span></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Market Sentiment -->
+                    <div class="mt-4">
+                        <h6 class="mb-3">Market Sentiment Analysis</h6>
+                        <div class="row row-cols-2 row-cols-md-4 g-3">
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Retail Traders</small>
+                                    <strong class="text-danger">72% Short</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Institutional</small>
+                                    <strong class="text-success">64% Long</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Order Flow</small>
+                                    <strong class="text-success">Buying Pressure</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Positioning</small>
+                                    <strong class="text-success">Net Long</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-12 col-xl-12 col-xxl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Trading Sessions & Market Hours</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="javascript:;">View Details</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Export Data</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Session Analysis</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-12 col-lg-6 col-xl-6">
+                            <div id="chart4"></div>
+                        </div>
+                        <div class="col-12 col-lg-6 col-xl-6">
+                            <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 g-3">
+                                <div class="col">
+                                    <div class="card radius-10 mb-0 shadow-none" style="background: rgba(123, 55, 142, 0.2)">
+                                        <div class="card-body p-4">
+                                            <div class="text-center">
+                                                <h5 class="mb-0 text-purple">Asian</h5>
+                                                <p class="mb-0 text-purple">Session</p>
+                                                <small class="text-muted">00:00 - 09:00 GMT</small>
+                                                <div class="mt-2">
+                                                    <span class="badge bg-light text-dark">Avg Range: 45 pips</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card radius-10 mb-0 shadow-none" style="background: rgba(234, 88, 12, 0.2)">
+                                        <div class="card-body p-4">
+                                            <div class="text-center">
+                                                <h5 class="mb-0 text-orange">London</h5>
+                                                <p class="mb-0 text-orange">Session</p>
+                                                <small class="text-muted">08:00 - 17:00 GMT</small>
+                                                <div class="mt-2">
+                                                    <span class="badge bg-light text-dark">Avg Range: 78 pips</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card radius-10 mb-0 shadow-none" style="background: rgba(22, 163, 74, 0.2)">
+                                        <div class="card-body p-4">
+                                            <div class="text-center">
+                                                <h5 class="mb-0 text-success">New York</h5>
+                                                <p class="mb-0 text-success">Session</p>
+                                                <small class="text-muted">13:00 - 22:00 GMT</small>
+                                                <div class="mt-2">
+                                                    <span class="badge bg-light text-dark">Avg Range: 92 pips</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card radius-10 mb-0 shadow-none" style="background: rgba(14, 165, 233, 0.2)">
+                                        <div class="card-body p-4">
+                                            <div class="text-center">
+                                                <h5 class="mb-0 text-primary">Overlap</h5>
+                                                <p class="mb-0 text-primary">London/NY</p>
+                                                <small class="text-muted">13:00 - 17:00 GMT</small>
+                                                <div class="mt-2">
+                                                    <span class="badge bg-light text-dark">High Volatility</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Current Session Info -->
+                    <div class="mt-4 p-3 bg-light radius-10">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Current Session: <span class="text-success">London Open</span></h6>
+                                <p class="small mb-0">Next session: New York opens in 3 hours 15 minutes</p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-clock-history h4 text-muted"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end row-->
+
+    <div class="row">
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent p-3">
+                    <div class="row row-cols-1 row-cols-lg-2 g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Technical Analysis</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-sm-end gap-3 cursor-pointer">
+                                <div class="font-13"><i class="bi bi-circle-fill text-info"></i><span class="ms-2">Bullish</span></div>
+                                <div class="font-13"><i class="bi bi-circle-fill text-orange"></i><span class="ms-2">Bearish</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="chart5"></div>
+                    
+                    <!-- Technical Indicators -->
+                    <div class="mt-4">
+                        <h6 class="mb-3">Technical Indicators Summary</h6>
+                        <div class="row row-cols-2 row-cols-md-4 g-3">
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">RSI (14)</small>
+                                    <strong class="text-success">54.2</strong>
+                                    <small class="d-block text-muted">Neutral</small>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">MACD</small>
+                                    <strong class="text-success">Bullish</strong>
+                                    <small class="d-block text-muted">Positive Divergence</small>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Stochastic</small>
+                                    <strong class="text-danger">72.4</strong>
+                                    <small class="d-block text-muted">Overbought</small>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">ADX</small>
+                                    <strong>28.6</strong>
+                                    <small class="d-block text-muted">Weak Trend</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Economic Calendar & Events</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="javascript:;">View Calendar</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Set Alerts</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Import to Calendar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-md bg-light-warning rounded-circle me-3">
+                                    <i class="bi bi-currency-dollar"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">US CPI Data Release</h6>
+                                    <p class="mb-0 text-muted">Tomorrow, 13:30 GMT | Impact: High</p>
+                                    <small class="text-muted">Forecast: 3.1% | Previous: 3.4%</small>
+                                </div>
+                                <span class="badge bg-warning">USD</span>
+                            </div>
+                        </div>
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-md bg-light-info rounded-circle me-3">
+                                    <i class="bi bi-bank"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">ECB Interest Rate Decision</h6>
+                                    <p class="mb-0 text-muted">In 2 days, 12:45 GMT | Impact: High</p>
+                                    <small class="text-muted">Expected: 4.25% | Current: 4.25%</small>
+                                </div>
+                                <span class="badge bg-info">EUR</span>
+                            </div>
+                        </div>
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-md bg-light-success rounded-circle me-3">
+                                    <i class="bi bi-mic"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">Fed Chair Powell Speech</h6>
+                                    <p class="mb-0 text-muted">In 3 days, 15:00 GMT | Impact: Medium</p>
+                                    <small class="text-muted">Jackson Hole Symposium</small>
+                                </div>
+                                <span class="badge bg-success">USD</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Economic Event Impact Guide -->
+                    <div class="mt-3 p-3 bg-light radius-10">
+                        <h6><i class="bi bi-info-circle me-2"></i>Event Impact Guide</h6>
+                        <p class="small mb-0">
+                            <span class="badge bg-danger me-1">High</span> Likely to cause significant volatility (60+ pips)
+                            <span class="badge bg-warning mx-2">Medium</span> May cause moderate price movements (30-60 pips)
+                            <span class="badge bg-success mx-2">Low</span> Minimal market impact expected (0-30 pips)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end row-->
+    
+    <div class="row">
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Carry Trade Analysis</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="javascript:;">View Details</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Export Data</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <div class="p-3 border radius-5">
+                                <small class="text-muted d-block">EUR Interest Rate</small>
+                                <h4 class="text-info mb-0">4.25%</h4>
+                                <small class="text-muted">ECB Main Refinancing Rate</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 border radius-5">
+                                <small class="text-muted d-block">USD Interest Rate</small>
+                                <h4 class="text-info mb-0">5.50%</h4>
+                                <small class="text-muted">Fed Funds Rate</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h6 class="mb-3">Carry Trade Summary</h6>
+                        <div class="row row-cols-2 row-cols-md-4 g-3">
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Interest Differential</small>
+                                    <strong class="text-danger">-1.25%</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Forward Points</small>
+                                    <strong class="text-danger">-12.4 pips</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Rollover Cost</small>
+                                    <strong class="text-danger">-$0.42/day</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Carry Rank</small>
+                                    <strong class="text-warning">Neutral</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Risk Management Tools</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="javascript:;">Calculate Position Size</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Risk Calculator</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Position Size Calculator</h6>
+                            <div class="p-3 bg-light radius-5 mb-3">
+                                <div class="mb-2">
+                                    <label class="form-label small">Account Balance ($)</label>
+                                    <input type="number" class="form-control form-control-sm" value="10000">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small">Risk Percentage (%)</label>
+                                    <input type="number" class="form-control form-control-sm" value="1">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small">Stop Loss (pips)</label>
+                                    <input type="number" class="form-control form-control-sm" value="30">
+                                </div>
+                                <button class="btn btn-sm btn-primary w-100">Calculate</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Recommended Position Size</h6>
+                            <div class="p-3 border radius-5 text-center mb-3">
+                                <small class="text-muted d-block">Lot Size</small>
+                                <h4 class="text-success mb-0">0.33</h4>
+                                <small class="text-muted">Standard Lots</small>
+                            </div>
+                            <div class="p-3 border radius-5 text-center">
+                                <small class="text-muted d-block">Risk Amount</small>
+                                <h4 class="text-info mb-0">$100</h4>
+                                <small class="text-muted">1% of $10,000</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end row-->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card radius-10">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Trading Insights & Analysis</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <button class="btn btn-sm btn-outline-primary">View Full Analysis</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Technical Analysis</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    RSI (14)
+                                    <span class="badge bg-success rounded-pill">54.2</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    MACD
+                                    <span class="badge bg-success rounded-pill">Bullish</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    50-Day MA
+                                    <span class="badge bg-success rounded-pill">1.0824</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    200-Day MA
+                                    <span class="badge bg-danger rounded-pill">1.0941</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Bollinger Bands
+                                    <span class="badge bg-success rounded-pill">Within Bands</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Trading Recommendations</h6>
+                            <div class="alert alert-success border-0">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    <div>
+                                        <h6 class="mb-1">Current Bias: <strong>Bullish</strong></h6>
+                                        <p class="mb-0">Price above key support at 1.0850, targeting 1.0920</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-light radius-5">
+                                <p class="small mb-0">
+                                    <strong>Key Levels:</strong> Support at 1.0850 and 1.0800 | Resistance at 1.0920 and 1.0950
+                                </p>
+                            </div>
+                            <div class="mt-3">
+                                <h6>Trade Setup</h6>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Entry: 1.0870-1.0880</li>
+                                    <li class="list-group-item">Stop Loss: 1.0830</li>
+                                    <li class="list-group-item">Take Profit: 1.0950</li>
+                                    <li class="list-group-item">Risk/Reward Ratio: 1:1.8</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</main>
+<!--end page main-->
+
+{% endblock %}

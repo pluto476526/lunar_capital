@@ -1,0 +1,338 @@
+{% extends 'copilot/main.html' %}
+{% load static %}
+{% include 'copilot/sidebar.html' %}
+{% block main %}
+
+
+
+<!--start content-->
+<main class="page-content">
+
+<div class="card">
+    <div class="card-body">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h5 class="card-title mb-0">Learning & Backtest Repository</h5>
+                <small class="text-muted">Store, categorize, and review trading strategies and educational notes</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-primary me-2">
+                    <i class="bi bi-plus-circle me-1"></i> New Strategy
+                </button>
+                <button class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-upload me-1"></i> Import
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Folder Navigation Sidebar -->
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">Categories</h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action active">
+                                <i class="bi bi-folder-fill me-2 text-primary"></i> All Strategies
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="bi bi-folder-fill me-2 text-success"></i> Trend Following
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="bi bi-folder-fill me-2 text-info"></i> Mean Reversion
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="bi bi-folder-fill me-2 text-warning"></i> Options Strategies
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="bi bi-folder-fill me-2 text-danger"></i> Breakout Trading
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="bi bi-folder-fill me-2 text-purple"></i> Educational Notes
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="bi bi-folder-fill me-2 text-secondary"></i> Risk Management
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">Filters</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Time Period</label>
+                            <select class="form-select">
+                                <option>Last 30 Days</option>
+                                <option>Last 90 Days</option>
+                                <option selected>All Time</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Performance</label>
+                            <select class="form-select">
+                                <option>All Results</option>
+                                <option>Profitable Only</option>
+                                <option>Unprofitable Only</option>
+                            </select>
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label">Sort By</label>
+                            <select class="form-select">
+                                <option>Date Modified</option>
+                                <option>Strategy Name</option>
+                                <option>Win Rate</option>
+                                <option>Profit Factor</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">Repository Stats</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Total Strategies:</span>
+                            <span class="fw-bold">42</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Avg. Win Rate:</span>
+                            <span class="fw-bold text-success">63.2%</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Last Added:</span>
+                            <span class="fw-bold">2 days ago</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-0">
+                            <span class="text-muted">Storage Used:</span>
+                            <span class="fw-bold">125 MB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="col-lg-9">
+                <div class="card mb-4">
+                    <div class="card-header bg-light py-2 d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">All Strategies</h6>
+                        <div class="input-group" style="width: 250px;">
+                            <input type="text" class="form-control form-control-sm" placeholder="Search strategies...">
+                            <button class="btn btn-sm btn-outline-secondary" type="button">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Strategy Card 1 -->
+                            <div class="col-md-6 col-xl-4 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-primary bg-opacity-10 p-2 rounded me-2">
+                                                <i class="bi bi-graph-up text-primary"></i>
+                                            </div>
+                                            <h6 class="card-title mb-0">Golden Cross (20/50 MA)</h6>
+                                        </div>
+                                        <p class="card-text small">Buys when 20-period MA crosses above 50-period MA, sells on opposite cross.</p>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Win Rate:</small>
+                                            <span class="badge bg-success">68%</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Profit Factor:</small>
+                                            <span class="fw-bold">2.1</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <small class="text-muted">Last Tested:</small>
+                                            <small class="text-muted">Mar 20, 2024</small>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Strategy Card 2 -->
+                            <div class="col-md-6 col-xl-4 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-info bg-opacity-10 p-2 rounded me-2">
+                                                <i class="bi bi-arrow-left-right text-info"></i>
+                                            </div>
+                                            <h6 class="card-title mb-0">RSI Reversal Strategy</h6>
+                                        </div>
+                                        <p class="card-text small">Buys when RSI(14) crosses below 30, sells when it crosses above 70.</p>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Win Rate:</small>
+                                            <span class="badge bg-success">59%</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Profit Factor:</small>
+                                            <span class="fw-bold">1.5</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <small class="text-muted">Last Tested:</small>
+                                            <small class="text-muted">Mar 18, 2024</small>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Strategy Card 3 -->
+                            <div class="col-md-6 col-xl-4 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-warning bg-opacity-10 p-2 rounded me-2">
+                                                <i class="bi bi-lightning text-warning"></i>
+                                            </div>
+                                            <h6 class="card-title mb-0">Breakout Trading System</h6>
+                                        </div>
+                                        <p class="card-text small">Identifies consolidation patterns and enters on breakout with high volume.</p>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Win Rate:</small>
+                                            <span class="badge bg-success">72%</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Profit Factor:</small>
+                                            <span class="fw-bold">2.4</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <small class="text-muted">Last Tested:</small>
+                                            <small class="text-muted">Mar 15, 2024</small>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Strategy Card 4 -->
+                            <div class="col-md-6 col-xl-4 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-danger bg-opacity-10 p-2 rounded me-2">
+                                                <i class="bi bi-newspaper text-danger"></i>
+                                            </div>
+                                            <h6 class="card-title mb-0">News Reaction Play</h6>
+                                        </div>
+                                        <p class="card-text small">Trades earnings announcements and other news events with specific entry criteria.</p>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Win Rate:</small>
+                                            <span class="badge bg-danger">42%</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Profit Factor:</small>
+                                            <span class="fw-bold">0.8</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <small class="text-muted">Last Tested:</small>
+                                            <small class="text-muted">Mar 12, 2024</small>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Strategy Card 5 -->
+                            <div class="col-md-6 col-xl-4 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-purple bg-opacity-10 p-2 rounded me-2">
+                                                <i class="bi bi-bar-chart text-purple"></i>
+                                            </div>
+                                            <h6 class="card-title mb-0">Bollinger Squeeze</h6>
+                                        </div>
+                                        <p class="card-text small">Identifies low volatility periods and enters on the expansion breakout.</p>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Win Rate:</small>
+                                            <span class="badge bg-success">65%</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Profit Factor:</small>
+                                            <span class="fw-bold">1.9</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <small class="text-muted">Last Tested:</small>
+                                            <small class="text-muted">Mar 10, 2024</small>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Educational Note Card -->
+                            <div class="col-md-6 col-xl-4 mb-4">
+                                <div class="card h-100 border-primary">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-primary bg-opacity-10 p-2 rounded me-2">
+                                                <i class="bi bi-journal-text text-primary"></i>
+                                            </div>
+                                            <h6 class="card-title mb-0">Risk Management Framework</h6>
+                                        </div>
+                                        <p class="card-text small">Comprehensive guide to position sizing, stop loss strategies, and portfolio risk management.</p>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Category:</small>
+                                            <span class="badge bg-primary">Education</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Pages:</small>
+                                            <span class="fw-bold">12</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <small class="text-muted">Last Updated:</small>
+                                            <small class="text-muted">Mar 8, 2024</small>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-sm btn-outline-primary">View Notes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <nav aria-label="Strategy repository pagination">
+                            <ul class="pagination pagination-sm justify-content-center mb-0">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+
+{% endblock %}

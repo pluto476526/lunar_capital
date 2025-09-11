@@ -6,42 +6,64 @@
       <div class="nav-toggle-icon"><i class="bi bi-list"></i></div>
     </div>
     <ul class="nav nav-pills flex-column">
-      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboards">
-        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-dashboards" type="button"><i class="bi bi-house-door-fill"></i></button>
+      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Dash">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-dash" type="button">
+          <i class="bi bi-joystick"></i> <!-- Dash -->
+        </button>
       </li>
+
       <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Markets">
-        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-markets" type="button"><i class="bi bi-graph-up"></i></button>
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-markets" type="button">
+          <i class="bi bi-cash-coin"></i> <!-- Markets -->
+        </button>
       </li>
-      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Analysis">
-        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-analysis" type="button"><i class="bi bi-bar-chart"></i></button>
+
+      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Research">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-research" type="button">
+          <i class="bi bi-lightbulb"></i> <!-- Research -->
+        </button>
       </li>
-      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Alerts">
-        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-alerts" type="button"><i class="bi bi-bell"></i></button>
+
+      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Performance">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-performance" type="button">
+          <i class="bi bi-trophy"></i> <!-- Performance -->
+        </button>
       </li>
-      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="News">
-        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-news" type="button"><i class="bi bi-newspaper"></i></button>
+
+      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Productivity">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-productivity" type="button">
+          <i class="bi bi-columns-gap"></i> <!-- Productivity -->
+        </button>
       </li>
-      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Application">
-        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-application" type="button"><i class="bi bi-grid-fill"></i></button>
+
+      <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Fun/Shenanigans">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-fun" type="button">
+          <i class="bi bi-lightning"></i> <!-- Fun/Shenanigans -->
+        </button>
       </li>
+
     </ul>
   </div>
   <div class="textmenu">
     <div class="brand-logo">
-      <img src="assets/images/logo-lunar.png" width="140" alt="LunarCapital"/>
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 14 14"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7.013 9c3 0 5.713-2 5.713-5.083M7.013 5c-3 0-5.739 2-5.739 5.083"/><path d="M5 7a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/><path d="M8.739 7.989C10.239 5.39 9.863 2.042 7.193.5M5.274 5.989c-1.5 2.598-1.137 5.97 1.533 7.511"/><path d="M8.726 5.989c-1.5-2.598-4.589-3.947-7.259-2.406m3.794 4.406c1.5 2.598 4.602 3.97 7.272 2.428"/></g></svg>
+      <strong class="text-secondary">&nbsp;LUNAR CAPITAL</strong>
     </div>
     <div class="tab-content">
-      <div class="tab-pane fade" id="pills-dashboards">
+      <!-- DASH -->
+      <div class="tab-pane fade" id="pills-dash">
         <div class="list-group list-group-flush">
           <div class="list-group-item">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-0">Dashboards</h5>
+              <h5 class="mb-0">Main</h5>
             </div>                    
           </div>
-          <a href="{% url 'copilot' %}" class="list-group-item"><i class="bi bi-house-door"></i> Market Overview</a>                 
-          <a href="{% url 'advanced_overview' %}" class="list-group-item"><i class="bi bi-house"></i> Advanced Overview</a>
+          <a href="{% url 'copilot' %}" class="list-group-item"><i class="bi bi-speedometer2"></i> Copilot</a>
+          <a href="{% url 'screener' %}" class="list-group-item"><i class="bi bi-search"></i> Screener</a>
         </div>
       </div>
+
+      <!-- MARKETS -->
       <div class="tab-pane fade" id="pills-markets">
         <div class="list-group list-group-flush">
           <div class="list-group-item">
@@ -49,83 +71,66 @@
               <h5 class="mb-0">Markets</h5>
             </div>                    
           </div>
-          <a href="markets-forex.html" class="list-group-item"><i class="bi bi-currency-exchange"></i> Forex</a>
-          <a href="markets-indices.html" class="list-group-item"><i class="bi bi-clipboard-data"></i> Indices</a>
-          <a href="markets-commodities.html" class="list-group-item"><i class="bi bi-bar-chart"></i> Commodities</a>
-          <a href="markets-crypto.html" class="list-group-item"><i class="bi bi-currency-bitcoin"></i> Cryptocurrency</a>
+          <a href="{% url 'dash_fx' %}" class="list-group-item"><i class="bi bi-cash-coin"></i> Forex</a>
+          <a href="{% url 'dash_stocks' %}" class="list-group-item"><i class="bi bi-graph-up"></i> Stocks</a>
+          <a href="{% url 'dash_crypto' %}" class="list-group-item"><i class="bi bi-currency-bitcoin"></i> Crypto</a>
         </div>
       </div>
-      <div class="tab-pane fade" id="pills-analysis">
+
+      <!-- RESEARCH -->
+      <div class="tab-pane fade" id="pills-research">
         <div class="list-group list-group-flush">
           <div class="list-group-item">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-0">Analysis</h5>
+              <h5 class="mb-0">Research & Tools</h5>
             </div>                   
           </div>
-          <a href="analysis-technical.html" class="list-group-item"><i class="bi bi-graph-up"></i> Technical Analysis</a>
-          <a href="analysis-sentiment.html" class="list-group-item"><i class="bi bi-people"></i> Market Sentiment</a>
-          <a href="analysis-correlation.html" class="list-group-item"><i class="bi bi-shuffle"></i> Correlation Matrix</a>
-          <a href="analysis-backtest.html" class="list-group-item"><i class="bi bi-arrow-repeat"></i> Strategy Tester</a>
+          <a href="{% url 'all_news' %}" class="list-group-item"><i class="bi bi-newspaper"></i> News</a>
+          <a href="{% url 'calendar' %}" class="list-group-item"><i class="bi bi-calendar3"></i> Financial Calendar</a>
+          <a href="{% url 'strategy_tester' %}" class="list-group-item"><i class="bi bi-brightness-high"></i> Strategy Tester</a>
         </div>
       </div>
-      <div class="tab-pane fade" id="pills-alerts">
+
+      <!-- PERFORMANCE -->
+      <div class="tab-pane fade" id="pills-performance">
         <div class="list-group list-group-flush">
           <div class="list-group-item">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-0">Alerts</h5>
+              <h5 class="mb-0">Performance & Metrics</h5>
             </div>                   
           </div>
-          <a href="alerts-my.html" class="list-group-item"><i class="bi bi-bell"></i> My Alerts</a>
-          <a href="alerts-create.html" class="list-group-item"><i class="bi bi-plus-circle"></i> Create Alert</a>
+          <a href="news-market.html" class="list-group-item"><i class="bi bi-bar-chart-line"></i> CSV Analysis</a>
         </div>
       </div>
-      <div class="tab-pane fade" id="pills-news">
+
+      <!-- PRODUCTIVITY -->
+      <div class="tab-pane fade" id="pills-productivity">
         <div class="list-group list-group-flush">
           <div class="list-group-item">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-0">News</h5>
+              <h5 class="mb-0">Productivity</h5>
             </div>                   
           </div>
-          <a href="news-market.html" class="list-group-item"><i class="bi bi-newspaper"></i> Market News</a>
-          <a href="news-economic.html" class="list-group-item"><i class="bi bi-graph-up"></i> Economic News</a>
+          <a href="{% url 'trade_planner' %}" class="list-group-item"><i class="bi bi-pencil-square"></i> Trade Planner</a>
+          <a href="{% url 'journal' %}" class="list-group-item"><i class="bi bi-journal-richtext"></i> Trading Journal</a>
+          <a href="app-chat-box.html" class="list-group-item"><i class="bi bi-chat-dots"></i> Konnekt</a>
+          <a href="app-to-do.html" class="list-group-item"><i class="bi bi-check-circle"></i> Todo List</a>
         </div>
       </div>
-      <div class="tab-pane fade" id="pills-calendar">
+
+      <!-- FUN -->
+      <div class="tab-pane fade" id="pills-fun">
         <div class="list-group list-group-flush">
           <div class="list-group-item">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-0">Economic Calendar</h5>
+              <h5 class="mb-0">Fun Stuff</h5>
             </div>                   
           </div>
-          <a href="calendar-view.html" class="list-group-item"><i class="bi bi-calendar-event"></i> View Calendar</a>
-          <a href="calendar-subscribe.html" class="list-group-item"><i class="bi bi-bell"></i> Event Alerts</a>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="pills-journal">
-        <div class="list-group list-group-flush">
-          <div class="list-group-item">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-0">Trading Journal</h5>
-            </div>                   
-          </div>
-          <a href="journal-entries.html" class="list-group-item"><i class="bi bi-journal-text"></i> Analysis Log</a>
-          <a href="journal-stats.html" class="list-group-item"><i class="bi bi-bar-chart"></i> Performance Stats</a>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="pills-application">
-        <div class="list-group list-group-flush">
-          <div class="list-group-item">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-0">Application</h5>
-            </div>                    
-          </div>
-          <a href="app-emailbox.html" class="list-group-item"><i class="bi bi-journal-text"></i> Trading Journal</a>
-          <a href="app-chat-box.html" class="list-group-item"><i class="bi bi-chat-left-text"></i> Konnekt</a>
-          <a href="app-file-manager.html" class="list-group-item"><i class="bi bi-calendar-event"></i> Economic Calendar</a>
-          <a href="app-to-do.html" class="list-group-item"><i class="bi bi-check2-square"></i> Todo List</a>
+          <a href="{% url 'fun_stuff' %}" class="list-group-item"><i class="bi bi-emoji-sunglasses"></i> Shenanigans</a>
         </div>
       </div>
     </div>
+
   </div>
 </aside>
 <!--end sidebar -->

@@ -1,0 +1,523 @@
+{% extends 'copilot/main.html' %}
+{% load static %}
+{% include 'copilot/sidebar.html' %}
+{% block main %}
+
+
+
+<!--start content-->
+<main class="page-content">
+  
+  <!-- Market Overview Section -->
+  <div class="row mb-4">
+    <div class="col">
+      <h4 class="mb-0">Trading Dashboard</h4>
+      <p class="text-muted mb-0">Multi-asset market intelligence for day traders</p>
+    </div>
+    <div class="col-auto">
+      <div class="d-flex align-items-center text-muted">
+        <i class="bi bi-circle-fill text-success me-1 small"></i>
+        <span class="small">Live</span>
+        <span class="ms-2 small" id="last-updated">Updated: 2025-09-10 21:16 UTC</span>
+      </div>
+    </div>
+  </div>
+    
+  <!-- Multi-Market Overview Cards -->
+  <div class="row row-cols-1 row-cols-lg-4 row-cols-xl-4 row-cols-xxl-4">
+    <!-- Crypto Market Card -->
+    <div class="col">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Crypto Market</p>
+              <h4 class="mb-0 text-success">Strong Bullish</h4>
+            </div>
+            <div class="ms-auto fs-2 text-success">
+              <i class="bi bi-currency-bitcoin"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <div class="d-flex justify-content-between">
+            <small class="mb-0">
+              <span class="text-success">100% <i class="bi bi-arrow-up"></i></span>
+              <span class="ms-1">coins up</span>
+            </small>
+            <small class="mb-0 text-muted">Vol: 3.8</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forex Market Card -->
+    <div class="col">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Forex Market</p>
+              <h4 class="mb-0 text-danger">Strong Bearish</h4>
+            </div>
+            <div class="ms-auto fs-2 text-danger">
+              <i class="bi bi-currency-exchange"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <div class="d-flex justify-content-between">
+            <small class="mb-0">
+              <span class="text-danger">25% <i class="bi bi-arrow-up"></i></span>
+              <span class="ms-1">pairs up</span>
+            </small>
+            <small class="mb-0 text-muted">Vol: 0.5</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stocks Market Card -->
+    <div class="col">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Stocks Market</p>
+              <h4 class="mb-0 text-danger">Strong Bearish</h4>
+            </div>
+            <div class="ms-auto fs-2 text-danger">
+              <i class="bi bi-graph-down-arrow"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <div class="d-flex justify-content-between">
+            <small class="mb-0">
+              <span class="text-danger">28.1% <i class="bi bi-arrow-up"></i></span>
+              <span class="ms-1">stocks up</span>
+            </small>
+            <small class="mb-0 text-muted">Vol: 1.9</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Stocks Market Card -->
+    <div class="col">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Active Market Session</p>
+              <h4 class="mb-0 text-danger">Tokyo</h4>
+            </div>
+            <div class="ms-auto fs-2 text-danger">
+              <i class="bi bi-graph-down-arrow"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <div class="d-flex justify-content-between">
+            <small class="mb-0">
+              <span class="text-danger">High Activity <i class="bi bi-arrow-up"></i></span>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!--end row-->
+
+
+  <!-- Session Overlay Heatmap -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="mb-3">Global Session Heatmap</h5>
+      <div class="table-responsive">
+        <table class="table table-sm text-center align-middle">
+          <thead class="table-light">
+          <tr>
+            <th>Market</th>
+            <th>Session</th>
+            <th>Status</th>
+            <th>Time Remaining</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>New York</td>
+            <td>Regular</td>
+            <td><span class="badge bg-secondary">Closed</span></td>
+            <td>Opens in 7h 30m</td>
+          </tr>
+          <tr>
+            <td>London</td>
+            <td>Regular</td>
+            <td><span class="badge bg-secondary">Closed</span></td>
+            <td>Opens in 3h 15m</td>
+          </tr>
+          <tr>
+            <td>Tokyo</td>
+            <td>Regular</td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td>Closes in 2h 45m</td>
+          </tr>
+          <tr>
+            <td>Sydney</td>
+            <td>Regular</td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td>Closes in 4h 10m</td>
+          </tr>
+          <tr>
+            <td>Crypto</td>
+            <td>24/7</td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td>Always open</td>
+          </tr>
+        </tbody>
+        </table>
+      </div>
+      <small class="text-muted">Overlay shows overlapping hours where volatility often spikes.</small>
+    </div>
+  </div>
+
+  <!-- Global Snapshot -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="mb-3">Global Market Snapshot</h5>
+      <div class="row">
+        <div class="col-lg-4">
+          <p class="fw-bold">Stocks</p>
+          <ul class="list-group list-group small">
+            <li class="list-group-item d-flex justify-content-between">S&P 500 <span class="text-success">+0.30%</span></li>
+            <li class="list-group-item d-flex justify-content-between">Dow Jones <span class="text-danger">-0.48%</span></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <p class="fw-bold">Forex</p>
+          <ul class="list-group list-group small">
+            <li class="list-group-item d-flex justify-content-between">EUR/USD <span class="text-success">+1.2%</span></li>
+            <li class="list-group-item d-flex justify-content-between">USD/JPY <span class="text-warning">+0.2%</span></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <p class="fw-bold">Crypto</p>
+          <ul class="list-group list-group small">
+            <li class="list-group-item d-flex justify-content-between">BTC/USDT <span class="text-success">+3.2%</span></li>
+            <li class="list-group-item d-flex justify-content-between">ETH/USDT <span class="text-success">+5.8%</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-search me-2 text-primary"></i>
+            <h5 class="card-title mb-0">Quick Scanner</h5>
+        </div>
+        
+        <form>
+            <!-- First Criteria Row -->
+            <div class="row g-2 mb-2">
+                <div class="col-4">
+                    <select class="form-select form-select-sm">
+                        <option selected>Volume</option>
+                        <option>Price</option>
+                        <option>RSI (14)</option>
+                        <option>Market Cap</option>
+                        <option>P/E Ratio</option>
+                        <option>Dividend Yield</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <select class="form-select form-select-sm">
+                        <option selected>></option>
+                        <option><</option>
+                        <option>=</option>
+                        <option>>=</option>
+                        <option><=</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control form-control-sm" value="1M">
+                </div>
+                <div class="col-1">
+                    <button type="button" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Second Criteria Row -->
+            <div class="row g-2 mb-2">
+                <div class="col-4">
+                    <select class="form-select form-select-sm">
+                        <option>Volume</option>
+                        <option>Price</option>
+                        <option selected>RSI (14)</option>
+                        <option>Market Cap</option>
+                        <option>P/E Ratio</option>
+                        <option>Dividend Yield</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <select class="form-select form-select-sm">
+                        <option>></option>
+                        <option selected><</option>
+                        <option>=</option>
+                        <option>>=</option>
+                        <option><=</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control form-control-sm" value="30">
+                </div>
+                <div class="col-1">
+                    <button type="button" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Third Criteria Row -->
+            <div class="row g-2 mb-3">
+                <div class="col-4">
+                    <select class="form-select form-select-sm">
+                        <option>Volume</option>
+                        <option selected>Price</option>
+                        <option>RSI (14)</option>
+                        <option>Market Cap</option>
+                        <option>P/E Ratio</option>
+                        <option>Dividend Yield</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <select class="form-select form-select-sm">
+                        <option selected>></option>
+                        <option><</option>
+                        <option>=</option>
+                        <option>>=</option>
+                        <option><=</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control form-control-sm" value="50">
+                </div>
+                <div class="col-1">
+                    <button type="button" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Add Criteria Button -->
+            <div class="mb-3">
+                <button type="button" class="btn btn-sm btn-outline-primary w-100">
+                    <i class="bi bi-plus-circle me-1"></i> Add Criteria
+                </button>
+            </div>
+            
+            <!-- Market Segment Selector -->
+            <div class="mb-3">
+                <label class="form-label">Market Segment</label>
+                <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" name="segment" id="stocks" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary btn-sm" for="stocks">Stocks</label>
+                    
+                    <input type="radio" class="btn-check" name="segment" id="etfs" autocomplete="off">
+                    <label class="btn btn-outline-primary btn-sm" for="etfs">ETFs</label>
+                    
+                    <input type="radio" class="btn-check" name="segment" id="crypto" autocomplete="off">
+                    <label class="btn btn-outline-primary btn-sm" for="crypto">Crypto</label>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-primary btn-sm">
+                    <i class="bi bi-search me-1"></i> Run Scan
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-clockwise me-1"></i> Reset
+                </button>
+            </div>
+        </form>
+        
+        <!-- Recent Scans -->
+        <div class="mt-3 pt-3 border-top">
+            <h6 class="small text-muted mb-2">Recent Scans</h6>
+            <div class="d-flex flex-wrap gap-1">
+                <span class="badge bg-light text-dark">Oversold Stocks</span>
+                <span class="badge bg-light text-dark">High Volume</span>
+                <span class="badge bg-light text-dark">Breakout Candidates</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  <!-- Gold & Silver -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="mb-3">Precious Metals Overview</h5>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="border p-3 radius-10 h-100">
+            <h6 class="fw-bold">Gold (XAU/USD)</h6>
+            <p class="mb-1">Price: <span class="fw-bold">$2,045.30</span></p>
+            <p class="mb-1">Daily Change: <span class="text-success">+0.8%</span></p>
+            <p class="mb-1">52-Week Range: $1,810 – $2,150</p>
+            <p class="mb-1">Support: $2,020 / $1,980</p>
+            <p class="mb-1">Resistance: $2,060 / $2,100</p>
+            <p class="mb-0 text-muted small">Reason: Safe-haven demand amid inflation uncertainty</p>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="border p-3 radius-10 h-100">
+            <h6 class="fw-bold">Silver (XAG/USD)</h6>
+            <p class="mb-1">Price: <span class="fw-bold">$26.45</span></p>
+            <p class="mb-1">Daily Change: <span class="text-danger">-0.4%</span></p>
+            <p class="mb-1">52-Week Range: $21.00 – $29.50</p>
+            <p class="mb-1">Support: $25.50 / $24.80</p>
+            <p class="mb-1">Resistance: $27.20 / $28.00</p>
+            <p class="mb-0 text-muted small">Reason: Industrial demand trends + correlation with gold</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Watchlist -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="mb-3">Comprehensive Watchlist</h5>
+      <div class="table-responsive">
+        <table class="table table-hover table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Symbol</th>
+              <th>Asset Class</th>
+              <th>Price</th>
+              <th>Change %</th>
+              <th>Status</th>
+              <th>Reason Watched</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>XAU/USD</td>
+              <td>Commodity</td>
+              <td>$2,045.30</td>
+              <td><span class="text-success">+0.8%</span></td>
+              <td><span class="badge bg-success">Bullish</span></td>
+              <td>Testing resistance, safe-haven flows</td>
+            </tr>
+            <tr>
+              <td>XAG/USD</td>
+              <td>Commodity</td>
+              <td>$26.45</td>
+              <td><span class="text-danger">-0.4%</span></td>
+              <td><span class="badge bg-warning">Neutral</span></td>
+              <td>Industrial demand + gold correlation</td>
+            </tr>
+            <tr>
+              <td>BTC/USDT</td>
+              <td>Crypto</td>
+              <td>$61,250</td>
+              <td><span class="text-success">+3.2%</span></td>
+              <td><span class="badge bg-success">Bullish</span></td>
+              <td>Breakout above key resistance</td>
+            </tr>
+            <tr>
+              <td>EUR/USD</td>
+              <td>Forex</td>
+              <td>1.325</td>
+              <td><span class="text-success">+1.2%</span></td>
+              <td><span class="badge bg-warning">Neutral</span></td>
+              <td>Near support zone at 1.320</td>
+            </tr>
+            <tr>
+              <td>NVDA</td>
+              <td>Stock</td>
+              <td>$177.33</td>
+              <td><span class="text-success">+3.8%</span></td>
+              <td><span class="badge bg-success">Strong</span></td>
+              <td>Strong earnings momentum</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+  <!-- Reddit Feed Card -->
+  <div class="col-md-6 mb-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-reddit me-2 fs-5 text-danger"></i>
+          <h5 class="mb-0">Trader Community Feed</h5>
+        </div>
+        <div class="mb-2">
+          <span class="badge bg-warning me-2">WSB</span>
+          <span class="small">NVDA call options gaining traction</span>
+        </div>
+        <div class="mb-2">
+          <span class="badge bg-info me-2">Daytrading</span>
+          <span class="small">Risk management in volatile sessions</span>
+        </div>
+        <div class="mb-3">
+          <span class="badge bg-success me-2">Forex</span>
+          <span class="small">EUR/USD breakout or fakeout?</span>
+        </div>
+        <small class="text-muted">Reddit communities feed</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shenanigans Card -->
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 border-primary">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-emoji-laughing me-2 fs-5 text-primary"></i>
+          <h5 class="mb-0 text-primary">Trader Shenanigans</h5>
+        </div>
+        <p class="small mb-3">Fun tools to lighten up your trading day</p>
+        
+        <div class="d-flex justify-content-between mb-3">
+          <div class="text-center">
+            <div class="bg-light text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1" style="width: 40px; height: 40px;">
+              <i class="bi bi-stars"></i>
+            </div>
+            <small class="text-muted">Wizard</small>
+          </div>
+          <div class="text-center">
+            <div class="bg-light text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1" style="width: 40px; height: 40px;">
+              <i class="bi bi-moon-stars"></i>
+            </div>
+            <small class="text-muted">Horoscopes</small>
+          </div>
+          <div class="text-center">
+            <div class="bg-light text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1" style="width: 40px; height: 40px;">
+              <i class="bi bi-lightning"></i>
+            </div>
+            <small class="text-muted">Strategies</small>
+          </div>
+        </div>
+        
+        <a href="fun.html" class="btn btn-outline-primary btn-sm w-100">
+          Explore Fun Tools
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+</main>
+<!--end page main-->
+
+
+{% endblock %}

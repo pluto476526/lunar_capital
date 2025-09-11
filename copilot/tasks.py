@@ -27,9 +27,9 @@ def fetch_forex_data():
         return None
 
     # Configurable defaults (override in settings)
-    pairs = json.loads(getattr(settings, "FOREX_PAIRS"))
-    interval = getattr(settings, "FOREX_INTERVAL")
-    output_size = getattr(settings, "FOREX_OUTPUT_SIZE")
+    pairs = json.loads(getattr(settings, "FX_PAIRS"))
+    interval = getattr(settings, "TD_FX_INTERVAL")
+    output_size = getattr(settings, "TD_FX_OUTPUT_SIZE")
 
     # dynamic dates (UTC)
     end_date = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
@@ -72,18 +72,15 @@ def fetch_forex_data():
             logger.error("process_forex_data returned unexpected value.")
             return None
 
-        # Cache last result for quick UI access (short TTL)
-        try:
-            cache_set("last_market_data", market_data, ttl=60)
-        except Exception:
-            logger.debug("Failed to cache last_market_data (non-fatal).")
-
         # Broadcast to WebSocket clients via Channels
         try:
             channel_layer = get_channel_layer()
             async_to_sync(channel_layer.group_send)(
-                "dashboard_updates",
-                {"type": "send_dashboard_update", "data": market_data},
+                f"market_intelligence",
+                {
+                    "type": "market.intelligence",
+                    "message": processed_data
+                }
             )
         except Exception:
             logger.debug("Failed to broadcast market_data to channel layer (non-fatal).")

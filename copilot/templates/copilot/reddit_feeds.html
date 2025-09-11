@@ -1,0 +1,177 @@
+{% extends 'copilot/main.html' %}
+{% load static %}
+{% include 'copilot/sidebar.html' %}
+{% block main %}
+
+
+
+<!--start content-->
+<main class="page-content">
+
+	<div class="card">
+	  <div class="card-body">
+	    <div class="d-flex align-items-center mb-3">
+	      <i class="bi bi-reddit me-2 fs-4 text-danger"></i>
+	      <h5 class="mb-0">Trader Community Feeds</h5>
+	      <span class="badge bg-secondary ms-2">Live</span>
+	    </div>
+	    
+	    <div class="row">
+	      <!-- WallStreetBets Community -->
+	      <div class="col-md-6 mb-3">
+	        <div class="card h-100">
+	          <div class="card-header bg-warning bg-opacity-10 py-2">
+	            <div class="d-flex align-items-center">
+	              <span class="badge bg-warning me-2">WSB</span>
+	              <h6 class="mb-0">WallStreetBets</h6>
+	              <i class="bi bi-arrow-up-right-circle-fill text-warning ms-auto"></i>
+	            </div>
+	          </div>
+	          <div class="card-body">
+	            <div class="mb-2">
+	              <p class="mb-0 small">NVDA call options gaining traction 🚀</p>
+	              <div class="d-flex justify-content-between mt-1">
+	                <small class="text-muted">Posted 2h ago</small>
+	                <div>
+	                  <small class="text-muted me-2"><i class="bi bi-arrow-up"></i> 4.2k</small>
+	                  <small class="text-muted"><i class="bi bi-chat"></i> 873</small>
+	                </div>
+	              </div>
+	            </div>
+	            <hr class="my-2">
+	            <div class="mb-0">
+	              <p class="mb-0 small">GME earnings next week - what's your play?</p>
+	              <div class="d-flex justify-content-between mt-1">
+	                <small class="text-muted">Posted 5h ago</small>
+	                <div>
+	                  <small class="text-muted me-2"><i class="bi bi-arrow-up"></i> 2.7k</small>
+	                  <small class="text-muted"><i class="bi bi-chat"></i> 542</small>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	      
+	      <!-- Daytrading Community -->
+	      <div class="col-md-6 mb-3">
+	        <div class="card h-100">
+	          <div class="card-header bg-info bg-opacity-10 py-2">
+	            <div class="d-flex align-items-center">
+	              <span class="badge bg-info me-2">Daytrading</span>
+	              <h6 class="mb-0">Daytrading</h6>
+	              <i class="bi bi-arrow-up-right-circle-fill text-info ms-auto"></i>
+	            </div>
+	          </div>
+	          <div class="card-body">
+	            <div class="mb-2">
+	              <p class="mb-0 small">Tips for managing risk in volatile sessions</p>
+	              <div class="d-flex justify-content-between mt-1">
+	                <small class="text-muted">Posted 3h ago</small>
+	                <div>
+	                  <small class="text-muted me-2"><i class="bi bi-arrow-up"></i> 1.8k</small>
+	                  <small class="text-muted"><i class="bi bi-chat"></i> 324</small>
+	                </div>
+	              </div>
+	            </div>
+	            <hr class="my-2">
+	            <div class="mb-0">
+	              <p class="mb-0 small">Best indicators for scalping the opening bell</p>
+	              <div class="d-flex justify-content-between mt-1">
+	                <small class="text-muted">Posted 7h ago</small>
+	                <div>
+	                  <small class="text-muted me-2"><i class="bi bi-arrow-up"></i> 1.2k</small>
+	                  <small class="text-muted"><i class="bi bi-chat"></i> 287</small>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	      
+	      <!-- Forex Community -->
+	      <div class="col-md-6 mb-3">
+	        <div class="card h-100">
+	          <div class="card-header bg-success bg-opacity-10 py-2">
+	            <div class="d-flex align-items-center">
+	              <span class="badge bg-success me-2">Forex</span>
+	              <h6 class="mb-0">Forex</h6>
+	              <i class="bi bi-arrow-up-right-circle-fill text-success ms-auto"></i>
+	            </div>
+	          </div>
+	          <div class="card-body">
+	            <div class="mb-2">
+	              <p class="mb-0 small">EUR/USD breakout or fakeout?</p>
+	              <div class="d-flex justify-content-between mt-1">
+	                <small class="text-muted">Posted 4h ago</small>
+	                <div>
+	                  <small class="text-muted me-2"><i class="bi bi-arrow-up"></i> 956</small>
+	                  <small class="text-muted"><i class="bi bi-chat"></i> 213</small>
+	                </div>
+	              </div>
+	            </div>
+	            <hr class="my-2">
+	            <div class="mb-0">
+	              <p class="mb-0 small">GBP/USD analysis for the week ahead</p>
+	              <div class="d-flex justify-content-between mt-1">
+	                <small class="text-muted">Posted 9h ago</small>
+	                <div>
+	                  <small class="text-muted me-2"><i class="bi bi-arrow-up"></i> 742</small>
+	                  <small class="text-muted"><i class="bi bi-chat"></i> 156</small>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	      
+	      <!-- Crypto Community -->
+	      <div class="col-md-6 mb-3">
+	        <div class="card h-100">
+	          <div class="card-header bg-purple bg-opacity-10 py-2">
+	            <div class="d-flex align-items-center">
+	              <span class="badge bg-purple me-2">Crypto</span>
+	              <h6 class="mb-0">CryptoCurrency</h6>
+	              <i class="bi bi-arrow-up-right-circle-fill text-purple ms-auto"></i>
+	            </div>
+	          </div>
+	          <div class="card-body">
+	            <div class="mb-2">
+	              <p class="mb-0 small">Bitcoin dominance continues to rise</p>
+	              <div class="d-flex justify-content-between mt-1">
+	                <small class="text-muted">Posted 1h ago</small>
+	                <div>
+	                  <small class="text-muted me-2"><i class="bi bi-arrow-up"></i> 2.3k</small>
+	                  <small class="text-muted"><i class="bi bi-chat"></i> 487</small>
+	                </div>
+	              </div>
+	            </div>
+	            <hr class="my-2">
+	            <div class="mb-0">
+	              <p class="mb-0 small">Altcoin season: myth or reality?</p>
+	              <div class="d-flex justify-content-between mt-1">
+	                <small class="text-muted">Posted 6h ago</small>
+	                <div>
+	                  <small class="text-muted me-2"><i class="bi bi-arrow-up"></i> 1.5k</small>
+	                  <small class="text-muted"><i class="bi bi-chat"></i> 421</small>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	    
+	    <div class="d-flex justify-content-between align-items-center mt-3">
+	      <small class="text-muted">Updated just now</small>
+	      <button class="btn btn-outline-secondary btn-sm">
+	        <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+	      </button>
+	    </div>
+	  </div>
+	</div>
+
+</main>
+<!--end page main-->
+
+{% endblock %}

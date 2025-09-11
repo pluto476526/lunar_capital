@@ -1,0 +1,354 @@
+{% extends 'copilot/main.html' %}
+{% load static %}
+{% include 'copilot/sidebar.html' %}
+{% block main %}
+
+
+
+<!--start content-->
+<main class="page-content">
+	<div class="card">
+    <div class="card-body">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h5 class="card-title mb-0">Screener & Idea Generator</h5>
+                <small class="text-muted">Discover new trading opportunities based on specific criteria</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-success me-2">
+                    <i class="bi bi-lightning-charge me-1"></i> Scan Market
+                </button>
+                <button class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-gear me-1"></i> Settings
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Column - Criteria Builder -->
+            <div class="col-lg-5">
+                <div class="card mb-4">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">Criteria Builder</h6>
+                    </div>
+                    <div class="card-body">
+                        <!-- Saved Screens Dropdown -->
+                        <div class="mb-4">
+                            <label class="form-label">Load Saved Screen</label>
+                            <div class="input-group">
+                                <select class="form-select">
+                                    <option selected>Select a saved screen...</option>
+                                    <option>Oversold Bounce Candidates</option>
+                                    <option>New 52-Week Highs</option>
+                                    <option>High Volume Breakouts</option>
+                                    <option>Earnings Gap Plays</option>
+                                    <option>Low Float Momentum</option>
+                                </select>
+                                <button class="btn btn-outline-secondary" type="button">
+                                    <i class="bi bi-folder-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Criteria Rows -->
+                        <div class="mb-3">
+                            <label class="form-label">Screening Criteria</label>
+                            
+                            <!-- Criteria Row 1 -->
+                            <div class="row g-2 mb-2">
+                                <div class="col-md-5">
+                                    <select class="form-select">
+                                        <option selected>Market Cap</option>
+                                        <option>Price</option>
+                                        <option>Volume</option>
+                                        <option>RSI (14)</option>
+                                        <option>EPS</option>
+                                        <option>P/E Ratio</option>
+                                        <option>Dividend Yield</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-select">
+                                        <option>></option>
+                                        <option><</option>
+                                        <option selected>=</option>
+                                        <option>>=</option>
+                                        <option><=</option>
+                                        <option>Crosses Above</option>
+                                        <option>Crosses Below</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" value="1B">
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-outline-danger w-100">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Criteria Row 2 -->
+                            <div class="row g-2 mb-2">
+                                <div class="col-md-5">
+                                    <select class="form-select">
+                                        <option>Market Cap</option>
+                                        <option selected>RSI (14)</option>
+                                        <option>Volume</option>
+                                        <option>Price</option>
+                                        <option>EPS</option>
+                                        <option>P/E Ratio</option>
+                                        <option>Dividend Yield</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-select">
+                                        <option>></option>
+                                        <option selected><</option>
+                                        <option>=</option>
+                                        <option>>=</option>
+                                        <option><=</option>
+                                        <option>Crosses Above</option>
+                                        <option>Crosses Below</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" value="30">
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-outline-danger w-100">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Criteria Row 3 -->
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-5">
+                                    <select class="form-select">
+                                        <option>Market Cap</option>
+                                        <option>RSI (14)</option>
+                                        <option selected>Volume</option>
+                                        <option>Price</option>
+                                        <option>EPS</option>
+                                        <option>P/E Ratio</option>
+                                        <option>Dividend Yield</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-select">
+                                        <option selected>></option>
+                                        <option><</option>
+                                        <option>=</option>
+                                        <option>>=</option>
+                                        <option><=</option>
+                                        <option>Crosses Above</option>
+                                        <option>Crosses Below</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" value="500K">
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-outline-danger w-100">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Add Criteria Button -->
+                            <button class="btn btn-sm btn-outline-primary w-100">
+                                <i class="bi bi-plus-circle me-1"></i> Add Criteria
+                            </button>
+                        </div>
+
+                        <!-- Scan Options -->
+                        <div class="mb-3">
+                            <label class="form-label">Market Segment</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="market-segment" id="stocks" autocomplete="off" checked>
+                                <label class="btn btn-outline-primary" for="stocks">Stocks</label>
+
+                                <input type="radio" class="btn-check" name="market-segment" id="etfs" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="etfs">ETFs</label>
+
+                                <input type="radio" class="btn-check" name="market-segment" id="crypto" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="crypto">Crypto</label>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary">
+                                <i class="bi bi-search me-1"></i> Run Screen
+                            </button>
+                            <button class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-clockwise me-1"></i> Reset Criteria
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Results -->
+            <div class="col-lg-7">
+                <div class="card mb-4">
+                    <div class="card-header bg-light py-2 d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">Screening Results</h6>
+                        <span class="badge bg-primary">42 matches</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th>Price</th>
+                                        <th>Change</th>
+                                        <th>Volume</th>
+                                        <th>Market Cap</th>
+                                        <th>RSI</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold">AAPL</td>
+                                        <td>$172.89</td>
+                                        <td class="text-success">+1.2%</td>
+                                        <td>35.7M</td>
+                                        <td>2.7T</td>
+                                        <td>28.5</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1" title="Quick Chart">
+                                                <i class="bi bi-graph-up"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-success" title="Add to Watchlist">
+                                                <i class="bi bi-star"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">NVDA</td>
+                                        <td>$745.32</td>
+                                        <td class="text-success">+4.2%</td>
+                                        <td>42.5M</td>
+                                        <td>1.8T</td>
+                                        <td>32.1</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1" title="Quick Chart">
+                                                <i class="bi bi-graph-up"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-success" title="Add to Watchlist">
+                                                <i class="bi bi-star"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">TSLA</td>
+                                        <td>$182.45</td>
+                                        <td class="text-danger">-2.7%</td>
+                                        <td>38.2M</td>
+                                        <td>580B</td>
+                                        <td>26.8</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1" title="Quick Chart">
+                                                <i class="bi bi-graph-up"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-success" title="Add to Watchlist">
+                                                <i class="bi bi-star"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">AMD</td>
+                                        <td>$178.35</td>
+                                        <td class="text-success">+3.4%</td>
+                                        <td>28.7M</td>
+                                        <td>288B</td>
+                                        <td>29.3</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1" title="Quick Chart">
+                                                <i class="bi bi-graph-up"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-success" title="Add to Watchlist">
+                                                <i class="bi bi-star"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">MSFT</td>
+                                        <td>$415.86</td>
+                                        <td class="text-success">+0.8%</td>
+                                        <td>25.3M</td>
+                                        <td>3.1T</td>
+                                        <td>31.5</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1" title="Quick Chart">
+                                                <i class="bi bi-graph-up"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-success" title="Add to Watchlist">
+                                                <i class="bi bi-star"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        <nav aria-label="Screener results pagination">
+                            <ul class="pagination pagination-sm justify-content-center mb-0">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Results Summary -->
+                <div class="card">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">Screen Summary</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="border-end">
+                                    <h6 class="mb-0">42</h6>
+                                    <small class="text-muted">Total Matches</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="border-end">
+                                    <h6 class="mb-0 text-success">68%</h6>
+                                    <small class="text-muted">Positive Change</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <h6 class="mb-0">$1.8B</h6>
+                                <small class="text-muted">Avg. Volume</small>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-download me-1"></i> Export Results
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+
+{% endblock %}

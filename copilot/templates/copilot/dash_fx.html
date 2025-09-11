@@ -1,0 +1,481 @@
+{% extends 'copilot/main.html' %}
+{% load static %}
+{% include 'copilot/sidebar.html' %}
+{% block main %}
+
+
+
+
+
+
+<!--start content-->
+<main class="page-content">
+  <!-- Market Overview Section -->
+  <div class="row mb-4">
+    <div class="col">
+      <h4 class="mb-0">Market Overview</h4>
+      <p class="text-muted mb-0">Real-time market intelligence and analysis</p>
+    </div>
+    <div class="col-auto">
+      <div class="d-flex align-items-center text-muted">
+        <i class="bi bi-circle-fill text-success me-1 small"></i>
+        <span class="small">Live</span>
+        <span class="ms-2 small" id="last-updated">Updated: 2025-09-10 21:16 UTC</span>
+      </div>
+    </div>
+  </div>
+    
+  <!-- Key Metrics Cards -->
+  <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-4">
+    <div class="col" id="market-status-card">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Market Status</p>
+              <h4 class="mb-0" id="market-status-value">Strong Bearish</h4>
+            </div>
+            <div class="ms-auto fs-2 text-danger">
+              <i class="bi bi-graph-down-arrow"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <small class="mb-0">
+            <span id="market-breadth" class="text-danger">+25% <i class="bi bi-arrow-down"></i></span>
+            <span class="ms-1">of instruments trending up</span>
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col" id="volatility-card">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Volatility Index</p>
+              <h4 class="mb-0" id="volatility-value">0.5</h4>
+            </div>
+            <div class="ms-auto fs-2 text-warning">
+              <i class="bi bi-lightning-charge"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <small class="mb-0">
+            <span id="volatility-change" class="text-muted">Low volatility</span>
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col" id="session-card">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Active Session</p>
+              <h4 class="mb-0" id="session-activity-value">After Hours</h4>
+            </div>
+            <div class="ms-auto fs-2 text-orange">
+              <i class="bi bi-clock-history"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <small class="mb-0" id="session-details">
+            <span class="text-muted" id="session-status">Medium Activity</span>
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col" id="liquidity-card">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Market Liquidity</p>
+              <h4 class="mb-0" id="liquidity-value">Medium</h4>
+            </div>
+            <div class="ms-auto fs-2 text-info">
+              <i class="bi bi-currency-exchange"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <small class="mb-0" id="liquidity-details">
+            <span class="text-info" id="volume-ratio">1.27x</span>
+            <span class="ms-1">avg volume</span>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div><!--end row-->
+
+  <!-- Market Analysis Section -->
+  <div class="row mt-4">
+    <div class="col-12 col-lg-8">
+      <div class="card radius-10">
+        <div class="card-body">
+          <h5 class="card-title">Market Intelligence</h5>
+          
+          <div class="market-narrative mt-3" id="narrative-container">
+            <div class="alert alert-primary border-0 bg-light-primary">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">Strong Bearish Sentiment Across Forex Markets</h6>
+                  <p class="mb-0">The after-hours forex market is exhibiting a strong bearish bias, with the Volatility Index at 0.5 and only 25.0% of currency pairs advancing.</p>
+                </div>
+                <div class="ms-3">
+                  <span class="badge bg-primary">ANALYSIS</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="alert alert-light border-0 mt-3">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">Currency Strength Analysis</h6>
+                  <p class="mb-0">This downturn is led by the Japanese yen (JPY), which is the weakest currency, while the British pound (GBP) is demonstrating resilience as the strongest currency.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-light border-0 mt-3">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">Key Levels to Watch</h6>
+                  <p class="mb-0">GBP/USD approaching critical support at 1.325. USD/JPY edging closer to significant support level at 145.0.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-light p-3 radius-10 mt-3">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <i class="bi bi-info-circle text-primary me-2"></i>
+              </div>
+              <div class="flex-grow-1">
+                <p class="mb-0 small">Analysis generated at <span id="analysis-time">09:16 PM UTC</span>. Monitoring <span id="key-events">4 currency pairs</span> for market conditions. News sentiment: <span class="text-info">Neutral</span> with focus on inflation, rates, and geopolitics.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-12 col-lg-4">
+      <div class="card radius-10">
+        <div class="card-body">
+          <h5 class="card-title">Top Movers</h5>
+          
+          <div class="row mt-3">
+            <div class="col-6">
+              <h6 class="text-center text-success">Top Gainers</h6>
+              <ul class="list-group list-group-flush" id="top-gainers">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
+                  <span>USD/JPY</span>
+                  <span class="badge bg-success rounded-pill">+1.43%</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
+                  <span>EUR/CAD</span>
+                  <span class="badge bg-success rounded-pill">-0.20%</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-6">
+              <h6 class="text-center text-danger">Top Losers</h6>
+              <ul class="list-group list-group-flush" id="top-losers">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
+                  <span>GBP/USD</span>
+                  <span class="badge bg-danger rounded-pill">-0.24%</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
+                  <span>EUR/GBP</span>
+                  <span class="badge bg-danger rounded-pill">-0.33%</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card radius-10 mt-3">
+        <div class="card-body">
+          <h5 class="card-title">Currency Strength</h5>
+          <div class="row mt-3">
+            <div class="col-6 text-center">
+              <div class="p-2 bg-success bg-opacity-10 rounded">
+                <h6 class="text-success">Strongest</h6>
+                <h4 class="mb-0">GBP</h4>
+                <small class="text-muted">British Pound</small>
+              </div>
+            </div>
+            <div class="col-6 text-center">
+              <div class="p-2 bg-danger bg-opacity-10 rounded">
+                <h6 class="text-danger">Weakest</h6>
+                <h4 class="mb-0">JPY</h4>
+                <small class="text-muted">Japanese Yen</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!--end row-->
+
+  <!-- Correlation Matrix Section -->
+  <div class="row mt-4">
+    <div class="col-12 col-lg-6">
+      <div class="card radius-10">
+        <div class="card-body">
+          <h5 class="card-title">Correlation Matrix</h5>
+          
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered table-sm text-center">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>EUR/CAD</th>
+                  <th>EUR/GBP</th>
+                  <th>GBP/USD</th>
+                  <th>USD/JPY</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="fw-bold">EUR/CAD</td>
+                  <td class="bg-light">-</td>
+                  <td class="bg-success bg-opacity-25">0.30</td>
+                  <td class="bg-success bg-opacity-25">0.42</td>
+                  <td class="bg-light">-0.07</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">EUR/GBP</td>
+                  <td class="bg-success bg-opacity-25">0.30</td>
+                  <td class="bg-light">-</td>
+                  <td class="bg-danger bg-opacity-25">-0.22</td>
+                  <td class="bg-success bg-opacity-10">0.37</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">GBP/USD</td>
+                  <td class="bg-success bg-opacity-25">0.42</td>
+                  <td class="bg-danger bg-opacity-25">-0.22</td>
+                  <td class="bg-light">-</td>
+                  <td class="bg-danger bg-opacity-50">-0.75</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">USD/JPY</td>
+                  <td class="bg-light">-0.07</td>
+                  <td class="bg-success bg-opacity-10">0.37</td>
+                  <td class="bg-danger bg-opacity-50">-0.75</td>
+                  <td class="bg-light">-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="mt-3 small">
+            <span class="text-success">Strong Positive</span> |
+            <span class="text-danger">Strong Negative</span> |
+            <span>Weak Correlation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-12 col-lg-6">
+      <div class="card radius-10 h-100">
+        <div class="card-body">
+          <h5 class="card-title">Technical Indicators</h5>
+          
+          <div class="row mt-4">
+            <div class="col-6 text-center">
+              <div class="position-relative d-inline-block">
+                <span class="donut" data-peity='{ "fill": ["#8932ff", "rgba(135, 50, 255, 0.15)"], "innerRadius": 28, "radius": 50, "width": 80, "height": 80}'>25/100</span>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                  <h4 class="mb-0">25%</h4>
+                </div>
+              </div>
+              <p class="mt-2 mb-0">Bullish Signals</p>
+            </div>
+            
+            <div class="col-6 text-center">
+              <div class="position-relative d-inline-block">
+                <span class="donut" data-peity='{ "fill": ["#ff6632", "rgba(255, 101, 50, 0.15)"], "innerRadius": 28, "radius": 50, "width": 80, "height": 80}'>1/4</span>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                  <h4 class="mb-0">25%</h4>
+                </div>
+              </div>
+              <p class="mt-2 mb-0">RSI Above 60</p>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <h6>Indicator Summary</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                RSI Above 60
+                <span class="badge bg-secondary rounded-pill">1/4</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                MACD Bullish Cross
+                <span class="badge bg-secondary rounded-pill">0/4</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                Above 50-Day MA
+                <span class="badge bg-secondary rounded-pill">1/4</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!--end row-->
+
+  <!-- News Section -->
+  <div class="card radius-10 mt-4">
+    <div class="card-body">
+      <h5 class="card-title">Market News & Sentiment</h5>
+      <div class="row mt-3">
+        <div class="col-md-4 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <span class="badge bg-info mb-2">Neutral Sentiment</span>
+              <h6 class="card-title">Key Themes</h6>
+              <div class="d-flex flex-wrap gap-2 mt-3">
+                <span class="badge bg-light text-dark">Inflation</span>
+                <span class="badge bg-light text-dark">Interest Rates</span>
+                <span class="badge bg-light text-dark">Geopolitics</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="card h-100">
+            <div class="card-body">
+              <h6 class="card-title">Top News Headlines</h6>
+              <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">Europe's hotly contested ban on new gasoline cars is back in the spotlight</h6>
+                    <small>3 hours ago</small>
+                  </div>
+                  <p class="mb-1 small text-muted">Europe's ban on the sale of new diesel and gasoline cars and vans from 2035 has been a hot topic...</p>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">Trump presses European Union to impose 100% tariffs on India and China to pressure Putin</h6>
+                    <small>5 hours ago</small>
+                  </div>
+                  <p class="mb-1 small text-muted">U.S. President Donald Trump has asked the European Union to hit China and India with tariffs of up to 100%...</p>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">US Dollar Volatility Could Spike on Inflation Data - GBP/USD, EUR/USD in Focus</h6>
+                    <small>7 hours ago</small>
+                  </div>
+                  <p class="mb-1 small text-muted">Traders are watching upcoming inflation data for signals on future Fed policy...</p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Currency Pairs Section -->
+  <div class="card radius-10">
+     <div class="card-body">
+       <div class="row g-3">
+         <div class="col-12 col-lg-4 col-xl-4 d-flex">
+          <div class="card mb-0 radius-10 border shadow-none w-100">
+            <div class="card-body">
+              <h5 class="card-title">Forex Pairs Overview</h5>
+              <p class="text-secondary font-13">Click any pair for detailed analysis</p>
+              <ul class="list-group list-group-flush mt-3" id="forex-pairs-list">
+                <li class="list-group-item border-top" data-symbol="EUR/USD">
+                  <div class="d-flex align-items-center gap-2">
+                     <div><i class="bi bi-circle-fill text-success"></i></div>
+                     <div>EUR/USD</div>
+                     <div class="ms-auto"><span class="text-success">+1.2%</span></div>
+                  </div>
+                </li>
+                <li class="list-group-item" data-symbol="GBP/USD">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><i class="bi bi-circle-fill text-success"></i></div>
+                    <div>GBP/USD</div>
+                    <div class="ms-auto"><span class="text-success">+0.8%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="USD/JPY">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><i class="bi bi-circle-fill text-warning"></i></div>
+                    <div>USD/JPY</div>
+                    <div class="ms-auto"><span class="text-warning">+0.2%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="AUD/USD">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><i class="bi bi-circle-fill text-danger"></i></div>
+                    <div>AUD/USD</div>
+                    <div class="ms-auto"><span class="text-danger">-0.4%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="USD/CAD">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><i class="bi bi-circle-fill text-success"></i></div>
+                    <div>USD/CAD</div>
+                    <div class="ms-auto"><span class="text-success">+0.5%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="USD/CHF">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><i class="bi bi-circle-fill text-success"></i></div>
+                    <div>USD/CHF</div>
+                    <div class="ms-auto"><span class="text-success">+0.9%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="NZD/USD">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><i class="bi bi-circle-fill text-danger"></i></div>
+                    <div>NZD/USD</div>
+                    <div class="ms-auto"><span class="text-danger">-1.2%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="EUR/GBP">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><i class="bi bi-circle-fill text-danger"></i></div>
+                    <div>EUR/GBP</div>
+                    <div class="ms-auto"><span class="text-danger">-0.7%</span></div>
+                 </div>
+               </li>
+              </ul>
+            </div>
+          </div>
+         </div>
+
+         <div class="col-12 col-lg-8 col-xl-8 d-flex">
+          <div class="card mb-0 radius-10 border shadow-none w-100">
+            <div class="card-body">
+              <h5 class="card-title">Pair Performance Details</h5>
+              <div class="selected-pair-details" id="pair-details">
+                <div class="text-center py-5 text-muted">
+                  <i class="bi bi-currency-exchange display-4"></i>
+                  <p class="mt-3">Select a currency pair from the list to view detailed analysis</p>
+                </div>
+              </div>
+             </div>
+            </div>
+        </div>
+       </div><!--end row-->
+     </div>
+  </div>
+  
+</main>
+
+<!--end page main-->
+
+
+
+{% endblock %}

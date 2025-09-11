@@ -1,0 +1,282 @@
+{% extends 'copilot/main.html' %}
+{% load static %}
+{% include 'copilot/sidebar.html' %}
+{% block main %}
+
+
+
+<!--start content-->
+<main class="page-content">
+
+	<div class="card">
+  <div class="card-body">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h5 class="card-title mb-0">My Trading Journal</h5>
+        <small class="text-muted">Track, analyze, and improve your trading performance</small>
+      </div>
+      <div>
+        <button class="btn btn-primary btn-sm">
+          <i class="bi bi-plus-circle me-1"></i> New Entry
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Left Column - Trade Details -->
+      <div class="col-lg-8">
+        <!-- Performance Summary -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h6 class="card-title mb-3">Today's Performance</h6>
+            <div class="row text-center">
+              <div class="col-4">
+                <div class="border-end">
+                  <h4 class="text-success mb-0">+$1,245</h4>
+                  <small class="text-muted">P&L</small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="border-end">
+                  <h4 class="mb-0">72%</h4>
+                  <small class="text-muted">Win Rate</small>
+                </div>
+              </div>
+              <div class="col-4">
+                <h4 class="mb-0">8</h4>
+                <small class="text-muted">Trades</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Trades Table -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h6 class="card-title mb-3">Recent Trades</h6>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Symbol</th>
+                    <th>Direction</th>
+                    <th>Entry</th>
+                    <th>Exit</th>
+                    <th>P&L</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Today 10:23</td>
+                    <td>NVDA</td>
+                    <td><span class="badge bg-success">Long</span></td>
+                    <td>$745.32</td>
+                    <td>$752.86</td>
+                    <td class="text-success">+$376</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Today 11:47</td>
+                    <td>TSLA</td>
+                    <td><span class="badge bg-danger">Short</span></td>
+                    <td>$182.45</td>
+                    <td>$180.12</td>
+                    <td class="text-success">+$465</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Today 13:15</td>
+                    <td>AAPL</td>
+                    <td><span class="badge bg-success">Long</span></td>
+                    <td>$172.89</td>
+                    <td>$171.45</td>
+                    <td class="text-danger">-$288</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trade Notes -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h6 class="card-title mb-3">Today's Journal Notes</h6>
+            <div class="border-start border-3 border-primary ps-3">
+              <p class="mb-2">"Got stopped out on AAPL due to market overreaction to Fed comments. Should have waited for confirmation before entering."</p>
+              <p class="mb-0">"NVDA trade worked perfectly according to plan. Took profits at resistance as planned."</p>
+            </div>
+            <textarea class="form-control mt-3" rows="3" placeholder="Add your trading notes here..."></textarea>
+            <div class="d-flex justify-content-end mt-2">
+              <button class="btn btn-primary btn-sm">Save Notes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Fun Elements & Analysis -->
+      <div class="col-lg-4">
+        <!-- Market Mood -->
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <h6 class="card-title mb-3">Market Mood Today</h6>
+            <div class="display-4 mb-2">😊</div>
+            <p class="small mb-0">Bullish sentiment with moderate volatility</p>
+          </div>
+        </div>
+
+        <!-- Trader Horoscope -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h6 class="card-title mb-3">🔮 Your Trading Horoscope</h6>
+            <p class="small mb-0">Mercury is aligning with your risk management stars. It's a good day to trust your stops and take profits at resistance.</p>
+          </div>
+        </div>
+
+        <!-- Strategy of the Day -->
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <h6 class="card-title mb-3">⚡ Strategy Generator</h6>
+            <p class="fw-bold mb-2" id="strategy-output">Inverse Wombat Momentum Play</p>
+            <button class="btn btn-outline-primary btn-sm" onclick="generateStrategy()">
+              Generate New Strategy
+            </button>
+          </div>
+        </div>
+
+        <!-- Emotional State -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h6 class="card-title mb-3">Current Emotional State</h6>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Calm</span>
+              <span class="text-muted">|</span>
+              <span>Focused</span>
+              <span class="text-muted">|</span>
+              <span>Confident</span>
+            </div>
+            <div class="progress mb-3" style="height: 10px;">
+              <div class="progress-bar bg-success" role="progressbar" style="width: 70%"></div>
+              <div class="progress-bar bg-warning" role="progressbar" style="width: 20%"></div>
+              <div class="progress-bar bg-danger" role="progressbar" style="width: 10%"></div>
+            </div>
+            <small class="text-muted">Rate your emotional state after each trade</small>
+          </div>
+        </div>
+
+        <!-- Coping Mechanism -->
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <h6 class="card-title mb-3">🚨 Need a Break?</h6>
+            <p class="small mb-2" id="cope-output">Feeling stressed? Press the button.</p>
+            <button class="btn btn-outline-danger btn-sm" onclick="cope()">
+              Trader Therapy Session
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Performance -->
+    <div class="card mt-4">
+      <div class="card-body">
+        <h6 class="card-title mb-3">Weekly Performance</h6>
+        <div class="row text-center">
+          <div class="col-6 col-md-2 mb-3">
+            <div class="card bg-light">
+              <div class="card-body py-2">
+                <div class="small text-muted">Mon</div>
+                <div class="fw-bold text-success">+$892</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-2 mb-3">
+            <div class="card bg-light">
+              <div class="card-body py-2">
+                <div class="small text-muted">Tue</div>
+                <div class="fw-bold text-danger">-$245</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-2 mb-3">
+            <div class="card bg-light">
+              <div class="card-body py-2">
+                <div class="small text-muted">Wed</div>
+                <div class="fw-bold text-success">+$1,532</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-2 mb-3">
+            <div class="card bg-light">
+              <div class="card-body py-2">
+                <div class="small text-muted">Thu</div>
+                <div class="fw-bold text-success">+$768</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-2 mb-3">
+            <div class="card bg-light">
+              <div class="card-body py-2">
+                <div class="small text-muted">Fri</div>
+                <div class="fw-bold text-success">+$1,245</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-2 mb-3">
+            <div class="card bg-primary text-white">
+              <div class="card-body py-2">
+                <div class="small">Week</div>
+                <div class="fw-bold">+$4,192</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function generateStrategy() {
+    const names = [
+      "The Lunar Fibonacci Retracement Algorithm",
+      "Quantum Turtle Oscillator",
+      "Inverse Wombat Momentum Play",
+      "The Alpha Gorilla Hedging Protocol",
+      "The Galactic RSI Vortex Strategy"
+    ];
+    document.getElementById("strategy-output").innerText = names[Math.floor(Math.random() * names.length)];
+  }
+
+  function cope() {
+    const responses = [
+      "Breathe. It's only pretend money.",
+      "Imagine your portfolio on a beach, sipping cocktails.",
+      "Reminder: Screens can't hurt you, unless you throw them.",
+      "Markets fall, but pizza delivery is eternal.",
+      "At least you're not trading tulips in 1637."
+    ];
+    document.getElementById("cope-output").innerText = responses[Math.floor(Math.random() * responses.length)];
+  }
+</script>
+
+</main>
+<!--end page main-->
+
+{% endblock %}

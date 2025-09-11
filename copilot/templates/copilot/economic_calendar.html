@@ -1,0 +1,150 @@
+{% extends 'copilot/main.html' %}
+{% load static %}
+{% include 'copilot/sidebar.html' %}
+{% block main %}
+
+
+
+<!--start content-->
+<main class="page-content">
+
+  <!-- Header -->
+  <div class="card radius-10 mb-4">
+    <div class="card-body">
+      <h4 class="mb-1">Financial Calendar</h4>
+      <p class="text-muted mb-0">Key economic events and data releases that impact global markets.</p>
+    </div>
+  </div>
+
+  <!-- Event Highlights -->
+  <div class="row mb-4">
+    <div class="col-lg-6">
+      <div class="card border">
+        <div class="card-body">
+          <h6 class="fw-bold">📊 Core CPI m/m</h6>
+          <p class="mb-1">Currency: <span class="fw-bold">USD</span></p>
+          <p class="mb-1">Date: Feb 8, 2024 15:30</p>
+          <p class="mb-1">Category: Consumer Inflation Report</p>
+          <p class="mb-1">Actual: <span class="text-success">0.4</span></p>
+          <p class="mb-1">Forecast: 0.4 | Previous: 0.2</p>
+          <p class="mb-1">Projection: 0.5</p>
+          <p class="mb-1">Outcome: <span class="badge bg-warning">Actual = Forecast > Previous</span></p>
+          <p class="mb-0">Strength: <span class="text-success">Strong Data</span> | Quality: <span class="text-danger">Bad Data</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card border">
+        <div class="card-body">
+          <h6 class="fw-bold">💼 Non-Farm Payrolls (NFP)</h6>
+          <p class="mb-1">Currency: <span class="fw-bold">USD</span></p>
+          <p class="mb-1">Date: Feb 9, 2024 15:30</p>
+          <p class="mb-1">Category: Employment Report</p>
+          <p class="mb-1">Actual: <span class="text-danger">145K</span></p>
+          <p class="mb-1">Forecast: 180K | Previous: 210K</p>
+          <p class="mb-1">Projection: 190K</p>
+          <p class="mb-1">Outcome: <span class="badge bg-danger">Missed Forecast & Lower than Previous</span></p>
+          <p class="mb-0">Strength: <span class="text-warning">Weak Data</span> | Quality: <span class="text-success">Good Data</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Event Calendar Table -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="mb-3">Upcoming Events</h5>
+      <div class="table-responsive">
+        <table class="table table-hover table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Event</th>
+              <th>Currency</th>
+              <th>Category</th>
+              <th>Date/Time</th>
+              <th>Actual</th>
+              <th>Forecast</th>
+              <th>Previous</th>
+              <th>Projection</th>
+              <th>Outcome</th>
+              <th>Strength</th>
+              <th>Quality</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Core CPI m/m</td>
+              <td>USD</td>
+              <td>Consumer Inflation Report</td>
+              <td>Feb 8, 2024 15:30</td>
+              <td>0.4</td>
+              <td>0.4</td>
+              <td>0.2</td>
+              <td>0.5</td>
+              <td><span class="badge bg-warning">Forecast Met</span></td>
+              <td><span class="text-success">Strong</span></td>
+              <td><span class="text-danger">Bad</span></td>
+            </tr>
+            <tr>
+              <td>Non-Farm Payrolls</td>
+              <td>USD</td>
+              <td>Employment Report</td>
+              <td>Feb 9, 2024 15:30</td>
+              <td>145K</td>
+              <td>180K</td>
+              <td>210K</td>
+              <td>190K</td>
+              <td><span class="badge bg-danger">Missed</span></td>
+              <td><span class="text-warning">Weak</span></td>
+              <td><span class="text-success">Good</span></td>
+            </tr>
+            <tr>
+              <td>FOMC Meeting Minutes</td>
+              <td>USD</td>
+              <td>Central Bank Report</td>
+              <td>Feb 14, 2024 21:00</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>N/A</td>
+              <td><span class="badge bg-info">Pending</span></td>
+              <td><span class="text-muted">Neutral</span></td>
+              <td><span class="text-muted">Neutral</span></td>
+            </tr>
+            <tr>
+              <td>ECB Interest Rate Decision</td>
+              <td>EUR</td>
+              <td>Monetary Policy</td>
+              <td>Feb 15, 2024 14:45</td>
+              <td>—</td>
+              <td>4.50%</td>
+              <td>4.25%</td>
+              <td>4.75%</td>
+              <td><span class="badge bg-info">Pending</span></td>
+              <td><span class="text-info">Medium</span></td>
+              <td><span class="text-muted">Neutral</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes Section -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5>Trader Notes</h5>
+      <p class="text-muted mb-0">
+        - Core CPI meeting forecast boosted USD but weak NFP could cap gains.  
+        - Watch EUR on ECB rate decision next week.  
+        - Precious metals may react to inflation data divergence.  
+      </p>
+    </div>
+  </div>
+
+</main>
+<!--end page main-->
+
+{% endblock %}
+
+

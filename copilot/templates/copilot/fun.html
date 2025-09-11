@@ -1,0 +1,150 @@
+{% extends 'copilot/main.html' %}
+{% load static %}
+{% include 'copilot/sidebar.html' %}
+{% block main %}
+
+<!--start content-->
+<main class="page-content">
+    
+    <!-- Breadcrumb -->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Entertainment</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bi bi-emoji-laughing-fill" style="color:#7b378e"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Trader Fun</li>
+                </ol>
+            </nav>
+        </div>          
+    </div>
+    <!--end breadcrumb-->
+
+    <div class="row">
+        <!-- Left Column -->
+        <div class="col-12 col-lg-8">
+            <div class="row">
+                <!-- Market Wizard -->
+                <div class="col-12 col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <h5 class="mb-3">🧙 The Market Wizard</h5>
+                            <button class="btn btn-dark" onclick="summonWizard()">Consult the Oracle</button>
+                            <p class="mt-3 fw-bold" id="wizard-output">Click to receive wisdom...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategy Name Generator -->
+                <div class="col-12 col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <h5 class="mb-3">⚡ Strategy Name Generator</h5>
+                            <button class="btn btn-primary" onclick="generateStrategy()">Name Your Strategy</button>
+                            <p class="mt-3 fw-bold" id="strategy-output">Click to generate...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trading History -->
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-3">📅 This Day in Trading History</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">1637: Tulip Mania peaks. A single tulip could buy a house. Markets can be irrational.</li>
+                                <li class="list-group-item">2010: The Flash Crash. Sometimes the market just needs a 5-min timeout.</li>
+                                <li class="list-group-item">1999: Analysts said Amazon was "overvalued." Spoiler: they were wrong.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-12 col-lg-4">
+            <!-- Trader Horoscopes -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="mb-3">🔮 Trader Horoscopes</h5>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Crypto Traders</h6>
+                        <p class="mb-0">The moons are aligning with a shitcoin. Your risk of FOMO is critical. Stay strong.</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Forex Traders</h6>
+                        <p class="mb-0">Mercury is in retrograde over the ECB. Expect confusing commentary and whipsaws. Trust nothing.</p>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold">Stock Traders</h6>
+                        <p class="mb-0">Your chart shows a classic 'hopium and dreams' pattern. Consider a stop-loss... for your emotions.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coping Mechanism -->
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <h5 class="mb-3">🚨 Trader Coping Mechanism</h5>
+                    <button class="btn btn-danger btn-lg" onclick="cope()">SEND HELP</button>
+                    <p class="mt-3 fw-bold" id="cope-output">Feeling stressed? Press the button.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dev Log (Always Visible) -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="mb-3">📝 Dev's Unhinged Trading Journal</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">2:47 AM: Convinced the VIX is controlled by a single algo in a Cleveland basement. No proof. Just a feeling.</li>
+                <li class="list-group-item">Entry 742: Added a 'YOLO' button to the UI. For... testing purposes.</li>
+                <li class="list-group-item">Note to self: If I see one more 'To the Moon' comment, I'm shorting every meme stock in existence.</li>
+                <li class="list-group-item">Experimental Thought: What if Jerome Powell is just a hologram generated by Bloomberg terminals?</li>
+            </ul>
+        </div>
+    </div>
+
+</main>
+<!--end page main-->
+
+<!-- Scripts -->
+<script>
+  function summonWizard() {
+    const quotes = [
+      "The trend is your friend. Until it betrays you and takes all your money.",
+      "I'd give you trading advice, but then we'd both be wrong.",
+      "The only thing rising faster than this stock is my blood pressure.",
+      "Prediction? Up. Or down. Or sideways. You're welcome.",
+      "This isn't a loss. It's a 'strategic liquidity reallocation.'"
+    ];
+    document.getElementById("wizard-output").innerText = quotes[Math.floor(Math.random() * quotes.length)];
+  }
+
+  function generateStrategy() {
+    const names = [
+      "The Lunar Fibonacci Retracement Algorithm",
+      "Quantum Turtle Oscillator",
+      "Inverse Wombat Momentum Play",
+      "The Alpha Gorilla Hedging Protocol",
+      "The Galactic RSI Vortex Strategy"
+    ];
+    document.getElementById("strategy-output").innerText = names[Math.floor(Math.random() * names.length)];
+  }
+
+  function cope() {
+    const responses = [
+      "Breathe. It's only pretend money.",
+      "Imagine your portfolio on a beach, sipping cocktails.",
+      "Reminder: Screens can't hurt you, unless you throw them.",
+      "Markets fall, but pizza delivery is eternal.",
+      "At least you're not trading tulips in 1637."
+    ];
+    document.getElementById("cope-output").innerText = responses[Math.floor(Math.random() * responses.length)];
+  }
+</script>
+
+{% endblock %}

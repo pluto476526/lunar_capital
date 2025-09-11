@@ -1,0 +1,574 @@
+{% extends 'copilot/main.html' %}
+{% load static %}
+{% include 'copilot/sidebar.html' %}
+{% block main %}
+
+
+
+<!--start content-->
+<main class="page-content">
+  
+  <!-- Top Stats Row -->
+  <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-4">
+    <!-- Market Status Card -->
+    <div class="col" id="market-status-card">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Market Status</p>
+              <h4 class="mb-0" id="market-status-value">Strong Bullish</h4>
+            </div>
+            <div class="ms-auto fs-2 text-success">
+              <i class="bi bi-graph-up-arrow"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <small class="mb-0">
+            <span id="market-breadth" class="text-success">100% <i class="bi bi-arrow-up"></i></span>
+            <span class="ms-1">of cryptocurrencies trending up</span>
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fear & Greed Index Card -->
+    <div class="col" id="fear-greed-card">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Fear & Greed Index</p>
+              <h4 class="mb-0" id="fear-greed-value">72</h4>
+            </div>
+            <div class="ms-auto fs-2 text-warning">
+              <i class="bi bi-emoji-smile"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <small class="mb-0">
+            <span id="fear-greed-label" class="text-warning">Greed</span>
+            <span class="ms-1">market sentiment</span>
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volatility Card -->
+    <div class="col" id="volatility-card">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Market Volatility</p>
+              <h4 class="mb-0" id="volatility-value">3.8</h4>
+            </div>
+            <div class="ms-auto fs-2 text-info">
+              <i class="bi bi-lightning-charge"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <small class="mb-0">
+            <span id="volatility-label" class="text-info">Moderate</span>
+            <span class="ms-1">volatility level</span>
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Liquidity Card -->
+    <div class="col" id="liquidity-card">
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="">
+              <p class="mb-1">Market Liquidity</p>
+              <h4 class="mb-0" id="liquidity-score">1.01</h4>
+            </div>
+            <div class="ms-auto fs-2 text-primary">
+              <i class="bi bi-droplet"></i>
+            </div>
+          </div>
+          <div class="border-top my-2"></div>
+          <small class="mb-0">
+            <span id="liquidity-status" class="text-primary">Medium</span>
+            <span class="ms-1">liquidity conditions</span>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div><!--end row-->
+
+  <!-- Charts and Indicators Row -->
+  <div class="row">
+    <div class="col-12 col-lg-8 col-xl-8">
+      <!-- Market Breadth Chart -->
+      <div class="card radius-10">
+        <div class="card-body">
+           <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Market Breadth Trend</h5>
+              <span class="badge bg-light text-dark">5 symbols</span>
+           </div>
+           <div id="breadth-trend-chart" class="mt-3" style="height: 250px;"></div>
+           <div class="mt-3 small text-muted">
+             Based on 5 symbols evaluated
+           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4 col-xl-4">
+      <!-- Technical Indicators -->
+      <div class="card radius-10">
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-4">
+            <div class="">
+              <span class="donut" data-peity='{ "fill": ["#8932ff", "rgba(135, 50, 255, 0.15)"], "innerRadius": 28, "radius": 50, "width": 67, "height": 67}'>0/5</span>
+            </div>
+            <div class="">
+              <h4 class="mb-0" id="rsi-strong-value">0</h4>
+              <p class="mb-1">RSI > 65</p>
+            </div>
+          </div>
+          <div class="border-top my-4"></div>
+          <div class="d-flex align-items-center gap-4">
+            <div class="">
+              <span class="donut" data-peity='{ "fill": ["#ff6632", "rgba(255, 101, 50, 0.15)"], "innerRadius": 28, "radius": 50, "width": 67, "height": 67}'>0/5</span>
+            </div>
+            <div class="">
+              <h4 class="mb-0" id="macd-bullish-value">0</h4>
+              <p class="mb-1">MACD Bull Cross</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Volume Ratio -->
+      <div class="card radius-10">
+        <div class="card-body">
+           <div id="volume-chart" style="height: 100px;"></div>
+           <div class="d-flex align-items-end mt-3">
+              <div>
+                <h4 class="mb-1" id="volume-ratio-value">1.02</h4>
+                <p class="mb-0">Volume Ratio Avg</p>
+              </div>
+              <div class="ms-auto">
+                <p class="mb-0 text-success">
+                  Above average <i class="bi bi-arrow-up"></i>
+                </p>
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div><!--end row-->
+
+  <!-- Intelligence and Top Movers Row -->
+  <div class="row">
+    <div class="col-12 col-lg-6 col-xl-6 d-flex">
+      <!-- Market Intelligence -->
+      <div class="card radius-10 w-100">
+        <div class="card-body">
+          <div class="row g-3 align-items-center">
+            <div class="col">
+              <h5 class="mb-0">Market Intelligence</h5>
+            </div>
+            <div class="col-auto">
+              <span class="badge bg-success">LIVE</span>
+            </div>
+          </div>
+
+          <div class="market-narrative mt-4">
+            <h6>The cryptocurrency market is exhibiting a strong bullish trend in after-hours trading, with the Volatility Index at 3.8 and 100.0% of tokens advancing.</h6>
+            <p class="small">Bitcoin (BTC) is leading the charge, up 1.95% to $113,725.66, with its dominance at 40.0%. This surge in BTC price has significant implications for the broader market, as altcoins often follow Bitcoin's lead.</p>
+          </div>
+
+          <div class="bg-light p-3 radius-10 mt-3">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <i class="bi bi-info-circle text-primary me-2"></i>
+              </div>
+              <div class="flex-grow-1">
+                <p class="mb-0 small">Analysis generated at 2025-09-10T20:51:58. Current session: After Hours.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Top Movers -->
+    <div class="col-12 col-lg-6 col-xl-6 d-flex">
+      <div class="card radius-10 w-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Top Movers</h5>
+            <span class="badge bg-light text-dark">By Change %</span>
+          </div>
+
+          <div id="top-movers-container" class="mt-3">
+            <div class="row">
+              <div class="col-6">
+                <h6 class="text-center text-success">Top Gainers</h6>
+                <ul class="list-group list-group-flush" id="top-gainers">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    LTC/USDT
+                    <span class="badge bg-success rounded-pill">+2.98%</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    BTC/USDT
+                    <span class="badge bg-success rounded-pill">+1.95%</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-6">
+                <h6 class="text-center text-danger">Top Losers</h6>
+                <ul class="list-group list-group-flush" id="top-losers">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    BCH/USDT
+                    <span class="badge bg-danger rounded-pill">-0.75%</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    XRP/USDT
+                    <span class="badge bg-danger rounded-pill">-0.42%</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!--end row-->
+  
+  <!-- Correlation Matrix -->
+  <div class="row">
+    <div class="col-12 col-xl-12 d-flex">
+      <div class="card radius-10 w-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Correlation Matrix</h5>
+            <span class="badge bg-light text-dark">5 Symbols</span>
+          </div>
+          <div class="table-responsive mt-4">
+            <table class="table table-bordered table-hover" id="correlation-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>BTC/USDT</th>
+                  <th>ETH/USDT</th>
+                  <th>XRP/USDT</th>
+                  <th>LTC/USDT</th>
+                  <th>BCH/USDT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>BTC/USDT</td>
+                  <td>1.00</td>
+                  <td>0.72</td>
+                  <td>0.87</td>
+                  <td>0.93</td>
+                  <td>0.54</td>
+                </tr>
+                <tr>
+                  <td>ETH/USDT</td>
+                  <td>0.72</td>
+                  <td>1.00</td>
+                  <td>0.76</td>
+                  <td>0.80</td>
+                  <td>0.08</td>
+                </tr>
+                <tr>
+                  <td>XRP/USDT</td>
+                  <td>0.87</td>
+                  <td>0.76</td>
+                  <td>1.00</td>
+                  <td>0.81</td>
+                  <td>0.22</td>
+                </tr>
+                <tr>
+                  <td>LTC/USDT</td>
+                  <td>0.93</td>
+                  <td>0.80</td>
+                  <td>0.81</td>
+                  <td>1.00</td>
+                  <td>0.54</td>
+                </tr>
+                <tr>
+                  <td>BCH/USDT</td>
+                  <td>0.54</td>
+                  <td>0.08</td>
+                  <td>0.22</td>
+                  <td>0.54</td>
+                  <td>1.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!--end row-->
+
+  <!-- News Section -->
+  <div class="row">
+    <div class="col-12 col-xl-12 d-flex">
+      <div class="card radius-10 w-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Latest News</h5>
+            <span class="badge bg-light text-dark">24 articles</span>
+          </div>
+          
+          <div class="row mt-4" id="news-container">
+            <div class="col-md-6 col-lg-4">
+              <div class="card border-0 shadow-none mb-3">
+                <div class="card-body">
+                  <h6 class="card-title">CNBC's UK Exchange newsletter: Holiday stocks still come with baggage</h6>
+                  <p class="card-text small text-muted">After something of a renaissance for the package holiday sector, Jet2's profit warning serves to remind investors of its unpredictability.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-primary">Regulation</span>
+                    <small>2 hours ago</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+              <div class="card border-0 shadow-none mb-3">
+                <div class="card-body">
+                  <h6 class="card-title">Trump appeals order blocking him from firing Fed Governor Lisa Cook</h6>
+                  <p class="card-text small text-muted">The Supreme Court is expected to make the final decision on the question of whether President Trump has legal cause to remove Cook from the Federal Reserve.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-warning text-dark">Politics</span>
+                    <small>4 hours ago</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+              <div class="card border-0 shadow-none mb-3">
+                <div class="card-body">
+                  <h6 class="card-title">Bitcoin: Will the Inverted Head-and-Shoulders Pattern Play Out?</h6>
+                  <p class="card-text small text-muted">Technical analysis of Bitcoin's current price pattern and potential outcomes for the cryptocurrency market.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-success">Technology</span>
+                    <small>6 hours ago</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="text-center mt-3">
+            <button class="btn btn-sm btn-outline-primary">View All News</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!--end row-->
+
+  <div class="card radius-10">
+     <div class="card-body">
+       <div class="row g-3">
+         <div class="col-12 col-lg-4 col-xl-4 d-flex">
+          <div class="card mb-0 radius-10 border shadow-none w-100">
+            <div class="card-body">
+              <h5 class="card-title">Cryptocurrency Overview</h5>
+              <p class="text-secondary font-13">Click any asset for detailed analysis</p>
+              <ul class="list-group list-group-flush mt-3" id="crypto-assets-list">
+                <li class="list-group-item border-top" data-symbol="BTC">
+                  <div class="d-flex align-items-center gap-2">
+                     <div><img src="{% static 'images/btc.png' %}" width="20" height="20" alt="BTC"></div>
+                     <div>Bitcoin (BTC)</div>
+                     <div class="ms-auto"><span class="text-success">+3.2%</span></div>
+                  </div>
+                </li>
+                <li class="list-group-item" data-symbol="ETH">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><img src="{% static 'images/eth.png' %}" width="20" height="20" alt="ETH"></div>
+                    <div>Ethereum (ETH)</div>
+                    <div class="ms-auto"><span class="text-success">+5.8%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="BNB">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><img src="{% static 'images/bnb.png' %}" width="20" height="20" alt="BNB"></div>
+                    <div>BNB (BNB)</div>
+                    <div class="ms-auto"><span class="text-warning">+0.4%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="SOL">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><img src="{% static 'images/sol.png' %}" width="20" height="20" alt="SOL"></div>
+                    <div>Solana (SOL)</div>
+                    <div class="ms-auto"><span class="text-success">+12.5%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="XRP">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><img src="{% static 'images/xrp.png' %}" width="20" height="20" alt="XRP"></div>
+                    <div>XRP (XRP)</div>
+                    <div class="ms-auto"><span class="text-danger">-5.8%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="ADA">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><img src="{% static 'images/ada.png' %}" width="20" height="20" alt="ADA"></div>
+                    <div>Cardano (ADA)</div>
+                    <div class="ms-auto"><span class="text-danger">-2.9%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="AVAX">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><img src="{% static 'images/avax.png' %}" width="20" height="20" alt="AVAX"></div>
+                    <div>Avalanche (AVAX)</div>
+                    <div class="ms-auto"><span class="text-success">+9.2%</span></div>
+                 </div>
+               </li>
+               <li class="list-group-item" data-symbol="DOT">
+                 <div class="d-flex align-items-center gap-2">
+                    <div><img src="{% static 'images/dot.png' %}" width="20" height="20" alt="DOT"></div>
+                    <div>Polkadot (DOT)</div>
+                    <div class="ms-auto"><span class="text-success">+7.8%</span></div>
+                 </div>
+               </li>
+              </ul>
+            </div>
+          </div>
+         </div>
+
+         <div class="col-12 col-lg-8 col-xl-8 d-flex">
+          <div class="card mb-0 radius-10 border shadow-none w-100">
+            <div class="card-body">
+              <h5 class="card-title">Asset Performance Details</h5>
+              <div class="selected-asset-details" id="asset-details">
+                <div class="text-center py-5 text-muted">
+                  <i class="bi bi-currency-bitcoin display-4"></i>
+                  <p class="mt-3">Select a cryptocurrency from the list to view detailed analysis</p>
+                </div>
+              </div>
+             </div>
+            </div>
+        </div>
+       </div><!--end row-->
+     </div>
+  </div>
+
+</main>
+<!--end page main-->
+
+<!-- JavaScript to handle asset selection and dynamic updates -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Add click event listeners to all asset list items
+  const assetItems = document.querySelectorAll('#crypto-assets-list li');
+  assetItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const symbol = this.getAttribute('data-symbol');
+      loadAssetDetails(symbol);
+    });
+  });
+
+  // Function to load asset details
+  function loadAssetDetails(symbol) {
+    const detailsContainer = document.getElementById('asset-details');
+    detailsContainer.innerHTML = `
+      <div class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading ${symbol} details...</p>
+      </div>
+    `;
+    
+    // Simulate API call
+    setTimeout(() => {
+      // This would be populated with real data
+      let assetData = {
+        'BTC': {
+          name: 'Bitcoin',
+          price: '$61,250',
+          change: '+3.2%',
+          marketCap: '$1.21T',
+          volume: '$42.5B',
+          supply: '19.6M',
+          sentiment: 'Bullish',
+          rsi: '62',
+          trend: 'Upward',
+          support: '$58,000, $56,500',
+          resistance: '$63,000, $65,800'
+        },
+        'ETH': {
+          name: 'Ethereum',
+          price: '$3,420',
+          change: '+5.8%',
+          marketCap: '$415B',
+          volume: '$28.3B',
+          supply: '120.2M',
+          sentiment: 'Very Bullish',
+          rsi: '68',
+          trend: 'Upward',
+          support: '$3,200, $3,050',
+          resistance: '$3,500, $3,650'
+        }
+        // Additional assets would be defined here
+      };
+      
+      const data = assetData[symbol] || {
+        name: symbol,
+        price: 'N/A',
+        change: '0%',
+        marketCap: 'N/A',
+        volume: 'N/A',
+        supply: 'N/A',
+        sentiment: 'Neutral',
+        rsi: 'N/A',
+        trend: 'N/A',
+        support: 'N/A',
+        resistance: 'N/A'
+      };
+      
+      detailsContainer.innerHTML = `
+        <h6 class="border-bottom pb-2">${data.name} Analysis</h6>
+        <div class="row mt-3">
+          <div class="col-6">
+            <p class="mb-1">Price: <strong>${data.price}</strong></p>
+            <p class="mb-1">24h Change: <span class="${data.change.includes('+') ? 'text-success' : 'text-danger'}">${data.change}</span></p>
+            <p class="mb-1">Market Cap: <strong>${data.marketCap}</strong></p>
+          </div>
+          <div class="col-6">
+            <p class="mb-1">Volume: <strong>${data.volume}</strong></p>
+            <p class="mb-1">Circulating Supply: <strong>${data.supply}</strong></p>
+            <p class="mb-1">Sentiment: <strong>${data.sentiment}</strong></p>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-6">
+            <h6>Technical Indicators</h6>
+            <p class="mb-1">RSI: <strong>${data.rsi}</strong></p>
+            <p class="mb-1">Trend: <strong>${data.trend}</strong></p>
+          </div>
+          <div class="col-6">
+            <h6>Key Levels</h6>
+            <p class="mb-1">Support: ${data.support}</p>
+            <p class="mb-1">Resistance: ${data.resistance}</p>
+          </div>
+        </div>
+        <div class="mt-3">
+          <h6>Market Sentiment</h6>
+          <div class="progress mb-2" style="height: 10px;">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 70%">70% Bullish</div>
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 30%">30% Bearish</div>
+          </div>
+        </div>
+      `;
+    }, 1000);
+  }
+});
+</script>
+
+
+{% endblock %}

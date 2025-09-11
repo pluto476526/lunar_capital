@@ -1,0 +1,624 @@
+{% extends 'copilot/main.html' %}
+{% block main %}
+
+<!--start content-->
+<main class="page-content">
+    
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="ps-3">Microsoft Corporation (MSFT) - Comprehensive Analysis</div>
+        <div class="ms-auto">
+            <span class="market-status status-open text-success">NASDAQ OPEN</span>
+        </div>
+    </div>
+    <!--end breadcrumb-->
+
+    
+    <div class="row">
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0">MSFT Overview</h4>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="javascript:;">View Historical Data</a></li>
+                                <li><a class="dropdown-item" href="javascript:;">Compare with competitors</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-3 row-cols-xxl-3 g-3">
+                        <div class="col">
+                            <div class="card radius-10 bg-tiffany mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-currency-dollar"></i>
+                                    </div>
+                                    <h3 class="text-white">407.54</h3>
+                                    <p class="mb-0 text-white">Current Price</p>
+                                    <small class="text-white positive-change">+1.8%</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 bg-danger mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-arrow-left-right"></i>
+                                    </div>
+                                    <h3 class="text-white">12.4M</h3>
+                                    <p class="mb-0 text-white">Volume</p>
+                                    <small class="text-white">Avg: 25.8M</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 bg-success mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-lightning-charge"></i>
+                                    </div>
+                                    <h3 class="text-white">3.03T</h3>
+                                    <p class="mb-0 text-white">Market Cap</p>
+                                    <small class="text-white">#2 globally</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 bg-dark mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-graph-up-arrow"></i>
+                                    </div>
+                                    <h3 class="text-white">36.27</h3>
+                                    <p class="mb-0 text-white">P/E Ratio</p>
+                                    <small class="text-white">Industry: 28.4</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 bg-purple mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-bar-chart"></i>
+                                    </div>
+                                    <h3 class="text-white">0.75%</h3>
+                                    <p class="mb-0 text-white">Dividend Yield</p>
+                                    <small class="text-white">$3.04 annual</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 bg-orange mb-0 stat-card">
+                                <div class="card-body text-center">
+                                    <div class="widget-icon mx-auto mb-3 bg-white-1 text-white">
+                                        <i class="bi bi-bullseye"></i>
+                                    </div>
+                                    <h3 class="text-white">52W High</h3>
+                                    <p class="mb-0 text-white">415.32</p>
+                                    <small class="text-white">-1.9% from high</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Key Metrics Section -->
+                    <div class="mt-4">
+                        <h6 class="mb-3">Key Performance Metrics</h6>
+                        <div class="row row-cols-2 row-cols-md-4 g-3">
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Beta</small>
+                                    <strong>0.89</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">EPS</small>
+                                    <strong>11.06</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">ROE</small>
+                                    <strong>39.2%</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Profit Margin</small>
+                                    <strong>36.4%</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">MSFT Performance</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="javascript:;">View Details</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Export Data</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="chart1"></div>
+                    
+                    <!-- Price Targets -->
+                    <div class="mt-4">
+                        <h6 class="mb-3">Analyst Price Targets</h6>
+                        <div class="row row-cols-2 row-cols-md-4 g-2">
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Low Target</small>
+                                    <strong>350.00</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Median Target</small>
+                                    <strong>425.00</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">High Target</small>
+                                    <strong>500.00</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center bg-light">
+                                    <small class="text-muted d-block">Consensus</small>
+                                    <strong>Buy</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end row-->
+
+    <div class="row">
+        <div class="col-12 col-lg-12 col-xl-12 col-xxl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Sector Comparison</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="javascript:;">View Details</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Export Data</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-lg-flex align-items-center justify-content-center gap-4">
+                        <div id="chart3"></div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-circle-fill text-primary me-1"></i> MSFT: <span class="me-1">+18.2% YTD</span></li>
+                            <li class="list-group-item"><i class="bi bi-circle-fill text-danger me-1"></i> AAPL: <span class="me-1">+9.7% YTD</span></li>
+                            <li class="list-group-item"><i class="bi bi-circle-fill text-success me-1"></i> GOOGL: <span class="me-1">+24.5% YTD</span></li>
+                            <li class="list-group-item"><i class="bi bi-circle-fill text-orange me-1"></i> NVDA: <span class="me-1">+68.3% YTD</span></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Peer Comparison -->
+                    <div class="mt-4">
+                        <h6 class="mb-3">Key Competitors</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Company</th>
+                                        <th>Price</th>
+                                        <th>Change</th>
+                                        <th>Market Cap</th>
+                                        <th>P/E Ratio</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Microsoft (MSFT)</td>
+                                        <td>407.54</td>
+                                        <td class="text-success">+1.8%</td>
+                                        <td>3.03T</td>
+                                        <td>36.27</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Apple (AAPL)</td>
+                                        <td>212.46</td>
+                                        <td class="text-danger">-0.3%</td>
+                                        <td>3.26T</td>
+                                        <td>32.15</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Google (GOOGL)</td>
+                                        <td>178.32</td>
+                                        <td class="text-success">+1.2%</td>
+                                        <td>2.24T</td>
+                                        <td>27.89</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amazon (AMZN)</td>
+                                        <td>185.18</td>
+                                        <td class="text-success">+0.8%</td>
+                                        <td>1.92T</td>
+                                        <td>62.41</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-12 col-xl-12 col-xxl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Business Segments</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="javascript:;">View Details</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Export Data</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-12 col-lg-6 col-xl-6">
+                            <div id="chart4"></div>
+                        </div>
+                        <div class="col-12 col-lg-6 col-xl-6">
+                            <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 g-3">
+                                <div class="col">
+                                    <div class="card radius-10 mb-0 shadow-none" style="background: rgba(123, 55, 142, 0.2)">
+                                        <div class="card-body p-4">
+                                            <div class="text-center">
+                                                <h5 class="mb-0 text-purple">Productivity</h5>
+                                                <p class="mb-0 text-purple">$76B Revenue</p>
+                                                <small class="text-muted">Office, LinkedIn</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card radius-10 mb-0 shadow-none" style="background: rgba(234, 88, 12, 0.2)">
+                                        <div class="card-body p-4">
+                                            <div class="text-center">
+                                                <h5 class="mb-0 text-orange">Cloud</h5>
+                                                <p class="mb-0 text-orange">$110B Revenue</p>
+                                                <small class="text-muted">Azure, Server</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card radius-10 mb-0 shadow-none" style="background: rgba(22, 163, 74, 0.2)">
+                                        <div class="card-body p-4">
+                                            <div class="text-center">
+                                                <h5 class="mb-0 text-success">Personal Computing</h5>
+                                                <p class="mb-0 text-success">$58B Revenue</p>
+                                                <small class="text-muted">Windows, Devices</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card radius-10 mb-0 shadow-none" style="background: rgba(14, 165, 233, 0.2)">
+                                        <div class="card-body p-4">
+                                            <div class="text-center">
+                                                <h5 class="mb-0 text-primary">Other</h5>
+                                                <p class="mb-0 text-primary">$12B Revenue</p>
+                                                <small class="text-muted">Gaming, Search</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Growth Metrics -->
+                    <div class="mt-4">
+                        <h6 class="mb-3">Segment Growth Rates</h6>
+                        <div class="row row-cols-2 row-cols-md-4 g-2">
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Productivity</small>
+                                    <strong class="text-success">+12.4%</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Cloud</small>
+                                    <strong class="text-success">+24.7%</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">PC</small>
+                                    <strong class="text-danger">-3.2%</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-2 border radius-5 text-center">
+                                    <small class="text-muted d-block">Other</small>
+                                    <strong class="text-success">+8.9%</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end row-->
+
+    <div class="row">
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent p-3">
+                    <div class="row row-cols-1 row-cols-lg-2 g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Analyst Sentiment</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-sm-end gap-3 cursor-pointer">
+                                <div class="font-13"><i class="bi bi-circle-fill text-info"></i><span class="ms-2">Buy</span></div>
+                                <div class="font-13"><i class="bi bi-circle-fill text-orange"></i><span class="ms-2">Hold</span></div>
+                                <div class="font-13"><i class="bi bi-circle-fill text-danger"></i><span class="ms-2">Sell</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="chart5"></div>
+                    
+                    <!-- Analyst Recommendations -->
+                    <div class="row mt-3 text-center">
+                        <div class="col-3">
+                            <div class="p-2">
+                                <h5 class="mb-0 text-success">32</h5>
+                                <small class="text-muted">Buy Ratings</small>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="p-2">
+                                <h5 class="mb-0 text-warning">8</h5>
+                                <small class="text-muted">Hold Ratings</small>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="p-2">
+                                <h5 class="mb-0 text-danger">2</h5>
+                                <small class="text-muted">Sell Ratings</small>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="p-2">
+                                <h5 class="mb-0 text-info">85%</h5>
+                                <small class="text-muted">Positive</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Upcoming Events</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="javascript:;">View Calendar</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;">Set Alerts</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-md bg-light-warning rounded-circle me-3">
+                                    <i class="bi bi-calendar-event"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">Q4 Earnings Release</h6>
+                                    <p class="mb-0 text-muted">July 25, 2023 | After Market Close</p>
+                                </div>
+                                <span class="badge bg-warning">High Impact</span>
+                            </div>
+                        </div>
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-md bg-light-info rounded-circle me-3">
+                                    <i class="bi bi-mic"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">Investor Day Presentation</h6>
+                                    <p class="mb-0 text-muted">August 15, 2023 | 10:00 AM ET</p>
+                                </div>
+                                <span class="badge bg-info">Medium Impact</span>
+                            </div>
+                        </div>
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-md bg-light-success rounded-circle me-3">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">Annual Shareholder Meeting</h6>
+                                    <p class="mb-0 text-muted">December 7, 2023 | 8:00 AM PT</p>
+                                </div>
+                                <span class="badge bg-success">Low Impact</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dividend Information -->
+                    <div class="mt-4 p-3 bg-light radius-10">
+                        <h6 class="mb-2">Dividend Information</h6>
+                        <div class="row row-cols-2 row-cols-md-4 g-2">
+                            <div class="col">
+                                <div class="text-center">
+                                    <small class="text-muted d-block">Annual Dividend</small>
+                                    <strong>$3.04</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="text-center">
+                                    <small class="text-muted d-block">Yield</small>
+                                    <strong>0.75%</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="text-center">
+                                    <small class="text-muted d-block">Payout Ratio</small>
+                                    <strong>28.4%</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="text-center">
+                                    <small class="text-muted d-block">Next Ex-Date</small>
+                                    <strong>Aug 15, 2023</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end row-->
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card radius-10">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Financial Health & Valuation</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <button class="btn btn-sm btn-outline-primary">View Full Financials</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Valuation Metrics</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    P/E Ratio
+                                    <span class="badge bg-primary rounded-pill">36.27</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Forward P/E
+                                    <span class="badge bg-primary rounded-pill">30.15</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    PEG Ratio
+                                    <span class="badge bg-success rounded-pill">1.82</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Price/Sales
+                                    <span class="badge bg-primary rounded-pill">13.42</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Price/Book
+                                    <span class="badge bg-primary rounded-pill">12.85</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Financial Strength</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Current Ratio
+                                    <span class="badge bg-success rounded-pill">2.1</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Debt/Equity
+                                    <span class="badge bg-success rounded-pill">0.35</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ROE
+                                    <span class="badge bg-success rounded-pill">39.2%</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ROA
+                                    <span class="badge bg-success rounded-pill">18.7%</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Operating Margin
+                                    <span class="badge bg-success rounded-pill">43.6%</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</main>
+<!--end page main-->
+
+{% endblock %}
