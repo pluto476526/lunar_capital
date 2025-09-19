@@ -111,40 +111,6 @@
 </main>
 <!--end page main-->
 
-<!-- Scripts -->
-<script>
-  function summonWizard() {
-    const quotes = [
-      "The trend is your friend. Until it betrays you and takes all your money.",
-      "I'd give you trading advice, but then we'd both be wrong.",
-      "The only thing rising faster than this stock is my blood pressure.",
-      "Prediction? Up. Or down. Or sideways. You're welcome.",
-      "This isn't a loss. It's a 'strategic liquidity reallocation.'"
-    ];
-    document.getElementById("wizard-output").innerText = quotes[Math.floor(Math.random() * quotes.length)];
-  }
 
-  function generateStrategy() {
-    const names = [
-      "The Lunar Fibonacci Retracement Algorithm",
-      "Quantum Turtle Oscillator",
-      "Inverse Wombat Momentum Play",
-      "The Alpha Gorilla Hedging Protocol",
-      "The Galactic RSI Vortex Strategy"
-    ];
-    document.getElementById("strategy-output").innerText = names[Math.floor(Math.random() * names.length)];
-  }
-
-  function cope() {
-    const responses = [
-      "Breathe. It's only pretend money.",
-      "Imagine your portfolio on a beach, sipping cocktails.",
-      "Reminder: Screens can't hurt you, unless you throw them.",
-      "Markets fall, but pizza delivery is eternal.",
-      "At least you're not trading tulips in 1637."
-    ];
-    document.getElementById("cope-output").innerText = responses[Math.floor(Math.random() * responses.length)];
-  }
-</script>
 
 {% endblock %}

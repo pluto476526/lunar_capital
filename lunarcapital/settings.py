@@ -32,7 +32,7 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 TWELVE_DATA_API_KEY = config("TWELVE_DATA_API_KEY", default="")
 POLYGON_API_KEY = config("POLYGON_API_KEY", default="")
 NEWS_API_KEY = config("NEWS_API_KEY")
-GROQ_API_KEY = config("GROQ_API_KEY")
+#GROQ_API_KEY = config("GROQ_API_KEY")
 GROQ_MODEL = "llama-3.3-70b-versatile"
 
 # FunFeatures Settings

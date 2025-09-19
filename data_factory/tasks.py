@@ -1,7 +1,7 @@
 ## data_factory/tasks.py
 ## pkibuka@milky-way.space
 
-import logging, time, requests, json
+import logging, time, requests, json, re
 from django.core.cache import cache
 from datetime import datetime, timedelta
 from requests.adapters import HTTPAdapter
@@ -38,6 +38,20 @@ binance_exchange = ccxt.binance({
     'enableRateLimit': True,
     'rateLimit': 1200,  # Binance rate limit
 })
+
+
+@shared_task(bind=True)
+def fetch_and_process_forex_data(self):
+    return fetch_and_process_market_data('forex')
+
+@shared_task(bind=True)
+def fetch_and_process_stock_data(self):
+    return fetch_and_process_market_data('stocks')
+
+@shared_task(bind=True)
+def fetch_and_process_crypto_data(self):
+    return fetch_and_process_market_data('crypto')
+
 
 def convert_aggs_to_dict(aggs):
     """Convert Polygon Agg objects to serializable dictionaries"""
@@ -113,6 +127,61 @@ def fetch_polygon_data(asset_class: str, symbols: list):
     
     return data
 
+
+
+
+
+
+# def fetch_polygon_data(asset_class: str, symbols: list):
+#     """
+#     Fetch forex time-series from TwelveData.
+#     """
+#     API_KEY = getattr(settings, "TWELVE_DATA_API_KEY", None)
+#     if not API_KEY:
+#         logger.debug("TWELVE_DATA_API_KEY not set in settings.")
+#         return None
+
+#     # Configurable defaults (override in settings)
+#     pairs = json.loads(getattr(settings, "FX_PAIRS"))
+#     interval = getattr(settings, "TD_FX_INTERVAL")
+#     output_size = getattr(settings, "TD_FX_OUTPUT_SIZE")
+
+#     # dynamic dates (UTC)
+#     end_date = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+#     # start 30 days earlier by default — adjust if you only want a short window
+#     start_date = (datetime.utcnow() - timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
+
+#     symbols = ",".join(pairs)  # API expects comma-separated list
+#     url = (
+#         "https://api.twelvedata.com/time_series"
+#         f"?apikey={API_KEY}"
+#         f"&interval={interval}"
+#         f"&symbol={symbols}"
+#         f"&start_date={start_date}"
+#         f"&end_date={end_date}"
+#         f"&format=JSON"
+#         f"&outputsize={output_size}"
+#     )
+
+#     try:
+#         logger.debug("Requesting forex data from TwelveData")
+#         resp = http.get(url, timeout=10)
+#         resp.raise_for_status()
+
+#         raw_forex_data = resp.json()
+#     except Exception as e:
+#         logger.error(e)
+
+#     return raw_forex_data        
+
+
+
+
+
+
+
+
+
 def fetch_binance_data(symbols: list):
     """Fetch cryptocurrency data from Binance API"""
     data = {}
@@ -142,10 +211,10 @@ def fetch_news_data(self):
         # Define which sources to scrape
         sources = [
             fn.CNBC(topics=['*']),
-            fn.SeekingAlpha(topics=['*']),
-            fn.Investing(topics=['*']),
-            fn.WSJ(topics=['*']),
-            fn.Yahoo(topics=['*']),
+            # fn.SeekingAlpha(topics=['*']),
+            # fn.Investing(topics=['*']),
+            # fn.WSJ(topics=['*']),
+            # fn.Yahoo(topics=['*']),
         ]
 
         all_news = []
@@ -374,32 +443,20 @@ def fetch_extra_yfinance_data(self):
     logger.info("Completed fetching extra yfinance data")
     return results
 
-@shared_task(bind=True)
-def fetch_and_process_forex_data(self, single_symbol: str = None):
-    return fetch_and_process_market_data('forex', single_symbol)
-
-@shared_task(bind=True)
-def fetch_and_process_stock_data(self, single_symbol: str = None):
-    return fetch_and_process_market_data('stocks', single_symbol)
-
-@shared_task(bind=True)
-def fetch_and_process_crypto_data(self, single_symbol: str = None):
-    return fetch_and_process_market_data('crypto', single_symbol)
-
 @shared_task(bind=True, max_retries=3)
-def fetch_and_process_market_data(self, asset_class: str, single_symbol: str = None):
+def fetch_and_process_market_data(self, asset_class: str):
     """
     Fetch, process, and broadcast market data for a specific asset class
     """
     # Get symbols based on asset class
     if asset_class == 'forex':
-        symbols = json.loads(getattr(settings, "FX_PAIRS", '["EUR/USD","GBP/USD","USD/JPY","USD/CHF"]'))
+        symbols = json.loads(getattr(settings, "FX_PAIRS", ["EUR/USD","GBP/USD","USD/JPY","USD/CHF"]))
         data_source = 'polygon'
     elif asset_class == 'stocks':
-        symbols = json.loads(getattr(settings, "STOCK_SYMBOLS", '["AMZN","TSLA","NVDA","JPM","JNJ","V","PG"]'))
+        symbols = json.loads(getattr(settings, "STOCK_SYMBOLS", ["AMZN","TSLA","NVDA","JPM","JNJ","V","PG"]))
         data_source = 'yfinance'
     elif asset_class == 'crypto':
-        symbols = json.loads(getattr(settings, "CRYPTO_SYMBOLS", '["BTC/USDT","ETH/USDT","XRP/USDT","LTC/USDT","BCH/USDT"]'))
+        symbols = json.loads(getattr(settings, "CRYPTO_SYMBOLS", ["BTC/USDT","ETH/USDT","XRP/USDT","LTC/USDT","BCH/USDT"]))
         data_source = 'binance'
     else:
         logger.error(f"Unsupported asset class: {asset_class}")
@@ -444,33 +501,40 @@ def fetch_and_process_market_data(self, asset_class: str, single_symbol: str = N
             'generated_at': datetime.utcnow().isoformat(),
             'symbols': symbols
         })
-        
+
+        # Save to cache
+        cache_key = f"{asset_class}_market_data"
+        cache.set(cache_key, processed_data, 3000)
+
         logger.info(f"Processed {asset_class} data")
         
         # If a single symbol is requested, get its overview
-        single_symbol_data = None
-        if single_symbol:
+        symbol_data = None
+        for symbol in symbols:
             try:
-                single_symbol_data = engine.get_asset_overview(formatted_data, single_symbol, asset_class)
-                logger.info(f"Processed single symbol {single_symbol} for {asset_class}")
+                symbol_data = engine.get_asset_overview(symbol, formatted_data, asset_class, '1h')
+                symbol_cache_key = f"symbol_data:{symbol}"
+                cache.set(symbol_cache_key, symbol_data, 3000)
+
+                logger.info(f"Processed symbol : {symbol} for {asset_class}")
                 
-                # Broadcast to symbol-specific WebSocket channel
+                # Broadcast to symbol data WebSocket channel
                 try:
                     channel_layer = get_channel_layer()
                     async_to_sync(channel_layer.group_send)(
-                        f"symbol_intelligence_{asset_class}_{single_symbol}",
+                        f"symbol_data",
                         {
                             "type": "symbol.intelligence",
-                            "message": single_symbol_data
+                            "message": symbol_data
                         }
                     )
-                    logger.info(f"Symbol intelligence broadcasted for {single_symbol}")
+                    logger.info(f"Symbol intelligence broadcasted for {symbol}")
                 except Exception as e:
                     logger.error(f"Failed to broadcast symbol intelligence: {e}")
             except Exception as e:
-                logger.error(f"Error processing single symbol {single_symbol}: {e}")
+                logger.error(f"Error processing single symbol {symbol}: {e}")
         
-        # Broadcast to market WebSocket channel
+        # Broadcast to market data WebSocket channel
         try:
             channel_layer = get_channel_layer()
             async_to_sync(channel_layer.group_send)(
@@ -484,7 +548,7 @@ def fetch_and_process_market_data(self, asset_class: str, single_symbol: str = N
         except Exception as e:
             logger.error(f"Failed to broadcast to WebSocket: {e}")
         
-        return processed_data, single_symbol_data
+        return processed_data, symbol_data
         
     except Exception as e:
         logger.error(f"Error processing {asset_class} data: {e}")

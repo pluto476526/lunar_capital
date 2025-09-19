@@ -5,5 +5,5 @@ from django.urls import re_path
 from copilot import consumers
 
 ws_urlpatterns = [
-    re_path(r"ws/dashboard/$", consumers.DashboardConsumer.as_asgi()),
+    re_path(r"ws/mi_socket/$", consumers.DashboardConsumer.as_asgi()),
 ]

@@ -21,6 +21,8 @@
   <link href="{% static 'copilot/css/light-theme.css' %}" rel="stylesheet" />
   <link href="{% static 'copilot/css/semi-dark.css' %}" rel="stylesheet" />
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/5.3.5/apexcharts.min.js" integrity="sha512-dC9VWzoPczd9ppMRE/FJohD2fB7ByZ0VVLVCMlOrM2LHqoFFuVGcWch1riUcwKJuhWx8OhPjhJsAHrp4CP4gtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
   <title>Lunar Capital - Intra Day Trading Dashboard</title>
 </head>
 
@@ -435,7 +437,14 @@
   <script src="{% static 'copilot/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
   <script src="{% static 'copilot/js/pace.min.js' %}"></script>
   <script src="{% static 'copilot/js/app.js' %}"></script>
-  <script src="{% static 'copilot/js/index.js' %}"></script>
+  <!-- <script src="{% static 'copilot/js/index.js' %}"></script> -->
+  <script>
+    // Enable Bootstrap tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+  </script>
 
 </body>
 

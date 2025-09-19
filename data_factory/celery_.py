@@ -22,27 +22,27 @@ app.conf.beat_schedule = {
         "task": "data_factory.tasks.fetch_and_process_forex_data",
         "schedule": 60.0,
     },
-    "process-and-broadcast-stock-data": {
-        "task": "data_factory.tasks.fetch_and_process_stock_data",
-        "schedule": 60.0,
-    },
-    "process-and-broadcast-crypto-data": {
-        "task": "data_factory.tasks.fetch_and_process_crypto_data",
-        "schedule": 60.0,
-    },
-    # Fetch extra yfinance data (indices, sectors)
-    "fetch-extra-yfinance-data": {
-        "task": "data_factory.tasks.fetch_extra_yfinance_data",
-        "schedule": 120.0,
-    },
+    # "process-and-broadcast-stock-data": {
+    #     "task": "data_factory.tasks.fetch_and_process_stock_data",
+    #     "schedule": 60.0,
+    # },
+    # "process-and-broadcast-crypto-data": {
+    #     "task": "data_factory.tasks.fetch_and_process_crypto_data",
+    #     "schedule": 60.0,
+    # },
+    ## Fetch extra yfinance data (indices, sectors)
+    # "fetch-extra-yfinance-data": {
+    #     "task": "data_factory.tasks.fetch_extra_yfinance_data",
+    #     "schedule": 120.0,
+    # },
     "fetch-news-data": {
         "task": "data_factory.tasks.fetch_news_data",
-        "schedule": 180.0,
+        "schedule": 120.0,
     },
-    "fetch-fear-greed-index": {
-        "task": "data_factory.tasks.fetch_fear_greed_index",
-        "schedule": 3600.0,
-    },
+    # "fetch-fear-greed-index": {
+    #     "task": "data_factory.tasks.fetch_fear_greed_index",
+    #     "schedule": 3600.0,
+    # },
 }
 
 

@@ -473,6 +473,16 @@ def calculate_technical_indicators(data: List[Dict], symbol: str, timeframe: str
     
     # Add intraday metrics - specific to current trading session
     metrics.update(calculate_intraday_metrics(df, timeframe))
+
+    # Add OHCLV data for candlesticks
+    metrics.update({
+    "open": round(opens[-1], 4),
+    "high": round(highs[-1], 4),
+    "low": round(lows[-1], 4),
+    "close": round(closes[-1], 4),
+    "volume": round(volumes[-1], 2),
+    })
+
     return metrics
 
 # ---------- Market-wide Metrics ----------
@@ -844,7 +854,7 @@ def get_categorized_news(raw_news: Dict[str, Any], ttl: int = _CACHE_TTL) -> Dic
 
 # ----------------- Main factory ------------------
 
-def process_asset_data(asset_data: Dict[str, Any], asset_class: str, timeframe: str = '1h', news_data: Optional[Dict[str, Any]] = None, breadth_series_len: int = 20, top_n: int = 5) -> Dict[str, Any]:
+def process_asset_data(asset_data: Dict[str, Any], asset_class: str, timeframe: str = '1m', news_data: Optional[Dict[str, Any]] = None, breadth_series_len: int = 20, top_n: int = 5) -> Dict[str, Any]:
     """Process asset data for any asset class and return comprehensive metrics."""
     # Calculate all market metrics - comprehensive market analysis
     mb = calculate_market_breadth(asset_data)
@@ -910,7 +920,7 @@ def process_asset_data(asset_data: Dict[str, Any], asset_class: str, timeframe: 
     
     return result
 
-def get_asset_overview(asset_data: Dict[str, Any], symbol: str, timeframe: str = '1h') -> Dict[str, Any]:
+def get_asset_overview(symbol: str, asset_data: Dict[str, Any], asset_class: str, timeframe: str = '1m') -> Dict[str, Any]:
     """Get comprehensive overview for a single asset for day trading."""
     if symbol not in asset_data.get("symbols", {}):
         return {"error": f"Symbol {symbol} not found in asset data"}
@@ -921,7 +931,7 @@ def get_asset_overview(asset_data: Dict[str, Any], symbol: str, timeframe: str =
     
     # Calculate technical indicators and market metrics
     technicals = calculate_technical_indicators(symbol_data, symbol, timeframe=timeframe)
-    market_data = process_asset_data(asset_data, timeframe=timeframe)
+    market_data = process_asset_data(asset_data, asset_class, timeframe=timeframe)
     
     # Combine technical and market data - context for individual asset performance
     technicals.update({
