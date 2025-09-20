@@ -1,204 +1,3 @@
-implemented celery task: 
-
-
-import logging, requests, json
-from datetime import datetime, timedelta
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
-from django.conf import settings
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
-from celery import shared_task
-from polygon import RESTClient
-from data_factory import engine
-
-logger = logging.getLogger(__name__)
-
-# Configure retry strategy for API calls
-retry_strategy = Retry(
-    total=3,
-    backoff_factor=1,
-    status_forcelist=[429, 500, 502, 503, 504],
-)
-adapter = HTTPAdapter(max_retries=retry_strategy)
-http = requests.Session()
-http.mount("https://", adapter)
-http.mount("http://", adapter)
-
-@shared_task(bind=True, max_retries=3)
-def fetch_polygon_data(self, asset_class: str, single_symbol: str=None):
-    """
-    Fetch time-series data from Polygon for various asset classes,
-    process OHLCV data, generate market intelligence narratives.
-    """
-    API_KEY = getattr(settings, "POLYGON_API_KEY", None)
-    if not API_KEY:
-        logger.error("POLYGON_API_KEY not set in settings.")
-        return None
-
-    # Configurable defaults based on asset class
-    if asset_class == 'forex':
-        symbols = json.loads(getattr(settings, "POLYGON_FX_PAIRS", '["EURUSD","GBPUSD","USDJPY","AUDUSD"]'))
-        timespan = getattr(settings, "POLYGON_FX_TIMESPAN", "day")
-        limit = getattr(settings, "POLYGON_FX_LIMIT", 50)
-        ticker_prefix = "C:"
-    elif asset_class == 'stocks':
-        symbols = json.loads(getattr(settings, "POLYGON_STOCK_SYMBOLS", '["AAPL","MSFT","GOOGL","AMZN"]'))
-        timespan = getattr(settings, "POLYGON_STOCK_TIMESPAN", "day")
-        limit = getattr(settings, "POLYGON_STOCK_LIMIT", 50)
-        ticker_prefix = ""
-    elif asset_class == 'crypto':
-        symbols = json.loads(getattr(settings, "POLYGON_CRYPTO_SYMBOLS", '["BTCUSD","ETHUSD","XRPUSD"]'))
-        timespan = getattr(settings, "POLYGON_CRYPTO_TIMESPAN", "day")
-        limit = getattr(settings, "POLYGON_CRYPTO_LIMIT", 50)
-        ticker_prefix = "X:"
-    else:
-        logger.error(f"Unsupported asset class: {asset_class}")
-        return None
-
-    # Dynamic dates - get more data for better analysis
-    end_date = datetime.utcnow().strftime("%Y-%m-%d")
-    start_date = (datetime.utcnow() - timedelta(days=30)).strftime("%Y-%m-%d")
-
-    client = RESTClient(API_KEY)
-    raw_data = {}
-
-    for symbol in symbols:
-        clean_symbol = symbol.upper().replace('/', '')
-        ticker = f"{ticker_prefix}{clean_symbol}"
-        aggs = []
-        
-        try:
-            resp = client.list_aggs(
-                ticker=ticker,
-                multiplier=1,
-                timespan=timespan,
-                from_=start_date,
-                to=end_date,
-                limit=limit,
-            )
-            
-            for bar in resp:
-                aggs.append({
-                    "timestamp": bar.timestamp,
-                    "open": bar.open,
-                    "high": bar.high,
-                    "low": bar.low,
-                    "close": bar.close,
-                    "volume": bar.volume,
-                })
-            
-            raw_data[symbol] = aggs
-            logger.info(f"Successfully fetched {asset_class} data for {symbol}")
-            
-        except Exception as e:
-            logger.error(f"Error fetching {asset_class} data for {ticker}: {e}")
-            # Retry the task if there's an error
-            try:
-                self.retry(exc=e, countdown=60)
-            except self.MaxRetriesExceededError:
-                logger.error(f"Max retries exceeded for {asset_class} data fetch")
-            raw_data[symbol] = []
-
-
-    
-    formatted_data = engine.format_asset_data(raw_data, symbols)
-    
-    # If a single symbol is requested, return only its overview
-    if single_symbol:
-        try:
-            forex_overview = engine.get_forex_asset_overview(formatted_data, single_symbol)
-            logger.debug(f"fx overview >>>>>>>> : {forex_overview}")
-            logger.info(f"Processed single symbol {single_symbol} for {asset_class}")
-            
-            # Broadcast to appropriate WebSocket channel
-            try:
-                channel_layer = get_channel_layer()
-                async_to_sync(channel_layer.group_send)(
-                    f"symbol_intelligence_{asset_class}_{single_symbol}",
-                    {
-                        "type": "symbol.intelligence",
-                        "message": forex_overview
-                    }
-                )
-                logger.info(f"Symbol intelligence broadcasted for {single_symbol}")
-            except Exception as e:
-                logger.error(f"Failed to broadcast symbol intelligence: {e}")
-                
-            
-        except Exception as e:
-            logger.error(f"Error processing single symbol {single_symbol}: {e}")
-    
-    # Otherwise, process the full market data
-    try:
-        processed_data = engine.process_asset_data(
-            formatted_data, 
-            asset_class, 
-            breadth_series_len=20, 
-            top_n=5
-        )
-        
-        # Add metadata
-        processed_data.update({
-            'asset_class': asset_class,
-            'generated_at': datetime.utcnow().isoformat(),
-            'symbols': symbols
-        })
-        
-        logger.info(f"Processed {asset_class} data with {len(processed_data.get('narratives', []))} narratives")
-        
-        # Broadcast to appropriate WebSocket channel
-        try:
-            channel_layer = get_channel_layer()
-            async_to_sync(channel_layer.group_send)(
-                f"market_intelligence_{asset_class}",
-                {
-                    "type": "market.intelligence",
-                    "message": processed_data
-                }
-            )
-            logger.info(f"Market intelligence broadcasted to {asset_class} WebSocket channel")
-        except Exception as e:
-            logger.error(f"Failed to broadcast to WebSocket: {e}")
-            
-        return processed_data, forex_overview
-        
-    except Exception as e:
-        logger.error(f"Error processing {asset_class} data: {e}")
-        # Create a basic response with error information
-        return {
-            'asset_class': asset_class,
-            'generated_at': datetime.utcnow().isoformat(),
-            'error': str(e),
-            'symbols': symbols,
-            'data': raw_data
-        }
-
-
-
-
-
-# Individual tasks for each asset class
-@shared_task(bind=True)
-def fetch_polygon_fx_data(self):
-    return fetch_polygon_data('forex', 'EURUSD')
-
-@shared_task(bind=True)
-def fetch_polygon_stock_data(self):
-    return fetch_polygon_data('stocks')
-
-@shared_task(bind=True)
-def fetch_polygon_crypto_data(self):
-    return fetch_polygon_data('crypto')
-
-
-
-
-
-
-
-    required data: 
-
     Additional Metrics to Calculate
 
 To make this dashboard more insightful, consider calculating these additional forex-specific metrics:
@@ -217,7 +16,6 @@ To make this dashboard more insightful, consider calculating these additional fo
 
     Order Flow Analysis - Track buy/sell pressure in the market
 
-This enhanced dashboard provides a comprehensive market overview while allowing users to drill down into specific pairs for more detailed analysis, all without changing the original styling or adding buy/sell signals.
 
 
 
@@ -227,7 +25,6 @@ These metrics give a top-level view of market sentiment and conditions.
 
     Market Status (Bullish/Bearish/Neutral):
 
-        How to Calculate: A composite score based on multiple indicators below (e.g., Advancers/Decliners, VIX level, Index performance). A simple rule could be: If >55% of S&P 500 stocks are above their 50-day MA, status is "Bullish"; if <45%, "Bearish"; else "Neutral".
 
     Market Breadth (Advancers vs. Decliners):
 
@@ -267,7 +64,6 @@ These metrics track the performance of major market segments.
 
         Metrics: Daily, weekly, monthly, and YTD returns for key sectors (Technology, Healthcare, Financials, Energy, etc.).
 
-        How to Get: Typically calculated using Sector ETFs (e.g., XLK for Tech, XLV for Health, XLF for Financials) or by aggregating the performance of all stocks within a sector classification.
 
 3. Individual Stock Metrics
 
@@ -373,7 +169,6 @@ To make this dashboard even more insightful, consider calculating these crypto-s
 
     Funding Rates: Perpetual swap market funding rates across exchanges
 
-This cryptocurrency dashboard provides traders with a comprehensive overview of the crypto market while maintaining the original styling and structure of your template. Users can click on any cryptocurrency to view detailed analysis, making it both informative and interactive.
 
 
 
@@ -382,4 +177,3 @@ This cryptocurrency dashboard provides traders with a comprehensive overview of 
 
 
 
-use the celery task example to help me fetch all the data i need from polygon api, coindesk, forexfactory, newsapi and other reputable apis. technical indicators are calculated from the received ohlcv data so no need to fetch technical indicators. i need data to calculate all the metrics i listed above.

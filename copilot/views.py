@@ -45,11 +45,11 @@ def fx_details_view(request, symbol):
     context = {}
     return render(request, "copilot/fx_details.html", context)
 
-def crypto_details_view(request, asset):
+def crypto_details_view(request, symbol):
     context = {}
     return render(request, "copilot/crypto_details.html", context)
 
-def stock_details_view(request):
+def stock_details_view(request, symbol):
     context = {}
     return render(request, "copilot/stock_details.html", context)
 

@@ -512,9 +512,14 @@ def fetch_and_process_market_data(self, asset_class: str):
         symbol_data = None
         for symbol in symbols:
             try:
+                # Process data
                 symbol_data = engine.get_asset_overview(symbol, formatted_data, asset_class, '1h')
-                symbol_cache_key = f"symbol_data:{symbol}"
-                cache.set(symbol_cache_key, symbol_data, 3000)
+
+                # Sanitize symbol name
+                s_symbol = f"symbol_data_{re.sub(r'[^a-zA-Z0-9._-]', '', symbol)}"
+
+                # Save to cache
+                cache.set(s_symbol, symbol_data, 3000)
 
                 logger.info(f"Processed symbol : {symbol} for {asset_class}")
                 
@@ -522,7 +527,7 @@ def fetch_and_process_market_data(self, asset_class: str):
                 try:
                     channel_layer = get_channel_layer()
                     async_to_sync(channel_layer.group_send)(
-                        f"symbol_data",
+                        s_symbol,
                         {
                             "type": "symbol.intelligence",
                             "message": symbol_data

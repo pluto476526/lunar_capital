@@ -920,6 +920,23 @@ def process_asset_data(asset_data: Dict[str, Any], asset_class: str, timeframe: 
     
     return result
 
+
+
+def to_json_safe(obj: Any):
+    """Recursively convert NumPy and datetime objects to JSON-safe Python types."""
+    if isinstance(obj, dict):
+        return {k: to_json_safe(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [to_json_safe(v) for v in obj]
+    elif isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    else:
+        return obj
+
 def get_asset_overview(symbol: str, asset_data: Dict[str, Any], asset_class: str, timeframe: str = '1m') -> Dict[str, Any]:
     """Get comprehensive overview for a single asset for day trading."""
     if symbol not in asset_data.get("symbols", {}):
@@ -941,7 +958,7 @@ def get_asset_overview(symbol: str, asset_data: Dict[str, Any], asset_class: str
         "timestamp": datetime.utcnow().isoformat()  # Analysis timestamp
     })
     
-    return technicals
+    return to_json_safe(technicals)
 
 
 

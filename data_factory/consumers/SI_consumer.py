@@ -8,23 +8,23 @@ from asgiref.sync import sync_to_async
 logger = logging.getLogger(__name__)
 
 
-
-
 class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
     """WebSocket consumer for symbol-specific intelligence."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.room_group_name = None
+        self.group_name = None
+        self.symbol = None
 
     async def connect(self) -> None:
         """Handle new WebSocket connection."""
         # Get symbol from URL route
-        self.room_group_name = "symbol_data"
+        self.symbol = self.scope['url_route']['kwargs']['symbol']
+        self.group_name = f"symbol_data_{self.symbol}"
 
         # Join group for this symbol
         await self.channel_layer.group_add(
-            self.room_group_name,
+            self.group_name,
             self.channel_name,
         )
         await self.accept()
@@ -35,22 +35,23 @@ class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
             "message": f"Connected to symbol data feed",
         })
 
-
-        # Send cached data for all assets
-        for asset_class in ["forex", "stocks", "crypto"]:
-            cache_key = f"{asset_class}_market_data"
+        # Send cached data for selected asset
+        if self.symbol:
+            cache_key = f"symbol_data_{self.symbol}"
             cached_data = await sync_to_async(cache.get)(cache_key)
+            message_type = f"cached_{self.symbol}_data"
+
             if cached_data:
                 await self.send_json({
-                    "type": "cached_market_data",
+                    "type": message_type,
                     "payload": cached_data,
                 })
 
     async def disconnect(self, close_code: int) -> None:
         """Handle WebSocket disconnection."""
-        if self.room_group_name:
+        if self.group_name:
             await self.channel_layer.group_discard(
-                self.room_group_name,
+                self.group_name,
                 self.channel_name,
             )
 
@@ -64,22 +65,19 @@ class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
         try:
             data = json.loads(text_data)
             message_type = data.get("type")
+            asset_class = data.get("asset_class")
             symbol = data.get("symbol")
+            key = f"symbol_data_{symbol.replace('/', '')}"
 
             if message_type == "request_symbol_details":
-                # Prefer in-memory latest data, fallback to Redis
-                payload = cache.get(f"symbol_data:{symbol}") or {}
+                payload = cache.get(key) or {}
 
                 await self.send_json({
-                    "type": "symbol_intelligence",
+                    "type": "symbol_details",
+                    "asset_class": asset_class,
                     "payload": payload,
                 })
 
-            else:
-                logger.warning(f"Unknown message type received: {message_type}")
-
-        except json.JSONDecodeError:
-            logger.error("Received invalid JSON data")
         except Exception as e:
             logger.error(f"Error processing WebSocket message: {e}")
 
@@ -92,8 +90,9 @@ class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
                 "payload": message,
                 "timestamp": event.get("timestamp", ""),
             })
+
         except Exception as e:
-            logger.error(f"Error sending symbol intelligence data: {e}")
+            logger.error(f"Error sending symbol data: {e}")
 
     async def send_json(self, content: dict) -> None:
         """Helper to send JSON messages safely to the client."""

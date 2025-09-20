@@ -5,6 +5,431 @@
 <main class="page-content">
     
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="ps-3">FX Analysis</div>
+        <div class="ms-auto">
+            <span class="market-status status-open text-success">24/7 MARKET</span>
+        </div>
+    </div>
+    <!--end breadcrumb-->
+
+    <!-- Price Overview Section -->
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <div class="card radius-10">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0"><span id="crypto-symbol"></span> Overview</h4>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="javascript:;">View Historical Data</a></li>
+                                <li><a class="dropdown-item" href="javascript:;">Compare with other cryptos</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="widget-icon-lg bg-tiffany text-white rounded-circle me-3">
+                                    <i class="bi bi-currency-ethereum"></i>
+                                </div>
+                                <div>
+                                    <h2 class="mb-0" id="crypto-price"></h2>
+                                    <p class="mb-0 text-success" id="crypto-change"></p>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3 mb-4">
+                                <div class="col-6" data-bs-toggle="tooltip" title="The price at which the asset opened in the current session.">
+                                    <div class="border radius-5 p-3 text-center">
+                                        <small class="text-muted d-block">Open Price</small>
+                                        <strong id="crypto-open-price"></strong>
+                                    </div>
+                                </div>
+                                <div class="col-6" data-bs-toggle="tooltip" title="Shows if the crypto market is currently open or closed.">
+                                    <div class="border radius-5 p-3 text-center">
+                                        <small class="text-muted d-block">Market Status</small>
+                                        <strong class="text-success" id="crypto-market-status"></strong>
+                                    </div>
+                                </div>
+                                <div class="col-6" data-bs-toggle="tooltip" title="The current trading session (e.g., Asian, European, US).">
+                                    <div class="border radius-5 p-3 text-center">
+                                        <small class="text-muted d-block">Current Session</small>
+                                        <strong id="crypto-current-session"></strong>
+                                    </div>
+                                </div>
+                                <div class="col-6" data-bs-toggle="tooltip" title="The direction of price movement: uptrend, downtrend, or sideways.">
+                                    <div class="border radius-5 p-3 text-center">
+                                        <small class="text-muted d-block">Trend Direction</small>
+                                        <strong class="text-success" id="crypto-trend-dir"></strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div id="mini-line-chart" class="mb-3" style="height: 200px;"></div>
+                            
+                            <div class="d-flex justify-content-around text-center">
+                                <div data-bs-toggle="tooltip" title="The total traded value of the asset in the last 24 hours.">
+                                    <small class="text-muted d-block">24h Volume</small>
+                                    <strong><span id="crypto-volume"></span> USDT</strong>
+                                </div>
+                                <div data-bs-toggle="tooltip" title="The total value of all coins in circulation.">
+                                    <small class="text-muted d-block">Market Cap</small>
+                                    <strong>409B</strong>
+                                </div>
+                                <div data-bs-toggle="tooltip" title="Compares trading volume against an average period to spot unusual activity.">
+                                    <small class="text-muted d-block">Volume Ratio</small>
+                                    <strong id="crypto-volume-ratio"></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-12 col-lg-4">
+            <div class="card radius-10">
+                <div class="card-body">
+                    <h5 class="mb-3">Key Technical Indicators</h5>
+                    
+                    <div class="row g-3">
+                        <div class="col-6" data-bs-toggle="tooltip" title="Relative Strength Index (RSI) measures momentum. Values above 70 suggest overbought; below 30 oversold.">
+                            <div class="border radius-5 p-2 text-center bg-light">
+                                <small class="text-muted d-block">RSI</small>
+                                <strong class="text-success" id="crypto-rsi"></strong>
+                                <div class="progress mt-1" style="height: 5px;">
+                                    <div class="progress-bar bg-success" role="progressbar" id="crypto-rsi-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="Average Directional Index (ADX) measures trend strength. Above 25 = strong trend.">
+                            <div class="border radius-5 p-2 text-center bg-light">
+                                <small class="text-muted d-block">ADX</small>
+                                <strong id="crypto-adx"></strong>
+                                <div class="progress mt-1" style="height: 5px;">
+                                    <div class="progress-bar" role="progressbar" id="crypto-adx-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="MACD tracks momentum by comparing short- and long-term moving averages.">
+                            <div class="border radius-5 p-2 text-center bg-light">
+                                <small class="text-muted d-block">MACD</small>
+                                <strong id="crypto-macd"></strong>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="Average True Range (ATR) shows volatility by measuring average price movement.">
+                            <div class="border radius-5 p-2 text-center bg-light">
+                                <small class="text-muted d-block">ATR</small>
+                                <strong id="crypto-atr"></strong>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="Volatility Index (VIX) reflects expected price fluctuations or fear levels.">
+                            <div class="border radius-5 p-2 text-center bg-light">
+                                <small class="text-muted d-block">VIX</small>
+                                <strong id="crypto-vix"></strong>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="On-Balance Volume (OBV) uses volume to confirm price trends. Rising OBV supports bullish moves.">
+                            <div class="border radius-5 p-2 text-center bg-light">
+                                <small class="text-muted d-block">OBV</small>
+                                <strong id="crypto-obv"></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end row-->
+
+    <!-- Support & Resistance Section -->
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card radius-10">
+                <div class="card-body">
+                    <h5 class="mb-3">Support & Resistance Levels</h5>
+                    
+                    <div class="row mb-4">
+                        <div class="col-6" data-bs-toggle="tooltip" title="Support: price level where buying interest is strong enough to prevent further decline.">
+                            <div class="p-3 border radius-5 text-center bg-light-success">
+                                <small class="text-muted d-block">Support Level</small>
+                                <strong id="crypto-support"></strong>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="Resistance: price level where selling pressure prevents further rise.">
+                            <div class="p-3 border radius-5 text-center bg-light-danger">
+                                <small class="text-muted d-block">Resistance Level</small>
+                                <strong id="crypto-resistance"></strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h6 class="mb-3">Pivot Points</h6>
+                    <div class="row row-cols-2 row-cols-md-4 g-2">
+                        <div class="col" data-bs-toggle="tooltip" title="S3: third support level, strongest expected support.">
+                            <div class="p-2 border radius-5 text-center">
+                                <small class="text-muted d-block">S3</small>
+                                <strong id="crypto-s3"></strong>
+                            </div>
+                        </div>
+                        <div class="col" data-bs-toggle="tooltip" title="S2: second support level, stronger than S1.">
+                            <div class="p-2 border radius-5 text-center">
+                                <small class="text-muted d-block">S2</small>
+                                <strong id="crypto-s2"></strong>
+                            </div>
+                        </div>
+                        <div class="col" data-bs-toggle="tooltip" title="S1: first support level, initial floor for price.">
+                            <div class="p-2 border radius-5 text-center">
+                                <small class="text-muted d-block">S1</small>
+                                <strong id="crypto-s1"></strong>
+                            </div>
+                        </div>
+                        <div class="col" data-bs-toggle="tooltip" title="Pivot point: central reference level calculated from H/L/C.">
+                            <div class="p-2 border radius-5 text-center bg-light">
+                                <small class="text-muted d-block">Pivot</small>
+                                <strong id="crypto-pivot"></strong>
+                            </div>
+                        </div>
+                        <div class="col" data-bs-toggle="tooltip" title="R1: first resistance level, initial ceiling for price.">
+                            <div class="p-2 border radius-5 text-center bg-light">
+                                <small class="text-muted d-block">R1</small>
+                                <strong id="crypto-r1"></strong>
+                            </div>
+                        </div>
+                        <div class="col" data-bs-toggle="tooltip" title="R2: second resistance level, stronger than R1.">
+                            <div class="p-2 border radius-5 text-center">
+                                <small class="text-muted d-block">R2</small>
+                                <strong id="crypto-r2"></strong>
+                            </div>
+                        </div>
+                        <div class="col" data-bs-toggle="tooltip" title="R3: third resistance level, strongest expected ceiling.">
+                            <div class="p-2 border radius-5 text-center">
+                                <small class="text-muted d-block">R3</small>
+                                <strong id="crypto-r3"></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-12 col-lg-6">
+            <div class="card radius-10">
+                <div class="card-body">
+                    <h5 class="mb-3">Bollinger Bands & Moving Averages</h5>
+                    
+                    <div class="row mb-4">
+                        <div class="col-4" data-bs-toggle="tooltip" title="Upper Bollinger Band: price volatility upper limit.">
+                            <div class="p-3 border radius-5 text-center">
+                                <small class="text-muted d-block">Upper Band</small>
+                                <strong id="crypto-upper-bb"></strong>
+                            </div>
+                        </div>
+                        <div class="col-4" data-bs-toggle="tooltip" title="Middle Bollinger Band: typically a moving average.">
+                            <div class="p-3 border radius-5 text-center bg-light">
+                                <small class="text-muted d-block">Middle Band</small>
+                                <strong id="crypto-middle-bb"></strong>
+                            </div>
+                        </div>
+                        <div class="col-4" data-bs-toggle="tooltip" title="Lower Bollinger Band: price volatility lower limit.">
+                            <div class="p-3 border radius-5 text-center">
+                                <small class="text-muted d-block">Lower Band</small>
+                                <strong id="crypto-lower-bb"></strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h6 class="mb-3">Moving Averages</h6>
+                    <div class="row row-cols-2 row-cols-md-3 g-2">
+                        <div class="col" data-bs-toggle="tooltip" title="Simple Moving Average over the last 5 periods.">
+                            <div class="p-2 border radius-5 text-center">
+                                <small class="text-muted d-block">SMA 5</small>
+                                <strong id="crypto-sma5"></strong>
+                            </div>
+                        </div>
+                        <div class="col" data-bs-toggle="tooltip" title="Simple Moving Average over the last 10 periods.">
+                            <div class="p-2 border radius-5 text-center">
+                                <small class="text-muted d-block">SMA 10</small>
+                                <strong id="crypto-sma10"></strong>
+                            </div>
+                        </div>
+                        <div class="col" data-bs-toggle="tooltip" title="Simple Moving Average over the last 20 periods.">
+                            <div class="p-2 border radius-5 text-center">
+                                <small class="text-muted d-block">SMA 20</small>
+                                <strong id="crypto-sma20"></strong>
+                            </div>
+                        </div>
+                        <div class="col" data-bs-toggle="tooltip" title="Volume Weighted Average Price.">
+                            <div class="p-2 border radius-5 text-center">
+                                <small class="text-muted d-block">VWAP</small>
+                                <strong id="crypto-vwap"></strong>
+                            </div>
+                        </div>
+                        <div class="col" data-bs-toggle="tooltip" title="Proximity of current price to moving averages or bands.">
+                            <div class="p-2 border radius-5 text-center">
+                                <small class="text-muted d-block">Price Proximity</small>
+                                <strong id="crypto-proximity"></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end row-->
+
+    <!-- Market Context Section -->
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card radius-10">
+                <div class="card-body">
+                    <h5 class="mb-3">Market Context</h5>
+                    
+                    <div class="row g-3">
+                        <div class="col-6" data-bs-toggle="tooltip" title="Highest price reached during the opening range.">
+                            <div class="p-3 border radius-5 text-center">
+                                <small class="text-muted d-block">Opening Range High</small>
+                                <strong id="crypto-opening-range-high"></strong>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="Lowest price reached during the opening range.">
+                            <div class="p-3 border radius-5 text-center">
+                                <small class="text-muted d-block">Opening Range Low</small>
+                                <strong id="crypto-opening-range-low"></strong>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="OR Breakout indicates price breaking above or below opening range.">
+                            <div class="p-3 border radius-5 text-center bg-light-success">
+                                <small class="text-muted d-block">OR Breakout</small>
+                                <strong id="crypto-or-breakout"></strong>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="The percentage difference between yesterday’s close and today’s open.">
+                            <div class="p-3 border radius-5 text-center">
+                                <small class="text-muted d-block">Gap %</small>
+                                <strong><span id="crypto-gap-pct"></span>%</strong>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="Range of intraday price movement as a percentage.">
+                            <div class="p-3 border radius-5 text-center">
+                                <small class="text-muted d-block">Intraday Range %</small>
+                                <strong><span id="crypto-intraday-range-pct"></span>%</strong>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="ATR ratio expresses volatility as a fraction of price.">
+                            <div class="p-3 border radius-5 text-center">
+                                <small class="text-muted d-block">ATR Ratio</small>
+                                <strong id="crypto-atr-ratio"></strong>
+                            </div>
+                        </div>
+                        <div class="col-12" data-bs-toggle="tooltip" title="Trend strength measured by ADX or other indicators. Stronger = clearer direction.">
+                            <div class="p-3 border radius-5">
+                                <small class="text-muted d-block">Trend Strength</small>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1 me-2" style="height: 10px;">
+                                        <div class="progress-bar bg-success" role="progressbar" id="crypto-trend-bar"></div>
+                                    </div>
+                                    <strong id="crypto-trend-strength"></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-12 col-lg-6">
+            <div class="card radius-10">
+                <div class="card-body">
+                    <h5 class="mb-3">Other Market Metrics & Signals</h5>
+                    
+                    <div class="row g-3">
+                        <div class="col-6" data-bs-toggle="tooltip" title="Compares current trading volume to the average volume.">
+                            <div class="p-3 border radius-5 text-center bg-light">
+                                <small class="text-muted d-block">Volume Ratio</small>
+                                <strong id="crypto-volume-ratio2"></strong>
+                            </div>
+                        </div>
+                        <div class="col-6" data-bs-toggle="tooltip" title="Identifies unusual or sudden spikes in trading activity.">
+                            <div class="p-3 border radius-5 text-center">
+                                <small class="text-muted d-block">Volume Spike</small>
+                                <strong id="crypto-volume-spike"></strong>
+                            </div>
+                        </div>
+                        <div class="col-12" data-bs-toggle="tooltip" title="MACD indicators provide momentum signals based on averages and divergence.">
+                            <div class="p-3 border radius-5">
+                                <h6 class="mb-2">MACD Indicators</h6>
+                                <div class="row g-2">
+                                    <div class="col-4">
+                                        <div class="text-center">
+                                            <small class="text-muted d-block">MACD</small>
+                                            <strong id="crypto-macd2"></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="text-center">
+                                            <small class="text-muted d-block">Signal</small>
+                                            <strong id="crypto-macd-signal"></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="text-center">
+                                            <small class="text-muted d-block">Histogram</small>
+                                            <strong id="crypto-macd-histogram"></strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12" data-bs-toggle="tooltip" title="Shows when the data was last updated.">
+                            <div class="p-3 border radius-5">
+                                <small class="text-muted d-block">Last Updated</small>
+                                <strong id="timestamp"></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end row-->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card radius-10">
+                <div class="card-header bg-transparent">
+                    <div class="row g-3 align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Price, Support, and Resistance.</h5>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
+                                <button class="btn btn-sm btn-outline-primary">View More Charts</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12" id="crypto-main-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</main>
+<!--end page main-->  
+
+
+<!--start content-->
+<main class="page-content">
+    
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="ps-3">EUR/USD - Comprehensive Forex Analysis & Trading Intelligence</div>
         <div class="ms-auto">
             <span class="market-status status-open text-success">LONDON SESSION OPEN</span>

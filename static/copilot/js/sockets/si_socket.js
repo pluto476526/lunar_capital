@@ -13,19 +13,24 @@ function getThemeColors() {
     return chartTheme.dark;
 }
 
+function getAssetFromUrl() {
+    const path = window.location.pathname.split("/").filter(Boolean);
+    // Example: ["co-pilot", "crypto", "BTCUSDT"]
 
+    if (path.length < 3) return null; // invalid URL
 
-// // Convert "BTCUSDT" -> "BTC/USDT"
-function formatSymbol(asset) {
-    const knownBases = ["USDT", "USD", "BTC", "ETH"];
-    for (let base of knownBases) {
-        if (asset.endsWith(base)) {
-            const main = asset.slice(0, -base.length);
-            return `${main}/${base}`;
-        }
+    const category = path[1]; // crypto, fx, stocks
+    const asset = path[2];
+
+    if (!asset) {
+        return null;
     }
+
     return asset;
 }
+
+const SYMBOL = getAssetFromUrl();
+
 
 
 function updateColor(el, value, threshold = 0) {
@@ -76,262 +81,6 @@ function timeAgo(timestamp) {
     const years = Math.floor(days / 365);
     return `${years}y ago`;
 }
-
-
-function renderMainChart(element, data) {
-    const priceHistory = [];
-    const MAX_POINTS = 100;
-    
-    // Save incoming price point
-    priceHistory.push({
-        x: new Date(data.timestamp),
-        y: data.price
-    });
-
-    if (priceHistory.length > MAX_POINTS) {
-        priceHistory.shift(); // keep memory small
-    }
-
-    // Extract only the most important levels
-    const pivot = data.pivot_points?.pivot;
-    const support = data.support_level;
-    const resistance = data.resistance_level;
-
-    const levels = [
-        { value: resistance, label: "Resistance", color: "#ef4444" },
-        { value: pivot, label: "Pivot", color: "#3b82f6" },
-        { value: support, label: "Support", color: "#22c55e" },
-    ].filter(l => l.value !== undefined);
-
-    // Series: Price line + level markers
-    const series = [
-        {
-            name: "Price",
-            data: [...priceHistory]
-        },
-        ...levels.map(l => ({
-            name: l.label,
-            data: priceHistory.map(p => ({ x: p.x, y: l.value })),
-        }))
-    ];
-
-    const options = {
-        chart: {
-            type: "line",
-            height: 500,
-            toolbar: { show: false },
-            animations: { enabled: true },
-            background: "#1e293b",
-            foreColor: "#e2e8f0"
-        },
-        stroke: {
-            width: [3, ...levels.map(() => 2)],
-            dashArray: [0, ...levels.map(() => 4)]
-        },
-        colors: ["#0ea5e9", ...levels.map(l => l.color)],
-        series: series,
-        xaxis: {
-            type: "datetime",
-            labels: { 
-                datetimeUTC: false,
-                style: {
-                    colors: '#94a3b8'
-                }
-            }
-        },
-        yaxis: {
-            decimalsInFloat: 4,
-            labels: {
-                formatter: val => val.toFixed(3),
-                style: {
-                    colors: '#94a3b8'
-                }
-            }
-        },
-        tooltip: {
-            shared: true,
-            x: { format: "HH:mm" },
-            theme: "dark"
-        },
-        annotations: {
-            yaxis: levels.map(l => ({
-                y: l.value,
-                borderColor: l.color,
-                label: {
-                    text: l.label + " " + l.value.toFixed(3),
-                    style: {
-                        background: l.color,
-                        color: "#fff",
-                        fontSize: "12px",
-                        fontWeight: "bold"
-                    }
-                }
-            }))
-        },
-        legend: { 
-            show: true,
-            position: 'top',
-            horizontalAlign: 'right',
-            labels: {
-                colors: '#e2e8f0'
-            }
-        },
-        grid: { 
-            borderColor: "#374151",
-            strokeDashArray: 4,
-            yaxis: {
-                lines: {
-                    show: true
-                }
-            }
-        }
-    };
-
-    if (element.mainChart) {
-        element.mainChart.updateOptions(options);
-        element.mainChart.updateSeries(series);
-    } else {
-        element.mainChart = new ApexCharts(element, options);
-        element.mainChart.render();
-    }
-}
-
-
-function renderPriceBarChart(element, data) {
-    const colors = getThemeColors();
-
-    const current = data.price;
-    const open = data.open_price;
-    const low = data.low;
-    const high = data.high;
-
-    const range = high - low || 1;
-    const position = ((current - low) / range) * 100;
-    const openPosition = ((open - low) / range) * 100;
-
-    const series = [{
-        name: "Price Position",
-        data: [position]
-    }];
-
-    const options = {
-        chart: {
-            type: "bar",
-            background: colors.background,
-            toolbar: { show: false },
-            animations: {
-                enabled: true,
-                easing: "easeinout",
-                speed: 600
-            }
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: "50%",
-                borderRadius: 6
-            }
-        },
-        colors: [current >= open ? colors.positive : colors.negative],
-        dataLabels: {
-            enabled: true,
-            formatter: val => `${val.toFixed(1)}% | ${current.toFixed(2)}`,
-            style: {
-                colors: [colors.text.primary],
-                fontSize: "12px",
-                fontWeight: "bold"
-            },
-            offsetY: -6
-        },
-        xaxis: {
-            categories: [data.symbol],
-            labels: { style: { colors: colors.text.primary } },
-            axisBorder: { show: false },
-            axisTicks: { show: false }
-        },
-        yaxis: {
-            min: 0,
-            max: 100,
-            tickAmount: 4,
-            labels: {
-                formatter: val => {
-                    if (val === 0) return `Low: ${low}`;
-                    if (val === 100) return `High: ${high}`;
-                    return `${val}%`;
-                },
-                style: { colors: colors.text.primary }
-            }
-        },
-        grid: {
-            borderColor: colors.grid,
-            strokeDashArray: 4,
-            xaxis: { lines: { show: false } },
-            yaxis: { lines: { show: true } }
-        },
-        tooltip: {
-            theme: isDarkMode() ? "dark" : "light",
-            y: {
-                formatter: () => `Price: ${current.toFixed(2)} (Low: ${low}, High: ${high})`
-            }
-        },
-        annotations: {
-            yaxis: [
-                {
-                    y: 100,
-                    y2: 0,
-                    borderColor: null,
-                    fillColor: colors.grid,
-                    opacity: 0.08
-                },
-                {
-                    y: openPosition,
-                    borderColor: colors.grid,
-                    label: {
-                        text: `Open: ${open.toFixed(2)}`,
-                        style: {
-                            color: colors.background,
-                            background: colors.grid,
-                            fontSize: "11px"
-                        }
-                    }
-                },
-                {
-                    y: position,
-                    borderColor: current >= open ? colors.positive : colors.negative,
-                    label: {
-                        style: {
-                            color: colors.background,
-                            background: current >= open ? colors.positive : colors.negative,
-                            fontSize: "11px"
-                        },
-                        text: `${current.toFixed(2)}`
-                    }
-                }
-            ]
-        },
-        fill: {
-            type: "gradient",
-            gradient: {
-                shade: isDarkMode() ? "dark" : "light",
-                type: "vertical",
-                shadeIntensity: 0.8,
-                opacityFrom: 0.95,
-                opacityTo: 0.65,
-                stops: [0, 100]
-            }
-        },
-        series: series
-    };
-
-    if (element.priceBarChart) {
-        element.priceBarChart.updateOptions(options, true, true);
-    } else {
-        element.priceBarChart = new ApexCharts(element, options);
-        element.priceBarChart.render();
-    }
-}
-
-
 
 function updateCryptoDash(data) {
     setTextContent(document.getElementById("crypto-symbol"), data.symbol);
@@ -427,8 +176,6 @@ function updateCryptoDash(data) {
 
 
 
-
-
 document.addEventListener("DOMContentLoaded", () => {
     const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
     const RECONNECT_DELAY = 5000;
@@ -448,31 +195,25 @@ document.addEventListener("DOMContentLoaded", () => {
         clearTimeout(reconnectState.timeout);
 
         // const asset_class = "forex";
-        const wsUrl = `${wsProtocol}://${location.host}/ws/symbol-data/EURCAD/`;
+        const wsUrl = `${wsProtocol}://${location.host}/ws/symbol-data/${SYMBOL}/`;
         symbolSocket = new WebSocket(wsUrl);
 
         symbolSocket.onopen = () => {
-            console.log(`[SI] Connected to intelligence feed`);
+            console.log(`[SI] Connected to ${SYMBOL} data feed`);
             reconnectState.attempts = 0;
             
             // Update UI to show connection status
             updateConnectionStatus('connected', `Connected`);
-            //requestAssetData(symbol, symbolSocket);
 
-            // Get and convert path ie. "BTCUSDT" -> "BTC/USDT"
-            const path = window.location.pathname;
-            const parts = path.split("/").filter(Boolean);
-            // ["co-pilot", "crypto", "BTCUSDT"]
+            
+            console.log("symbol: ", SYMBOL);
 
-            const asset = parts[parts.length - 1];
-            const symbol = formatSymbol(asset);
-            console.log("symbol: ", symbol);
-
-
-            symbolSocket.send(JSON.stringify({
-                type: 'request_symbol_details',
-                symbol: symbol
-            }));
+            if (SYMBOL) {
+                symbolSocket.send(JSON.stringify({
+                    type: 'request_symbol_details',
+                    symbol: SYMBOL
+                }));
+            }
         };
 
         symbolSocket.onmessage = (event) => {
@@ -487,7 +228,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     case 'symbol_intelligence':
                         console.log("symbol data >>: ", data.payload);
                         updateCryptoDash(data.payload);
-                        renderAssetDetails(data.payload);
+                        break;
+                    case `cached_${SYMBOL}_data`:
+                        console.log("cached symbol data: ", data.payload);
+                        updateCryptoDash(data.payload);
+                        break;
+                    case 'symbol_details':
+                        renderAssetDetails(data.asset_class, data.payload);
                         break;
                     default:
                         console.log('[SI] Unknown message type:', data.type);
