@@ -67,7 +67,7 @@ class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
             message_type = data.get("type")
             asset_class = data.get("asset_class")
             symbol = data.get("symbol")
-            key = f"symbol_data_{symbol.replace('/', '')}"
+            key = f"symbol_data_{symbol.replace('/', '').replace('^', '')}"
 
             if message_type == "request_symbol_details":
                 payload = cache.get(key) or {}

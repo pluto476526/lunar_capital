@@ -119,59 +119,15 @@
       <!-- Technical Indicators -->
       <div class="card radius-10">
         <div class="card-body">
-
-        <div class="d-flex align-items-center gap-4">
-          <div class=""></div>
-            <div class="">
-              <h4 class="mb-0" id="crypto-current-session"></h4>
-              <p class="mb-1">Session</p>
-            </div>
-          </div>
-          <div class="border-top my-4"></div>
-
-          <div class="d-flex align-items-center gap-4">
-          <div class=""></div>
-            <div class="">
-              <h4 class="mb-0" id="crypto-rsi-value"></h4>
-              <p class="mb-1">RSI > 65</p>
-            </div>
-          </div>
-          <div class="border-top my-4"></div>
-          <div class="d-flex align-items-center gap-4">
-            <div class=""></div>
-            <div class="">
-              <h4 class="mb-0" id="macd-bullish-value"></h4>
-              <p class="mb-1">MACD Bull Cross</p>
-            </div>
+        <h5 class="card-title">Technical Indicators</h5>
+          <div class="mt-4">
+            <ul class="list-group list-group-flush" id="crypto-tech-indicators"></ul>
           </div>
         </div>
       </div>
 
       <!-- Volume Ratio -->
       <div class="card radius-10">
-        <div class="card-body">
-           <div id="crypto-vol-chart"></div>
-           <div class="d-flex align-items-end mt-3">
-              <div>
-                <h4 class="mb-1" id="volume-ratio-value">1.02</h4>
-                <p class="mb-0">Volume Ratio Avg</p>
-              </div>
-              <div class="ms-auto">
-                <p class="mb-0 text-success">
-                  Above average <i class="bi bi-arrow-up"></i>
-                </p>
-              </div>
-           </div>
-        </div>
-      </div>
-    </div>
-  </div><!--end row-->
-
-  <!-- Intelligence and Top Movers Row -->
-  <div class="row">
-    <div class="col-12 col-lg-6 col-xl-6 d-flex">
-      <!-- Market Intelligence -->
-      <div class="card radius-10 w-100">
         <div class="card-body">
           <div class="row g-3 align-items-center">
             <div class="col">
@@ -207,6 +163,29 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div><!--end row-->
+
+  <!-- Intelligence and Top Movers Row -->
+  <div class="row">
+    <div class="col-12 col-lg-6 col-xl-6 d-flex">
+      <!-- Market Intelligence -->
+      <div class="card radius-10 w-100">
+        <div class="card-body">
+           <div id="crypto-vol-chart"></div>
+           <div class="d-flex align-items-end mt-3">
+              <div>
+                <h4 class="mb-1" id="volume-ratio-value">1.02</h4>
+                <p class="mb-0">Volume Ratio Avg</p>
+              </div>
+              <div class="ms-auto">
+                <p class="mb-0 text-success">
+                  Above average <i class="bi bi-arrow-up"></i>
+                </p>
+              </div>
+           </div>
         </div>
       </div>
     </div>
@@ -307,14 +286,24 @@
      <div class="card-body">
        <div class="row g-3">
          <div class="col-12 col-lg-4 col-xl-4 d-flex">
-          <div class="card mb-0 radius-10 border shadow-none w-100">
-            <div class="card-body">
-              <h5 class="card-title">Cryptocurrency Overview</h5>
-              <p class="text-secondary font-13">Click any asset for detailed analysis</p>
-              <ul class="list-group list-group-flush mt-3" id="crypto-assets-list"></ul>
+            <div class="card mb-0 radius-10 border shadow-none w-100">
+              <div class="card-body">
+                <h5 class="card-title">Cryptocurrency Overview</h5>
+                <p class="text-secondary font-13">Click any asset for detailed analysis</p>
+
+                <!-- Search box -->
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" id="crypto-search" placeholder="Search assets..." aria-label="Search assets">
+                  <button class="btn btn-sm btn-outline-secondary" type="button">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+
+                <ul class="list-group list-group-flush mt-3" id="crypto-assets-list"></ul>
+              </div>
             </div>
           </div>
-         </div>
+
 
          <div class="col-12 col-lg-8 col-xl-8 d-flex">
           <div class="card mb-0 radius-10 border shadow-none w-100">

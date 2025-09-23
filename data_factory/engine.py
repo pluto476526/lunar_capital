@@ -11,9 +11,11 @@ from cachetools import LRUCache
 from django.conf import settings
 from data_factory.narrative_generator import get_narrative_generator
 from data_factory import news_processor
+from pathlib import Path
 
 
 logger = logging.getLogger(__name__)
+
 
 # ---------- Config & cache setup ----------
 REDIS_URL = getattr(settings, "REDIS_URL", os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0"))
@@ -79,6 +81,19 @@ def cache_get(key: str, default=None) -> Any:
     except Exception as e:
         logger.error(f"cache_get failed for key {key}: {e}")
         return default
+
+def load_symbol_names(path: str) -> dict:
+    if Path(path).exists():
+        try:
+            with open(path, "r") as f:
+                return json.load(f)
+        except Exception as e:
+            logger.error(f"Failed to decode JSON from {path}: {e}")
+    return {}
+
+
+SYMBOL_NAMES = load_symbol_names("symbols.json")
+
 
 # ---------- Input normalization ----------
 def normalize_ohlcv_data(values: List[Dict[str, Any]]) -> pd.DataFrame:
@@ -181,6 +196,7 @@ def format_asset_data(api_response: Dict[str, Any], symbols: List[str]) -> Dict[
             out["symbols"][symbol] = {"values": [], "status": "missing"}
     
     return out
+
 
 # ---------- Technical Indicators ----------
 def safe_talib_calculation(func, default, *args, **kwargs):
@@ -486,6 +502,27 @@ def calculate_technical_indicators(data: List[Dict], symbol: str, timeframe: str
     return metrics
 
 # ---------- Market-wide Metrics ----------
+def get_assets_list(asset_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """
+    Return a list of assets with their latest prices.
+    """
+    results = []
+    symbols = asset_data.get("symbols", {})
+    
+    for symbol, data in symbols.items():
+        df = normalize_ohlcv_data(data.get("values", []))
+        if df.empty or "close" not in df.columns:
+            continue
+        
+        latest_close = df.iloc[-1]["close"]
+        results.append({
+            "symbol": symbol,
+            "name": SYMBOL_NAMES.get(symbol, symbol),
+            "price": round(float(latest_close), 4)
+        })
+    
+    return results
+
 def calculate_market_breadth(asset_data: Dict[str, Any]) -> Dict[str, Any]:
     """Calculate market breadth for day trading focus."""
     symbols = asset_data.get("symbols", {})
@@ -731,25 +768,44 @@ def calculate_volatility_index(asset_data: Dict[str, Any], period: int = 10) -> 
     cache_set("volatility_index", vol, ttl=_CACHE_TTL)
     return vol
 
-def technical_breadth_summary(asset_data: Dict[str, Any], asset_class: str = None) -> Dict[str, int]:
-    """Calculate technical breadth summary with asset-class specific parameters."""
+def technical_breadth_summary(asset_data: Dict[str, Any], asset_class: str = None) -> Dict[str, Any]:
+    """Calculate technical breadth summary with asset-class specific parameters for day trading.
+       Returns both counts and lists of assets that meet conditions."""
+    
+    # Counters
     macd_bull = 0
     rsi_over = 0
+    ma20_above = 0
+    ma50_above = 0
+    ma200_above = 0
+    vwap_above = 0
+    high_vol = 0
     total = 0
     
-    # Asset-class specific parameters - different markets have different characteristics
+    # Symbol trackers
+    passed = {
+        "macd_bull_cross": [],
+        "rsi_over": [],
+        "above_ma20": [],
+        "above_ma50": [],
+        "above_ma200": [],
+        "above_vwap": [],
+        "high_volume": []
+    }
+    
+    # Asset-class specific parameters
     if asset_class == 'forex':
-        macd_fast, macd_slow, macd_signal = 8, 17, 9  # Faster settings for 24h forex market
+        macd_fast, macd_slow, macd_signal = 8, 17, 9
         min_periods = 20
-        rsi_threshold = 60  # Lower threshold for forex (trends tend to be stronger)
+        rsi_threshold = 60
     elif asset_class == 'crypto':
-        macd_fast, macd_slow, macd_signal = 10, 21, 7  # Custom settings for volatile crypto market
+        macd_fast, macd_slow, macd_signal = 10, 21, 7
         min_periods = 22
-        rsi_threshold = 65  # Higher threshold for crypto (more overbought/oversold extremes)
+        rsi_threshold = 65
     else:
-        macd_fast, macd_slow, macd_signal = 12, 26, 9  # Standard settings for stocks
+        macd_fast, macd_slow, macd_signal = 12, 26, 9
         min_periods = 26
-        rsi_threshold = 70  # Standard RSI threshold for stocks
+        rsi_threshold = 70
     
     for symbol, data in asset_data.get("symbols", {}).items():
         if not data.get("values"):
@@ -757,14 +813,19 @@ def technical_breadth_summary(asset_data: Dict[str, Any], asset_class: str = Non
         df = normalize_ohlcv_data(data.get("values", []))
         if df.empty or len(df) < min_periods:
             continue
+        
         total += 1
         close_prices = df["close"].values
-        # RSI analysis - count overbought symbols
-        rsi_period = 9 if asset_class == 'forex' else 14  # Shorter RSI for faster forex signals
+        volume = df["volume"].values
+        
+        # RSI analysis
+        rsi_period = 9 if asset_class == 'forex' else 14
         rsi_val = calculate_rsi(close_prices, period=rsi_period)
         if not np.isnan(rsi_val) and rsi_val > rsi_threshold:
             rsi_over += 1
-        # MACD bull cross detection - count recent bullish crossovers
+            passed["rsi_over"].append(symbol)
+        
+        # MACD bull cross detection
         macd_min_periods = macd_slow + macd_signal
         if len(close_prices) >= macd_min_periods:
             try:
@@ -776,14 +837,48 @@ def technical_breadth_summary(asset_data: Dict[str, Any], asset_class: str = Non
                 )
                 if len(macd) >= 2 and len(macdsignal) >= 2:
                     if (macd[-2] <= macdsignal[-2]) and (macd[-1] > macdsignal[-1]):
-                        macd_bull += 1  # Count bullish crossovers
+                        macd_bull += 1
+                        passed["macd_bull_cross"].append(symbol)
             except Exception as e:
                 logger.debug(f"MACD calculation failed for {symbol}: {e}")
+        
+        # Moving averages
+        for period, key in [(20, "above_ma20"), (50, "above_ma50"), (200, "above_ma200")]:
+            if len(close_prices) >= period:
+                ma_val = np.mean(close_prices[-period:])
+                if close_prices[-1] > ma_val:
+                    if key == "above_ma20": ma20_above += 1
+                    elif key == "above_ma50": ma50_above += 1
+                    elif key == "above_ma200": ma200_above += 1
+                    passed[key].append(symbol)
+        
+        # VWAP check
+        if {"high", "low", "close", "volume"}.issubset(df.columns):
+            typical_price = (df["high"] + df["low"] + df["close"]) / 3
+            vwap = (typical_price * df["volume"]).cumsum() / df["volume"].cumsum()
+            if close_prices[-1] > vwap.iloc[-1]:
+                vwap_above += 1
+                passed["above_vwap"].append(symbol)
+        
+        # Volume surge
+        if len(volume) >= 20:
+            avg_vol = np.mean(volume[-20:])
+            if volume[-1] > 1.5 * avg_vol:  # 50% above normal
+                high_vol += 1
+                passed["high_volume"].append(symbol)
     
     return {
-        "macd_bull_cross": macd_bull,  # Number of bullish MACD crossovers
-        f"rsi_over_{rsi_threshold}": rsi_over,  # Number of overbought symbols
-        "symbols_evaluated": total  # Total symbols analyzed
+        "counts": {
+            "macd_bull_cross": macd_bull,
+            f"rsi_over_{rsi_threshold}": rsi_over,
+            "above_ma20": ma20_above,
+            "above_ma50": ma50_above,
+            "above_ma200": ma200_above,
+            "above_vwap": vwap_above,
+            "high_volume": high_vol,
+            "symbols_evaluated": total
+        },
+        "symbols": passed
     }
 
 def calculate_correlation_matrix(asset_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -854,7 +949,7 @@ def get_categorized_news(raw_news: Dict[str, Any], ttl: int = _CACHE_TTL) -> Dic
 
 # ----------------- Main factory ------------------
 
-def process_asset_data(asset_data: Dict[str, Any], asset_class: str, timeframe: str = '1m', news_data: Optional[Dict[str, Any]] = None, breadth_series_len: int = 20, top_n: int = 5) -> Dict[str, Any]:
+def process_asset_data(asset_data: Dict[str, Any], asset_class: str, timeframe: str = '1h', news_data: Optional[Dict[str, Any]] = None, breadth_series_len: int = 20, top_n: int = 5) -> Dict[str, Any]:
     """Process asset data for any asset class and return comprehensive metrics."""
     # Calculate all market metrics - comprehensive market analysis
     mb = calculate_market_breadth(asset_data)
@@ -866,11 +961,12 @@ def process_asset_data(asset_data: Dict[str, Any], asset_class: str, timeframe: 
     top = get_top_movers(asset_data, top_n=top_n, by="change_pct", timeframe=timeframe)
     tech = technical_breadth_summary(asset_data, asset_class)
     correlation_matrix = calculate_correlation_matrix(asset_data)
+    symbols = get_assets_list(asset_data)
+
     
     # Index returns for stocks - key benchmarks for equity traders
     if asset_class == 'stocks':
-        index_symbols = MAJOR_INDICES
-        index_returns = calculate_index_returns(asset_data, index_symbols)
+        index_returns = calculate_index_returns(asset_data, MAJOR_INDICES)
     else:
         index_returns = {}
     
@@ -903,6 +999,7 @@ def process_asset_data(asset_data: Dict[str, Any], asset_class: str, timeframe: 
     
     # Compile all market metrics into a comprehensive response
     result = {
+        "symbols": symbols,
         "market_status": mb["market_status"],
         "breadth_pct": mb["breadth_pct"],
         "breadth_series": breadth_series,

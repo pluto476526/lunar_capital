@@ -147,24 +147,8 @@
       <div class="card radius-10">
         <div class="card-body">
           <h5 class="card-title">Technical Indicators</h5>
-
-
           <div class="mt-4">
-            <h6>Indicator Summary</h6>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                RSI Above 60
-                <span class="badge bg-secondary rounded-pill">1/4</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                MACD Bullish Cross
-                <span class="badge bg-secondary rounded-pill">0/4</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                Above 50-Day MA
-                <span class="badge bg-secondary rounded-pill">1/4</span>
-              </li>
-            </ul>
+            <ul class="list-group list-group-flush" id="fx-tech-indicators"></ul>
           </div>
         </div>
       </div>
@@ -177,7 +161,7 @@
       <div class="card radius-10">
         <div class="card-body">
           <h5 class="card-title">Key Levels</h5>
-          <div class="mt-4" id="fx-key-levels"></div>
+          <div class="mt-4" id="fx-breadth-trend"></div>
         </div>
       </div>
     </div>
@@ -235,6 +219,12 @@
             <div class="card-body">
               <h5 class="card-title">FX Pairs Overview</h5>
               <p class="text-secondary font-13">Click any pair for detailed analysis</p>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" id="fx-search" placeholder="Search pairs..." aria-label="Search pairs">
+                <button class="btn btn-sm btn-outline-secondary" type="button">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
               <ul class="list-group list-group-flush mt-3" id="fx-pairs-list"></ul>
             </div>
           </div>

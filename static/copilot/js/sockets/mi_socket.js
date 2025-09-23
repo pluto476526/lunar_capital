@@ -1,19 +1,8 @@
 // copilot/sockets/dash_socket.js
 
-const SECTORMAP = {
-  "AAPL": "Technology", "MSFT": "Technology", "NVDA": "Technology", "GOOGL": "Technology", "META": "Technology",
-  "AMZN": "Consumer Discretionary", "TSLA": "Consumer Discretionary", "DIS": "Consumer Discretionary", "NKE": "Consumer Discretionary",
-  "JPM": "Financials", "BAC": "Financials", "GS": "Financials", "MS": "Financials", "V": "Financials", "MA": "Financials",
-  "JNJ": "Healthcare", "PFE": "Healthcare", "UNH": "Healthcare", "MRK": "Healthcare", "ABT": "Healthcare", "TMO": "Healthcare",
-  "PG": "Consumer Staples", "KO": "Consumer Staples", "PEP": "Consumer Staples", "WMT": "Consumer Staples", "COST": "Consumer Staples",
-  "XOM": "Energy", "CVX": "Energy",
-  "BA": "Industrials", "CAT": "Industrials", "UNP": "Industrials",
-  "LIN": "Materials", "SHW": "Materials",
-  "NEE": "Utilities", "DUK": "Utilities",
-  "PLD": "Real Estate", "AMT": "Real Estate",
-  "^GSPC": "Index", "^DJI": "Index", "^IXIC": "Index", "^RUT": "Index", "^FTSE": "Index"
-};
-
+let fxCorrelationEl, fxKeyLevelEl, stockNarrativeHeadlineEl, stockNarrativeEl;
+let stockNarrativeMetaEl, stockCorrelationEl, cryptoCorrelationEl;
+let cryptoBreadthTrendEl, dominanceEl, VolumeChartEl;
 
 
 // Function to load asset details
@@ -315,45 +304,107 @@ function updateForexDashboard(data) {
         losersEl.innerHTML = losers.map(item => createListItem(item, false)).join("");
     }
 
-    // Tech Indicators
-    
+    // Tech Indicators Accordion
+    const fxIndicatorsEl = document.getElementById("fx-tech-indicators");
+    if (fxIndicatorsEl) {
+        fxIndicatorsEl.innerHTML = "";
 
-    // Key Levels
-    fxKeyLevelEl = document.getElementById("fx-key-levels");
-    if (fxKeyLevelEl) renderKeyLevelsLineChart(fxKeyLevelEl, data.narrative.key_levels);
+        const { counts, symbols } = data.technical_breadth;
+        const total = counts.symbols_evaluated || 0;
 
-    // Pairs List
-    const fxListEl = document.getElementById("fx-pairs-list");
-    if (fxListEl) {
-        fxListEl.innerHTML = '';
-        // Merge gainers and losers into one array
-        const movers = [...data.top_movers.gainers, ...data.top_movers.losers];
+        const indicatorsMap = [
+            { label: "RSI Above 60", countKey: "rsi_over_60", symbolKey: "rsi_over" },
+            { label: "MACD Bullish Cross", countKey: "macd_bull_cross", symbolKey: "macd_bull_cross" },
+            { label: "Above 20-Day MA", countKey: "above_ma20", symbolKey: "above_ma20" },
+            { label: "Above 50-Day MA", countKey: "above_ma50", symbolKey: "above_ma50" },
+            { label: "Above 200-Day MA", countKey: "above_ma200", symbolKey: "above_ma200" },
+            { label: "Above VWAP", countKey: "above_vwap", symbolKey: "above_vwap" },
+            { label: "High Volume", countKey: "high_volume", symbolKey: "high_volume" }
+        ];
 
-        movers.forEach(asset => {
-            let changeClass = "text-muted";
-            if (asset.change_pct > 0) changeClass = "text-success";
-            else if (asset.change_pct < 0) changeClass = "text-danger";
+        indicatorsMap.forEach(({ label, countKey, symbolKey }, idx) => {
+            const id = `symbols-${countKey}-${idx}`;
 
-            const item = document.createElement("li");
-            item.className = "list-group-item d-flex align-items-center gap-2";
-            item.setAttribute("data-symbol", asset.symbol);
-            item.style.cursor = "pointer";
-            item.style.userSelect = "none";
+            const li = document.createElement("li");
+            li.className = "list-group-item px-0";
 
+            const symbolList = (symbols[symbolKey] && symbols[symbolKey].length > 0)
+                ? `<ul class="mb-0 ps-3">${symbols[symbolKey].map(s => `<li>${s}</li>`).join("")}</ul>`
+                : "<em class='text-muted'>None</em>";
 
-            item.innerHTML = `
-                <div>
-                    <img src="/static/images/${asset.symbol.split("/")[0].toLowerCase()}.png" width="20" height="20">
+            li.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center" 
+                     data-bs-toggle="collapse" 
+                     data-bs-target="#${id}" 
+                     style="cursor:pointer;">
+                    ${label}
+                    <span class="badge bg-secondary rounded-pill">${counts[countKey] || 0}/${total}</span>
                 </div>
-                <div>${asset.symbol}</div>
-                <div class="ms-auto">
-                    <span class="${changeClass}">${asset.latest.toFixed(2)}</span>
+                <div id="${id}" class="collapse mt-2">
+                    <small class="text-muted">
+                        ${symbolList}
+                    </small>
                 </div>
             `;
 
-            item.addEventListener("click", () => loadAssetDetails("fx", asset.symbol));
-            fxListEl.appendChild(item);
+            fxIndicatorsEl.appendChild(li);
         });
+    }
+
+    
+
+    // Breadth Chart
+    fxBreadthTrendEl = document.getElementById("fx-breadth-trend");
+    if (fxBreadthTrendEl) renderBreadthChart(fxBreadthTrendEl, data.breadth_series);
+
+    // Pairs List
+    const fxListEl = document.getElementById("fx-pairs-list");    
+    if (fxListEl) {
+        const assets = data.symbols;
+        const searchEl = document.getElementById("fx-search");
+
+        // Function to render the list
+        function renderAssets(data) {
+            if (!data) return;
+            fxListEl.innerHTML = '';
+            const list = data.slice(0, 10);
+
+            list.forEach(asset => {
+                const item = document.createElement("li");
+                item.className = "list-group-item d-flex align-items-center gap-2";
+                item.setAttribute("data-symbol", asset.symbol);
+                item.style.cursor = "pointer";
+                item.style.userSelect = "none";
+
+                item.innerHTML = `
+                    <div>
+                        <img src="/static/images/${asset.symbol.split("/")[0].toLowerCase()}.png" width="20" height="20">
+                    </div>
+                    <div>${asset.name} (${asset.symbol})</div>
+                    <div class="ms-auto">
+                        <span>${asset.price.toFixed(2)}</span>
+                    </div>
+                `;
+
+                item.addEventListener("click", () => loadAssetDetails("fx", asset.symbol));
+                fxListEl.appendChild(item);
+            });
+        }
+
+        // Initial render
+        renderAssets(assets);
+
+        // Search filter (case-insensitive, partial match)
+        if (searchEl) {
+            searchEl.addEventListener("input", () => {
+                const query = searchEl.value.trim().toLowerCase();
+                const filtered = assets.filter(asset =>
+                    asset.symbol.toLowerCase().includes(query) ||
+                    asset.name.toLowerCase().includes(query)
+                );
+                renderAssets(filtered);
+            });
+        }
     }
 }
 
@@ -387,12 +438,6 @@ function updateStocksDashboard(data) {
     if (sectorPerformanceEl) {
         renderSectorPerformanceTreemap(sectorPerformanceEl, data.narrative.sector_analysis.all_sectors);
     }
-
-    // Market Conditions Summary
-    if (data.technical_breadth) {
-        renderTechnicalBreadth(data.technical_breadth);
-    }
-
 
     // Market Narrative
     stockNarrativeHeadlineEl = document.getElementById("stock-market-narrative-headline");
@@ -460,38 +505,107 @@ function updateStocksDashboard(data) {
         losersEl.innerHTML = losers.map(item => createRow(item, false)).join("");
     }
 
-    // Stocks List
-    const stocksListEl = document.getElementById("stocks-list");
-    if (stocksListEl) {
-        stocksListEl.innerHTML = '';
-        // Merge gainers and losers into one array
-        const movers = [...data.top_movers.gainers, ...data.top_movers.losers];
 
-        movers.forEach(asset => {
-            let changeClass = "text-muted";
-            if (asset.change_pct > 0) changeClass = "text-success";
-            else if (asset.change_pct < 0) changeClass = "text-danger";
+    // Tech Indicators Accordion
+    // Tech Indicators Accordion
+    const stockIndicatorsEl = document.getElementById("stocks-tech-indicators");
+    if (stockIndicatorsEl) {
+        stockIndicatorsEl.innerHTML = "";
 
-            const item = document.createElement("li");
-            item.className = "list-group-item d-flex align-items-center gap-2";
-            item.setAttribute("data-symbol", asset.symbol);
-            item.style.cursor = "pointer";
-            item.style.userSelect = "none";
+  
+        const { counts, symbols } = data.technical_breadth;
+        const total = counts.symbols_evaluated || 0;
 
+        const indicatorsMap = [
+            { label: "RSI Above 70", countKey: "rsi_over_70", symbolKey: "rsi_over" },
+            { label: "MACD Bullish Cross", countKey: "macd_bull_cross", symbolKey: "macd_bull_cross" },
+            { label: "Above 20-Day MA", countKey: "above_ma20", symbolKey: "above_ma20" },
+            { label: "Above 50-Day MA", countKey: "above_ma50", symbolKey: "above_ma50" },
+            { label: "Above 200-Day MA", countKey: "above_ma200", symbolKey: "above_ma200" },
+            { label: "Above VWAP", countKey: "above_vwap", symbolKey: "above_vwap" },
+            { label: "High Volume", countKey: "high_volume", symbolKey: "high_volume" }
+        ];
 
-            item.innerHTML = `
-                <div>
-                    <img src="/static/images/${asset.symbol.split("/")[0].toLowerCase()}.png" width="20" height="20">
+        indicatorsMap.forEach(({ label, countKey, symbolKey }, idx) => {
+            const id = `symbols-${countKey}-${idx}`;
+
+            const li = document.createElement("li");
+            li.className = "list-group-item px-0";
+
+            const symbolList = (symbols[symbolKey] && symbols[symbolKey].length > 0)
+                ? `<ul class="mb-0 ps-3">${symbols[symbolKey].map(s => `<li>${s}</li>`).join("")}</ul>`
+                : "<em class='text-muted'>None</em>";
+
+            li.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center" 
+                     data-bs-toggle="collapse" 
+                     data-bs-target="#${id}" 
+                     style="cursor:pointer;">
+                    ${label}
+                    <span class="badge bg-secondary rounded-pill">${counts[countKey] || 0}/${total}</span>
                 </div>
-                <div>${asset.symbol}</div>
-                <div class="ms-auto">
-                    <span class="${changeClass}">${asset.latest.toFixed(2)}</span>
+                <div id="${id}" class="collapse mt-2">
+                    <small class="text-muted">
+                        ${symbolList}
+                    </small>
                 </div>
             `;
 
-            item.addEventListener("click", () => loadAssetDetails("stocks", asset.symbol));
-            stocksListEl.appendChild(item);
+            stockIndicatorsEl.appendChild(li);
         });
+
+    }
+
+
+    // Stocks List
+    const stocksListEl = document.getElementById("stocks-list");
+    
+    if (stocksListEl) {
+        const assets = data.symbols;
+        const searchEl = document.getElementById("stocks-search");
+
+        // Function to render the list
+        function renderAssets(data) {
+            if (!data) return;
+            stocksListEl.innerHTML = '';
+            const list = data.slice(0, 10);
+
+            list.forEach(asset => {
+                const item = document.createElement("li");
+                item.className = "list-group-item d-flex align-items-center gap-2";
+                item.setAttribute("data-symbol", asset.symbol);
+                item.style.cursor = "pointer";
+                item.style.userSelect = "none";
+
+                item.innerHTML = `
+                    <div>
+                        <img src="/static/images/${asset.symbol.split("/")[0].toLowerCase()}.png" width="20" height="20">
+                    </div>
+                    <div>${asset.name} (${asset.symbol})</div>
+                    <div class="ms-auto">
+                        <span>${asset.price.toFixed(2)}</span>
+                    </div>
+                `;
+
+                item.addEventListener("click", () => loadAssetDetails("stocks", asset.symbol));
+                stocksListEl.appendChild(item);
+            });
+        }
+
+        // Initial render
+        renderAssets(assets);
+
+        // Search filter (case-insensitive, partial match)
+        if (searchEl) {
+            searchEl.addEventListener("input", () => {
+                const query = searchEl.value.trim().toLowerCase();
+                const filtered = assets.filter(asset =>
+                    asset.symbol.toLowerCase().includes(query) ||
+                    asset.name.toLowerCase().includes(query)
+                );
+                renderAssets(filtered);
+            });
+        }
     }
 }
 
@@ -555,6 +669,55 @@ function updateCryptoDashboard(data) {
           });
     }
 
+    // Tech Indicators Accordion
+    // Tech Indicators Accordion
+    const cryptoIndicatorsEl = document.getElementById("crypto-tech-indicators");
+    if (cryptoIndicatorsEl) {
+        cryptoIndicatorsEl.innerHTML = "";
+
+        const { counts, symbols } = data.technical_breadth;
+        const total = counts.symbols_evaluated || 0;
+
+        const indicatorsMap = [
+            { label: "RSI Above 65", countKey: "rsi_over_65", symbolKey: "rsi_over" },
+            { label: "MACD Bullish Cross", countKey: "macd_bull_cross", symbolKey: "macd_bull_cross" },
+            { label: "Above 20-Day MA", countKey: "above_ma20", symbolKey: "above_ma20" },
+            { label: "Above 50-Day MA", countKey: "above_ma50", symbolKey: "above_ma50" },
+            { label: "Above 200-Day MA", countKey: "above_ma200", symbolKey: "above_ma200" },
+            { label: "Above VWAP", countKey: "above_vwap", symbolKey: "above_vwap" },
+            { label: "High Volume", countKey: "high_volume", symbolKey: "high_volume" }
+        ];
+
+        indicatorsMap.forEach(({ label, countKey, symbolKey }, idx) => {
+            const id = `symbols-${countKey}-${idx}`;
+
+            const li = document.createElement("li");
+            li.className = "list-group-item px-0";
+
+            const symbolList = (symbols[symbolKey] && symbols[symbolKey].length > 0)
+                ? `<ul class="mb-0 ps-3">${symbols[symbolKey].map(s => `<li>${s}</li>`).join("")}</ul>`
+                : "<em class='text-muted'>None</em>";
+
+            li.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center" 
+                     data-bs-toggle="collapse" 
+                     data-bs-target="#${id}" 
+                     style="cursor:pointer;">
+                    ${label}
+                    <span class="badge bg-secondary rounded-pill">${counts[countKey] || 0}/${total}</span>
+                </div>
+                <div id="${id}" class="collapse mt-2">
+                    <small class="text-muted">
+                        ${symbolList}
+                    </small>
+                </div>
+            `;
+
+            cryptoIndicatorsEl.appendChild(li);
+        });
+
+    }
+
 
     // Crypto Correlation Matrix
     cryptoCorrelationEl = document.getElementById("crypto-correlation-matrix");
@@ -599,36 +762,53 @@ function updateCryptoDashboard(data) {
 
     // Assets List
     const assetsListEl = document.getElementById("crypto-assets-list");
+    
     if (assetsListEl) {
-        assetsListEl.innerHTML = '';
-        // Merge gainers and losers into one array
-        const movers = [...data.top_movers.gainers, ...data.top_movers.losers];
+        const assets = data.symbols;
+        const searchEl = document.getElementById("crypto-search");
 
-        movers.forEach(asset => {
-            let changeClass = "text-muted";
-            if (asset.change_pct > 0) changeClass = "text-success";
-            else if (asset.change_pct < 0) changeClass = "text-danger";
+        // Function to render the list
+        function renderAssets(data) {
+            if (!data) return;
+            assetsListEl.innerHTML = '';
+            const list = data.slice(0, 10);
 
-            const item = document.createElement("li");
-            item.className = "list-group-item d-flex align-items-center gap-2";
-            item.setAttribute("data-symbol", asset.symbol);
-            item.style.cursor = "pointer";
-            item.style.userSelect = "none";
+            list.forEach(asset => {
+                const item = document.createElement("li");
+                item.className = "list-group-item d-flex align-items-center gap-2";
+                item.setAttribute("data-symbol", asset.symbol);
+                item.style.cursor = "pointer";
+                item.style.userSelect = "none";
 
+                item.innerHTML = `
+                    <div>
+                        <img src="/static/images/${asset.symbol.split("/")[0].toLowerCase()}.png" width="20" height="20">
+                    </div>
+                    <div>${asset.name} (${asset.symbol})</div>
+                    <div class="ms-auto">
+                        <span>${asset.price.toFixed(2)}</span>
+                    </div>
+                `;
 
-            item.innerHTML = `
-                <div>
-                    <img src="/static/images/${asset.symbol.split("/")[0].toLowerCase()}.png" width="20" height="20">
-                </div>
-                <div>${asset.symbol}</div>
-                <div class="ms-auto">
-                    <span class="${changeClass}">${asset.latest.toFixed(2)}</span>
-                </div>
-            `;
+                item.addEventListener("click", () => loadAssetDetails("crypto", asset.symbol));
+                assetsListEl.appendChild(item);
+            });
+        }
 
-            item.addEventListener("click", () => loadAssetDetails("crypto", asset.symbol));
-            assetsListEl.appendChild(item);
-        });
+        // Initial render
+        renderAssets(assets);
+
+        // Search filter (case-insensitive, partial match)
+        if (searchEl) {
+            searchEl.addEventListener("input", () => {
+                const query = searchEl.value.trim().toLowerCase();
+                const filtered = assets.filter(asset =>
+                    asset.symbol.toLowerCase().includes(query) ||
+                    asset.name.toLowerCase().includes(query)
+                );
+                renderAssets(filtered);
+            });
+        }
     }
 
 }
@@ -681,6 +861,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Handle market intelligence (live + cached)
                 if (payload.type === "market_intelligence" || payload.type === "cached_market_data") {
                     const msgdata = payload.payload;
+                    console.log("payload: ", msgdata);
 
                     if (msgdata.asset_class === "forex") updateForexDashboard(msgdata);
                     if (msgdata.asset_class === "stocks") updateStocksDashboard(msgdata);

@@ -15,19 +15,25 @@ function getThemeColors() {
 
 function getAssetFromUrl() {
     const path = window.location.pathname.split("/").filter(Boolean);
-    // Example: ["co-pilot", "crypto", "BTCUSDT"]
+    // ["co-pilot", "crypto", "BTCUSDT"]
 
     if (path.length < 3) return null; // invalid URL
 
     const category = path[1]; // crypto, fx, stocks
-    const asset = path[2];
+    let asset = decodeURIComponent(path[2]);
 
     if (!asset) {
         return null;
     }
 
+    // Remove leading ^ for stock symbols
+    if (category === "stocks" && asset.startsWith("^")) {
+        asset = asset.slice(1);
+    }
+
     return asset;
 }
+
 
 const SYMBOL = getAssetFromUrl();
 

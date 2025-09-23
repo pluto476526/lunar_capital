@@ -486,20 +486,12 @@ def fetch_and_process_market_data(self, asset_class: str):
 
     # Process the data
     try:
-        processed_data = engine.process_asset_data(
-            formatted_data, 
-            asset_class,
-            "1h",
-            raw_news,
-            breadth_series_len=20, 
-            top_n=5
-        )
+        processed_data = engine.process_asset_data(formatted_data, asset_class, "1h", raw_news)
 
         # Add metadata
         processed_data.update({
             'asset_class': asset_class,
             'generated_at': datetime.utcnow().isoformat(),
-            'symbols': symbols
         })
 
         # Save to cache

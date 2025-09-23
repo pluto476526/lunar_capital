@@ -138,14 +138,9 @@
     <div class="col-12 col-lg-4 col-xl-4">
       <div class="card radius-10 mt-3">
       <div class="card-body">
-        <h5 class="mb-3">Technical Indicators</h5>
-        <div class="row">
-          <div class="col-md-6">
-            <div id="macd-donut"></div>
-          </div>
-          <div class="col-md-6">
-            <div id="rsi-donut"></div>
-          </div>
+      <h5 class="card-title">Technical Indicators</h5>
+        <div class="mt-4">
+          <ul class="list-group list-group-flush" id="stocks-tech-indicators"></ul>
         </div>
       </div>
     </div>
@@ -232,6 +227,12 @@
             <div class="card-body">
               <h5 class="card-title">Asset Overview</h5>
               <p class="text-secondary font-13">Click any asset for detailed analysis</p>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" id="stocks-search" placeholder="Search assets..." aria-label="Search assets">
+                <button class="btn btn-sm btn-outline-secondary" type="button">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
               <ul class="list-group list-group-flush mt-3" id="stocks-list"></ul>
             </div>
           </div>
