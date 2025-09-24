@@ -8,7 +8,281 @@
 <!--start content-->
 <main class="page-content">
 
-	<div class="card">
+
+    <!-- CSV Upload & Analysis -->
+    <div class="card">
+        <div class="card-header py-2 d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Upload Your Transactions CSV</h5>
+            <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#csvExample" aria-expanded="false">
+                View Example CSV
+            </button>
+        </div>
+   
+
+      <div class="card-body p-3">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Capital & Base Currency -->
+             <div class="row">
+              <div class="col-xl-9 mx-auto">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="border p-4 rounded">
+                      <div class="card-title">
+                        <h5 class="mb-0">CSV and Settings</h5>
+                        <p>The initial equity is used to calculate the equity curve</p>
+                      </div>
+                      <hr/>
+                      <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">Initial Capital</label>
+                        <div class="col-sm-9">
+                          <input type="number" name="initial_capital" class="form-control" placeholder="Initial Capital (default 10,000)">
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">Base Currency</label>
+                        <div class="col-sm-9">
+                          <input type="text" name="base_currency" class="form-control" placeholder="Base Currency (default GBP)">
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">Upload CSV</label>
+                        <div class="col-sm-9 d-flex">
+                          <input id="csvFile" type="file" name="csv_file" accept=".csv" required hidden>
+                          <label for="csvFile" class="btn btn-outline-primary btn-sm"> <i class="bi bi-upload"></i> CSV</label>
+                          <input type="text" id="fileNamePlaceholder" class="form-control" placeholder="No file selected" readonly>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <label for="inputAddress4" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck4">
+                            <label class="form-check-label" for="gridCheck4">Request Luck</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <label class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                          <button type="submit" class="btn btn-purple px-5">Analyze</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+    </div>
+        <div class="collapse" id="csvExample">
+            <div class="card-body bg-light">
+                <h6 class="mb-2">Example CSV Structure</h6>
+                <pre class="small border p-2 bg-white">
+Transaction Date,Serial,Action,Description,Amount,Open date,Opening,Closing,P/L,Status,Balance,Currency
+24/07/2025 09:30:56,1564146,Fund payable,Currency conversion from CAD-C to GBP-C @ 0.539572,,24/07/2025 09:30:56,0.000000,0.000000,-79.00,,0.00,CAD
+24/07/2025 09:30:56,47745470,Trade Receivable,GBP/CAD,-1.00,24/07/2025 08:37:37,1.844940,1.844150,79.00,,79.00,CAD
+                </pre>
+            </div>
+        </div>
+    </div>
+
+
+<div class="card">
+    <div class="card-body">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h5 class="card-title mb-0">Trading Performance Analytics</h5>
+                <small class="text-muted">Deep analysis of your trading performance</small>
+            </div>
+            <div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary btn-sm">Last 30 Days</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm active">Last 90 Days</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm">Year to Date</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm">All Time</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics Grid -->
+        <div class="card mb-4">
+            <div class="card-header bg-light py-2">
+                <h6 class="mb-0">Key Metrics</h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6 col-md-2 mb-3">
+                        <div class="border-end">
+                            <h4 class="text-success mb-0">[WIN_RATE]% <!-- e.g., 60.0% --></h4>
+                            <small class="text-muted">Win Rate</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 mb-3">
+                        <div class="border-end">
+                            <h4 class="mb-0">[PROFIT_FACTOR] <!-- e.g., 6465.47 --></h4>
+                            <small class="text-muted">Profit Factor</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 mb-3">
+                        <div class="border-end">
+                            <h4 class="mb-0">[SHARPE_RATIO] <!-- e.g., 0.49 --></h4>
+                            <small class="text-muted">Sharpe Ratio</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 mb-3">
+                        <div class="border-end">
+                            <h4 class="text-danger mb-0">[MAX_DRAWDOWN] <!-- e.g., -1.36 --></h4>
+                            <small class="text-muted">Max Drawdown</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 mb-3">
+                        <div class="border-end">
+                            <h4 class="mb-0">[AVG_WIN_LOSS] <!-- e.g., 4310.67 --></h4>
+                            <small class="text-muted">Avg Win/Loss</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 mb-3">
+                        <h4 class="mb-0">[TOTAL_TRADES] <!-- e.g., 15 --></h4>
+                        <small class="text-muted">Total Trades</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Equity Curve by Time -->
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">Equity Curve</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs mb-3" id="equityTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="daily-tab" data-bs-toggle="tab" data-bs-target="#daily" type="button" role="tab">Daily</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="weekly-tab" data-bs-toggle="tab" data-bs-target="#weekly" type="button" role="tab">Weekly</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="monthly-tab" data-bs-toggle="tab" data-bs-target="#monthly" type="button" role="tab">Monthly</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="equityTabsContent">
+                            <div class="tab-pane fade show active" id="daily" role="tabpanel">
+                                <!-- Example daily equity curve data -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>[DATE_1] <!-- e.g., 2025-07-23 --></span>
+                                        <span class="[PNL_CLASS_1]">[PNL_BASE_1] <!-- e.g., +25.05 --></span>
+                                    </div>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar [PROGRESS_CLASS_1]" role="progressbar" style="width: [PROGRESS_WIDTH_1]%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>[DATE_2] <!-- e.g., 2025-07-24 --></span>
+                                        <span class="[PNL_CLASS_2]">[PNL_BASE_2] <!-- e.g., -33.08 --></span>
+                                    </div>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar [PROGRESS_CLASS_2]" role="progressbar" style="width: [PROGRESS_WIDTH_2]%"></div>
+                                    </div>
+                                </div>
+                                <!-- Add more daily entries as needed -->
+                            </div>
+                            <div class="tab-pane fade" id="weekly" role="tabpanel">
+                                <p class="text-center text-muted py-4">Weekly equity curve data will be displayed here</p>
+                            </div>
+                            <div class="tab-pane fade" id="monthly" role="tabpanel">
+                                <p class="text-center text-muted py-4">Monthly equity curve data will be displayed here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P&L Distribution -->
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">P&L Distribution by Symbol</h6>
+                    </div>
+                    <div class="card-body">
+                        <!-- Example P&L distribution data -->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>[SYMBOL_1] <!-- e.g., GBP/JPY --></span>
+                                <span>[TRADE_COUNT_1] trades <!-- e.g., 4 trades --></span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar [SYMBOL_CLASS_1]" role="progressbar" style="width: [SYMBOL_WIDTH_1]%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>[SYMBOL_2] <!-- e.g., GBP/CAD --></span>
+                                <span>[TRADE_COUNT_2] trades <!-- e.g., 3 trades --></span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar [SYMBOL_CLASS_2]" role="progressbar" style="width: [SYMBOL_WIDTH_2]%"></div>
+                            </div>
+                        </div>
+                        <!-- Add more symbol entries as needed -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Symbol Performance -->
+        <div class="card">
+            <div class="card-header bg-light py-2">
+                <h6 class="mb-0">Symbol Performance</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Trade Count</th>
+                                <th>Total P&L</th>
+                                <th>Avg P&L</th>
+                                <th>Best Trade</th>
+                                <th>Worst Trade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>[SYMBOL_1] <!-- e.g., GBP/JPY --></td>
+                                <td>[TRADE_COUNT_1] <!-- e.g., 4 --></td>
+                                <td class="[PNL_CLASS_1]">[TOTAL_PNL_1] <!-- e.g., +4567480.00 --></td>
+                                <td>[AVG_PNL_1] <!-- e.g., 1141870.00 --></td>
+                                <td>[BEST_TRADE_1] <!-- e.g., 2001480.00 --></td>
+                                <td>[WORST_TRADE_1] <!-- e.g., 423390.00 --></td>
+                            </tr>
+                            <tr>
+                                <td>[SYMBOL_2] <!-- e.g., GBP/CAD --></td>
+                                <td>[TRADE_COUNT_2] <!-- e.g., 3 --></td>
+                                <td class="[PNL_CLASS_2]">[TOTAL_PNL_2] <!-- e.g., +136.04 --></td>
+                                <td>[AVG_PNL_2] <!-- e.g., 45.35 --></td>
+                                <td>[BEST_TRADE_2] <!-- e.g., 122.13 --></td>
+                                <td>[WORST_TRADE_2] <!-- e.g., -92.75 --></td>
+                            </tr>
+                            <!-- Add more symbol rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<div class="card">
     <div class="card-body">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -321,6 +595,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 

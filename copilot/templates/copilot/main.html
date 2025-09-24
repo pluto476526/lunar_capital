@@ -8,6 +8,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link href="{% static 'copilot/plugins/perfect-scrollbar/css/perfect-scrollbar.css' %}" rel="stylesheet" />
 
   <link href="{% static 'copilot/css/bootstrap.min.css' %}" rel="stylesheet" />
   <link href="{% static 'copilot/css/bootstrap-extended.css' %}" rel="stylesheet" />
@@ -434,7 +435,6 @@
   <script src="{% static 'copilot/js/sockets/charts.js' %}"></script>
   <script src="{% static 'copilot/js/sockets/mi_socket.js' %}"></script>
   <script src="{% static 'copilot/js/sockets/si_socket.js' %}"></script>
-  <script src="{% static 'copilot/plugins/peity/jquery.peity.min.js' %}"></script>
   <script src="{% static 'copilot/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
   <script src="{% static 'copilot/js/pace.min.js' %}"></script>
   <script src="{% static 'copilot/js/app.js' %}"></script>
@@ -445,6 +445,11 @@
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+
+    document.getElementById("csvFile").addEventListener("change", function () {
+      const files = Array.from(this.files).map(file => file.name).join(", ");
+      document.getElementById("fileNamePlaceholder").value = files || "No file selected";
+    });
   </script>
 
 </body>

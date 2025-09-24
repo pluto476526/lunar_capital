@@ -1,10 +1,13 @@
 ## copilot/views.py
 ## pkibuka@milky-way.space
 
+from data_factory.performance_metrics import TradingPerformanceAnalyzer as TPA
 from django.shortcuts import render
-from data_factory import engine, tasks
+import pandas as pd
 import logging
 
+
+logger = logging.getLogger(__name__)
 
 def copilot_view(request):
     context = {}
@@ -15,11 +18,6 @@ def dash_fx_view(request):
     """
     Get FX market overview
     """
-    # result = tasks.fetch_and_process_forex_data.delay().get(timeout=30)
-    # market_data, _ = result if isinstance(result, tuple) else (result, None)
-    # context = {
-    #     "fx_data": market_data,
-    # }
     context = {}
     return render(request, "copilot/dash_fx.html", context)
 
@@ -37,11 +35,6 @@ def fx_details_view(request, symbol):
     """
     Get detailed info for a specific currency pair
     """
-    # result = tasks.fetch_and_process_forex_data.delay(single_symbol=symbol).get(timeout=30)
-    # _, symbol_data = result if isinstance(result, tuple) else (None, result)
-    # context = {
-    #     "fx_details": symbol_data,
-    # }
     context = {}
     return render(request, "copilot/fx_details.html", context)
 
@@ -82,7 +75,30 @@ def trade_planner_view(request):
     return render(request, "copilot/trade_planner.html", context)
 
 def performance_metrics_view(request):
-    context = {}
+    report = None
+    error = None
+
+    if request.method == "POST":
+        csv_file = request.FILES.get("csv_file")
+        initial_capital = request.POST.get("initial_capital")
+        base_currency = request.POST.get("base_currency") or "GBP"
+
+        try:
+            initial_capital = float(initial_capital)
+        except ValueError:
+            initial_capital = 10000
+
+        if csv_file:
+            try:
+                # Process the data
+                analyzer = TPA(csv_file, initial_capital, base_currency)
+                report = analyzer.generate_report()
+                    
+            except Exception as e:
+                error = f"Error processing CSV file: {str(e)}"
+
+    context = {"report": report, "error": error}
+    logger.debug(f"Performance metrics context: {context}")
     return render(request, "copilot/performance_metrics.html", context)
 
 def screener_view(request):

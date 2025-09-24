@@ -1,257 +1,256 @@
+## data_factory/performance_metrics.py
+## pkibuka@milky-way.space
+
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from datetime import datetime
-import warnings
-warnings.filterwarnings('ignore')
+import json, logging
+
+logger = logging.getLogger(__name__)
 
 class TradingPerformanceAnalyzer:
-    def __init__(self, csv_file_path):
+    def __init__(self, csv_path, initial_capital=10000, base_currency="GBP"):
         """
-        Initialize the analyzer with CSV data
+        Analyzer for trading performance with optional base currency conversion.
+
+        fx_rates: dict of conversion rates to base currency, e.g. {"CAD": 0.54, "AUD": 0.49, "GBP": 1.0}
         """
-        self.df = pd.read_csv(csv_file_path)
+        self.csv_path = csv_path
+        self.initial_capital = initial_capital
+        self.base_currency = base_currency
+        self.fx_rates = {"USD":"1.1648","JPY":"128.30","GBP":"0.87663","CHF":"1.1534","AUD":"1.5681","CAD":"1.5459","MXN":"23.5466","NZD":"1.6880","ZAR":"15.7165"}
+        self.df = None
+
+        self.load_data()
         self.preprocess_data()
+        # self.extract_fx_rates() from a json external file
+        self.convert_to_base_currency()
+        self.calculate_equity_curve()
         self.calculate_metrics()
-        
+
+    def load_data(self):
+        try:
+            self.df = pd.read_csv(self.csv_path, encoding='utf-16')
+        except UnicodeDecodeError:
+            self.df = pd.read_csv(self.csv_path, encoding='ISO-8859-1')
+
     def preprocess_data(self):
-        """
-        Clean and preprocess the trading data
-        """
-        # Convert date column to datetime
-        if 'date' in self.df.columns:
-            self.df['date'] = pd.to_datetime(self.df['date'])
-        elif 'Date' in self.df.columns:
-            self.df['date'] = pd.to_datetime(self.df['Date'])
+        """Normalize ledger data into structured format."""
+        # Ensure date column is properly parsed
+        self.df['date'] = pd.to_datetime(self.df['Transaction Date'], dayfirst=True, errors='coerce')
+
+        # Extract currency pair from Description
+        extracted = self.df['Description'].str.extract(r'([A-Z]{3}/[A-Z]{3})')
+        self.df['symbol'] = extracted[0] if not extracted.empty else pd.Series([None] * len(self.df), index=self.df.index)
         
-        # Ensure necessary columns exist (customize based on your CSV structure)
-        required_columns = ['symbol', 'quantity', 'price', 'side']  # Adjust based on your CSV
-        for col in required_columns:
-            if col not in self.df.columns:
-                raise ValueError(f"Required column '{col}' not found in CSV")
+        # Fill missing symbols from Action where applicable
+        action_extracted = self.df['Action'].str.extract(r'([A-Z]{3}/[A-Z]{3})')
+        self.df['symbol'] = self.df['symbol'].fillna(action_extracted[0])
+
+        # Side mapping
+        self.df['side'] = self.df['Action'].map({
+            'Trade Receivable': 'buy',
+            'Trade Payable': 'sell',
+            'Fund receivable': 'credit',
+            'Fund payable': 'debit'
+        })
+        
+        # Numeric conversions
+        self.df['quantity'] = pd.to_numeric(self.df['Amount'], errors='coerce').fillna(0)
+        self.df['opening_price'] = pd.to_numeric(self.df['Opening'], errors='coerce')
+        self.df['closing_price'] = pd.to_numeric(self.df['Closing'], errors='coerce')
+        self.df['pnl'] = pd.to_numeric(self.df['P/L'], errors='coerce').fillna(0)
+        self.df['balance'] = pd.to_numeric(self.df['Balance'], errors='coerce').fillna(0)
+        self.df['currency'] = self.df['Currency'].astype(str)  # Ensure currency is string
+        
+        # Check for non-numeric values in critical columns
+        if self.df['closing_price'].isna().any():
+            self.df['closing_price'] = self.df['closing_price'].fillna(0)  # Fill NaN with 0 for trade_value
         
         # Calculate trade value
-        self.df['trade_value'] = self.df['quantity'] * self.df['price']
+        self.df['trade_value'] = self.df['quantity'] * self.df['closing_price']
         
-        # Identify buy/sell transactions
-        self.df['is_buy'] = self.df['side'].str.lower().isin(['buy', 'b'])
-        self.df['is_sell'] = self.df['side'].str.lower().isin(['sell', 's'])
+        logger.info("Preprocessing completed.")
+
+
+    def convert_to_base_currency(self):
+        """
+        Convert PnL, balances, and trade values into base currency using FX rates.
+        Vectorized for speed and stability.
+        """        
+        # Ensure FX rates are numeric
+        fx_rates_numeric = {k: float(v) for k, v in self.fx_rates.items()}
         
+        # Compute conversion factor for each row
+        def compute_rate(currency):
+            if currency == self.base_currency:
+                return 1.0
+            return fx_rates_numeric.get(currency, 1.0) / fx_rates_numeric.get(self.base_currency, 1.0)
+        
+        # Ensure currency is a Series
+        if isinstance(self.df['currency'], pd.Series):
+            self.df['conversion_rate'] = self.df['currency'].map(compute_rate)
+        
+        # Convert numeric columns
+        self.df['pnl_base'] = self.df['pnl'].fillna(0) * self.df['conversion_rate']
+        self.df['balance_base'] = self.df['balance'].fillna(0) * self.df['conversion_rate']
+        self.df['trade_value_base'] = self.df['trade_value'].fillna(0) * self.df['conversion_rate']
+        
+        # Drop helper column
+        self.df.drop(columns=['conversion_rate'], inplace=True)
+        
+        logger.info("Currency conversion completed.")
+
+
     def calculate_metrics(self):
         """
-        Calculate comprehensive trading performance metrics
+        Core performance metrics using base currency
         """
-        # Total metrics
-        self.total_trades = len(self.df)
-        self.total_buys = self.df['is_buy'].sum()
-        self.total_sells = self.df['is_sell'].sum()
-        self.total_volume = self.df['quantity'].sum()
-        self.total_value = self.df['trade_value'].sum()
-        
-        # Win/loss metrics
-        winning_trades = self.df[self.df['pnl'] > 0] if 'pnl' in self.df.columns else pd.DataFrame()
-        losing_trades = self.df[self.df['pnl'] < 0] if 'pnl' in self.df.columns else pd.DataFrame()
-        
-        self.win_rate = len(winning_trades) / self.total_trades if self.total_trades > 0 else 0
-        self.average_win = winning_trades['pnl'].mean() if len(winning_trades) > 0 else 0
-        self.average_loss = losing_trades['pnl'].mean() if len(losing_trades) > 0 else 0
-        self.largest_win = winning_trades['pnl'].max() if len(winning_trades) > 0 else 0
-        self.largest_loss = losing_trades['pnl'].min() if len(losing_trades) > 0 else 0
-        
+        trades = self.df[self.df['side'].isin(['buy', 'sell'])]
+
+        self.total_trades = len(trades)
+        self.total_buys = (trades['side'] == 'buy').sum()
+        self.total_sells = (trades['side'] == 'sell').sum()
+        self.total_volume = trades['quantity'].sum()
+        self.total_value = trades['trade_value_base'].sum()  # use converted trade value
+
+        # Win/loss using base currency
+        winning = trades[trades['pnl_base'] > 0]
+        losing = trades[trades['pnl_base'] < 0]
+
+        self.win_rate = len(winning) / self.total_trades if self.total_trades else 0
+        self.average_win = winning['pnl_base'].mean() if not winning.empty else 0
+        self.average_loss = losing['pnl_base'].mean() if not losing.empty else 0
+        self.largest_win = winning['pnl_base'].max() if not winning.empty else 0
+        self.largest_loss = losing['pnl_base'].min() if not losing.empty else 0
+
         # Profit factor
-        gross_profit = winning_trades['pnl'].sum() if len(winning_trades) > 0 else 0
-        gross_loss = abs(losing_trades['pnl'].sum()) if len(losing_trades) > 0 else 1  # Avoid division by zero
+        gross_profit = winning['pnl_base'].sum()
+        gross_loss = abs(losing['pnl_base'].sum()) if not losing.empty else 1
         self.profit_factor = gross_profit / gross_loss if gross_loss != 0 else float('inf')
-        
-        # Risk/reward metrics
+
+        # Expectancy
         self.expectancy = (self.win_rate * self.average_win) - ((1 - self.win_rate) * abs(self.average_loss))
-        
-        # Calculate Sharpe ratio if we have enough data
-        if 'pnl' in self.df.columns and 'date' in self.df.columns:
-            daily_returns = self.df.groupby('date')['pnl'].sum()
-            risk_free_rate = 0.02 / 252  # Assuming 2% annual risk-free rate
-            excess_returns = daily_returns - risk_free_rate
-            self.sharpe_ratio = excess_returns.mean() / excess_returns.std() if excess_returns.std() != 0 else 0
-        
-        # Holding period analysis if we have entry/exit dates
-        if 'entry_date' in self.df.columns and 'exit_date' in self.df.columns:
-            self.df['holding_period'] = (pd.to_datetime(self.df['exit_date']) - 
-                                         pd.to_datetime(self.df['entry_date'])).dt.days
-            self.avg_holding_period = self.df['holding_period'].mean()
-        
-    def generate_report(self):
-        """
-        Generate a comprehensive trading performance report
-        """
-        report = {
-            "Summary Metrics": {
-                "Total Trades": self.total_trades,
-                "Total Buy Orders": self.total_buys,
-                "Total Sell Orders": self.total_sells,
-                "Total Volume": self.total_volume,
-                "Total Trade Value": self.total_value
-            },
-            "Performance Metrics": {
-                "Win Rate": f"{self.win_rate * 100:.2f}%",
-                "Average Win": self.average_win,
-                "Average Loss": self.average_loss,
-                "Largest Win": self.largest_win,
-                "Largest Loss": self.largest_loss,
-                "Profit Factor": self.profit_factor,
-                "Expectancy": self.expectancy,
-                "Sharpe Ratio": self.sharpe_ratio if hasattr(self, 'sharpe_ratio') else "N/A"
-            },
-            "Risk Metrics": {
-                "Risk of Ruin": self.calculate_risk_of_ruin(),
-                "Maximum Drawdown": self.calculate_max_drawdown() if hasattr(self, 'equity_curve') else "N/A",
-                "Value at Risk (95%)": self.calculate_var() if 'pnl' in self.df.columns else "N/A"
-            }
-        }
-        
-        if hasattr(self, 'avg_holding_period'):
-            report["Time Metrics"] = {
-                "Average Holding Period (days)": self.avg_holding_period
-            }
-        
-        return report
-    
-    def calculate_risk_of_ruin(self):
-        """
-        Calculate risk of ruin based on win rate and average win/loss
-        """
-        if self.win_rate == 0 or self.average_loss == 0:
-            return "N/A"
-        
-        # Simplified risk of ruin calculation
-        risk_per_trade = abs(self.average_loss) / (self.average_win + abs(self.average_loss))
-        risk_of_ruin = ((1 - risk_per_trade) / risk_per_trade) ** (self.average_win / abs(self.average_loss))
-        
-        return f"{risk_of_ruin * 100:.4f}%" if risk_of_ruin < 1 else "High"
-    
-    def calculate_max_drawdown(self):
-        """
-        Calculate maximum drawdown from equity curve
-        """
-        if not hasattr(self, 'equity_curve'):
-            self.calculate_equity_curve()
-        
-        cumulative_returns = self.equity_curve['cumulative_return']
-        peak = cumulative_returns.expanding(min_periods=1).max()
-        drawdown = (cumulative_returns - peak) / peak
-        max_drawdown = drawdown.min()
-        
-        return f"{max_drawdown * 100:.2f}%"
-    
-    def calculate_var(self, confidence_level=0.95):
-        """
-        Calculate Value at Risk
-        """
-        if 'pnl' not in self.df.columns:
-            return "N/A"
-        
-        var = np.percentile(self.df['pnl'], (1 - confidence_level) * 100)
-        return var
-    
-    def calculate_equity_curve(self, initial_capital=10000):
-        """
-        Calculate equity curve over time
-        """
-        if 'date' not in self.df.columns or 'pnl' not in self.df.columns:
-            return
-        
-        # Group P&L by date
-        daily_pnl = self.df.groupby('date')['pnl'].sum().reset_index()
+
+        # Sharpe ratio using base currency
+        daily_returns = trades.groupby('date')['pnl_base'].sum()
+        risk_free = 0.02 / 252
+        excess = daily_returns - risk_free
+        self.sharpe_ratio = excess.mean() / excess.std() if excess.std() else 0
+
+        # Risk metrics
+        self.max_drawdown = self.calculate_max_drawdown()
+        self.var_95 = np.percentile(trades['pnl_base'], 5) if not trades.empty else 0
+
+        # Symbol-level performance in base currency
+        self.symbol_performance = (
+            trades.groupby('symbol')['pnl_base']
+            .agg(['count', 'sum', 'mean', 'max', 'min'])
+            .rename(columns={
+                'count': 'trade_count',
+                'sum': 'total_pnl',
+                'mean': 'avg_pnl',
+                'max': 'best_trade',
+                'min': 'worst_trade'
+            })
+            .sort_values('total_pnl', ascending=False)
+            .reset_index()
+            .to_dict(orient='records')
+        )
+
+
+    def calculate_equity_curve(self):
+        """Build equity curve using base currency PnL."""
+        initial_capital = self.initial_capital
+        daily_pnl = self.df.groupby('date')['pnl_base'].sum().reset_index()
         daily_pnl = daily_pnl.sort_values('date')
-        
-        # Calculate cumulative returns
-        daily_pnl['cumulative_pnl'] = daily_pnl['pnl'].cumsum()
+        daily_pnl['cumulative_pnl'] = daily_pnl['pnl_base'].cumsum()
         daily_pnl['equity'] = initial_capital + daily_pnl['cumulative_pnl']
         daily_pnl['return'] = daily_pnl['equity'].pct_change().fillna(0)
         daily_pnl['cumulative_return'] = (1 + daily_pnl['return']).cumprod() - 1
-        
         self.equity_curve = daily_pnl
-    
-    def visualize_performance(self):
+
+
+    def calculate_max_drawdown(self):
+        if not hasattr(self, 'equity_curve'):
+            return 0
+        cumulative = self.equity_curve['cumulative_return']
+        peak = cumulative.expanding(min_periods=1).max()
+        drawdown = (cumulative - peak) / peak
+        return drawdown.min()
+
+
+    def generate_report(self):
         """
-        Create visualizations for trading performance
+        Return dictionary with all metrics and symbol-level performance in base currency
         """
-        fig, axes = plt.subplots(2, 2, figsize=(15, 10))
-        fig.suptitle('Trading Performance Analysis', fontsize=16)
-        
-        # Equity curve
-        if hasattr(self, 'equity_curve'):
-            axes[0, 0].plot(self.equity_curve['date'], self.equity_curve['equity'])
-            axes[0, 0].set_title('Equity Curve')
-            axes[0, 0].set_xlabel('Date')
-            axes[0, 0].set_ylabel('Equity Value')
-            axes[0, 0].grid(True)
-        
-        # Win/Loss distribution
-        if 'pnl' in self.df.columns:
-            axes[0, 1].hist(self.df['pnl'], bins=30, alpha=0.7, color='skyblue')
-            axes[0, 1].axvline(x=0, color='red', linestyle='--')
-            axes[0, 1].set_title('Profit/Loss Distribution')
-            axes[0, 1].set_xlabel('P&L')
-            axes[0, 1].set_ylabel('Frequency')
-        
-        # Trade activity by day of week
-        if 'date' in self.df.columns:
-            self.df['day_of_week'] = self.df['date'].dt.day_name()
-            day_counts = self.df['day_of_week'].value_counts()
-            axes[1, 0].bar(day_counts.index, day_counts.values)
-            axes[1, 0].set_title('Trades by Day of Week')
-            axes[1, 0].set_xlabel('Day of Week')
-            axes[1, 0].set_ylabel('Number of Trades')
-            axes[1, 0].tick_params(axis='x', rotation=45)
-        
-        # Performance by symbol (if data available)
-        if 'symbol' in self.df.columns and 'pnl' in self.df.columns:
-            symbol_performance = self.df.groupby('symbol')['pnl'].sum().sort_values()
-            axes[1, 1].barh(symbol_performance.index, symbol_performance.values)
-            axes[1, 1].set_title('Performance by Symbol')
-            axes[1, 1].set_xlabel('Total P&L')
-        
-        plt.tight_layout()
-        plt.show()
-    
-    def export_report(self, filename="trading_performance_report.txt"):
+        return {
+            "Base Currency": self.base_currency,
+            "Summary": {
+                "Total Trades": self.total_trades,
+                "Total Buys": self.total_buys,
+                "Total Sells": self.total_sells,
+                "Total Volume": self.total_volume,
+                "Total Trade Value (Base)": self.total_value,
+            },
+            "Performance": {
+                "Win Rate %": round(self.win_rate * 100, 2),
+                "Average Win (Base)": self.average_win,
+                "Average Loss (Base)": self.average_loss,
+                "Largest Win (Base)": self.largest_win,
+                "Largest Loss (Base)": self.largest_loss,
+                "Profit Factor": self.profit_factor,
+                "Expectancy (Base)": self.expectancy,
+                "Sharpe Ratio": self.sharpe_ratio,
+            },
+            "Risk": {
+                "Max Drawdown": self.max_drawdown,
+                "Value at Risk (95%) (Base)": self.var_95,
+            },
+            "Symbols": self.symbol_performance,
+            "EquityCurve": self.equity_curve.to_dict(orient='records'),
+        }
+
+    def export_report(self, filename="trading_performance_report.txt", fmt="txt"):
         """
-        Export the performance report to a text file
+        Export the performance report to a file (txt or json)
         """
         report = self.generate_report()
-        
-        with open(filename, 'w') as f:
+
+        if fmt == "json":
+            with open(filename.replace(".txt", ".json"), "w") as f:
+                json.dump(report, f, indent=4, default=str)
+            print(f"Report exported to {filename.replace('.txt', '.json')}")
+            return
+
+        # Default = text format
+        def write_section(f, section, data, indent=0):
+            prefix = " " * indent
+            if isinstance(data, dict):
+                for key, value in data.items():
+                    if isinstance(value, (dict, list)):
+                        f.write(f"{prefix}{key}:\n")
+                        write_section(f, key, value, indent + 4)
+                    else:
+                        f.write(f"{prefix}{key}: {value}\n")
+            elif isinstance(data, list):
+                for i, item in enumerate(data, 1):
+                    f.write(f"{prefix}- Item {i}:\n")
+                    write_section(f, f"Item {i}", item, indent + 4)
+            else:
+                f.write(f"{prefix}{data}\n")
+
+        with open(filename, "w") as f:
             f.write("TRADING PERFORMANCE REPORT\n")
             f.write("=" * 50 + "\n\n")
-            
+
             for section, metrics in report.items():
                 f.write(f"{section}:\n")
                 f.write("-" * len(section) + "\n")
-                
-                for metric, value in metrics.items():
-                    f.write(f"{metric}: {value}\n")
-                
+                write_section(f, section, metrics, indent=2)
                 f.write("\n")
-        
+
         print(f"Report exported to {filename}")
 
-# Example usage
-if __name__ == "__main__":
-    # Initialize analyzer with your CSV file path
-    analyzer = TradingPerformanceAnalyzer("trading_data.csv")
-    
-    # Generate and print report
-    report = analyzer.generate_report()
-    for section, metrics in report.items():
-        print(section)
-        print("-" * len(section))
-        for metric, value in metrics.items():
-            print(f"{metric}: {value}")
-        print()
-    
-    # Create visualizations
-    analyzer.visualize_performance()
-    
-    # Export report to file
-    analyzer.export_report()
+
+
+
