@@ -31,5 +31,3 @@
 #         except self.MaxRetriesExceededError:
 #             logger.error("Max retries exceeded for news data fetch")
 #         return []
-
-

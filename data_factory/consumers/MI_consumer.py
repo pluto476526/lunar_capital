@@ -3,9 +3,10 @@
 
 import json
 import logging
-from django.core.cache import cache
+
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
+from django.core.cache import cache
 
 logger = logging.getLogger(__name__)
 
@@ -24,21 +25,24 @@ class MarketIntelligenceConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
         # Send welcome message
-        await self.send_json({
-            "type": "connection_established",
-            "message": "Connected to the market intelligence feed",
-        })
+        await self.send_json(
+            {
+                "type": "connection_established",
+                "message": "Connected to the market intelligence feed",
+            }
+        )
 
         # Send cached data for all asset classes
         for asset_class in ["forex", "stocks", "crypto"]:
             cache_key = f"{asset_class}_market_data"
             cached_data = await sync_to_async(cache.get)(cache_key)
             if cached_data:
-                await self.send_json({
-                    "type": "cached_market_data",
-                    "payload": cached_data,
-                })
-
+                await self.send_json(
+                    {
+                        "type": "cached_market_data",
+                        "payload": cached_data,
+                    }
+                )
 
     async def disconnect(self, close_code: int) -> None:
         """Handle WebSocket disconnection."""
@@ -62,16 +66,20 @@ class MarketIntelligenceConsumer(AsyncWebsocketConsumer):
                 await self.send_json({"type": "pong"})
 
         except Exception as e:
-            logger.error(f"Error processing WebSocket message: {e} | Raw data: {text_data}")
+            logger.error(
+                f"Error processing WebSocket message: {e} | Raw data: {text_data}"
+            )
 
     async def market_intelligence(self, event: dict) -> None:
         """Handle market intelligence data broadcast from Celery tasks."""
         try:
-            await self.send_json({
-                "type": "market_intelligence",
-                "payload": event.get("message"),
-                "timestamp": event.get("timestamp", ""),
-            })
+            await self.send_json(
+                {
+                    "type": "market_intelligence",
+                    "payload": event.get("message"),
+                    "timestamp": event.get("timestamp", ""),
+                }
+            )
         except Exception as e:
             logger.error("Error sending market intelligence data: %s", e)
 

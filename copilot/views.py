@@ -1,16 +1,20 @@
 ## copilot/views.py
 ## pkibuka@milky-way.space
 
-from data_factory.performance_metrics import TradingPerformanceAnalyzer as TPA
-from django.shortcuts import render, redirect
-from django.core.cache import cache
-from django.contrib import messages
-from django.http import HttpResponse
-import logging, os, time
-import pandas as pd
+import logging
+import os
+import time
 
+import pandas as pd
+from django.contrib import messages
+from django.core.cache import cache
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+
+from data_factory.performance_metrics import TradingPerformanceAnalyzer as TPA
 
 logger = logging.getLogger(__name__)
+
 
 def get_report_id():
     return int(time.time())
@@ -38,6 +42,7 @@ def dash_stocks_view(request):
     context = {}
     return render(request, "copilot/dash_stocks.html", context)
 
+
 def fx_details_view(request, symbol):
     """
     Get detailed info for a specific currency pair
@@ -45,41 +50,51 @@ def fx_details_view(request, symbol):
     context = {}
     return render(request, "copilot/fx_details.html", context)
 
+
 def crypto_details_view(request, symbol):
     context = {}
     return render(request, "copilot/crypto_details.html", context)
+
 
 def stock_details_view(request, symbol):
     context = {}
     return render(request, "copilot/stock_details.html", context)
 
+
 def fun_stuff_view(request):
     context = {}
     return render(request, "copilot/fun.html", context)
+
 
 def economic_calendar_view(request):
     context = {}
     return render(request, "copilot/economic_calendar.html", context)
 
+
 def reddit_feeds_view(request):
     context = {}
     return render(request, "copilot/reddit_feeds.html", context)
+
 
 def all_news_view(request):
     context = {}
     return render(request, "copilot/all_news.html", context)
 
+
 def journal_view(request):
     context = {}
     return render(request, "copilot/journal.html", context)
+
 
 def strategy_tester_view(request):
     context = {}
     return render(request, "copilot/strategy_tester.html", context)
 
+
 def trade_planner_view(request):
     context = {}
     return render(request, "copilot/trade_planner.html", context)
+
 
 def performance_metrics_view(request):
     context = {
@@ -118,31 +133,57 @@ def performance_metrics_view(request):
 
         try:
             # Process the CSV file
-            analyzer = TPA(csv=csv_file, initial_capital=initial_capital, base_currency=base_currency)
+            analyzer = TPA(
+                csv=csv_file,
+                initial_capital=initial_capital,
+                base_currency=base_currency,
+            )
             report = analyzer.generate_report()
             cache.set(context["report_id"], report, 3600)
             request.session["report_id"] = context["report_id"]
 
             # Extract metrics
-            context["total_trades"] = report['Summary']['Total Trades']
-            context["total_buys"] = report['Summary']['Total Buys']
-            context["total_sells"] = report['Summary']['Total Sells']
-            context["total_volume"] = report['Summary']['Total Volume']
-            context["win_rate"] = report['Performance']['Win Rate %']
-            context["total_trade_value"] = round(float(report['Summary']['Total Trade Value (Base)']), 2)
-            context["avg_win"] = round(float(report['Performance']['Average Win (Base)']), 2)
-            context["avg_loss"] = round(abs(float(report['Performance']['Average Loss (Base)'])), 2)
-            context["largest_win"] = round(float(report['Performance']['Largest Win (Base)']), 2)
-            context["largest_loss"] = round(float(report['Performance']['Largest Loss (Base)']), 2)
-            context["profit_factor"] = round(float(report['Performance']['Profit Factor']), 2)
-            context["expectancy"] = round(float(report['Performance']['Expectancy (Base)']), 2)
-            context["sharpe_ratio"] = round(float(report['Performance']['Sharpe Ratio']), 2)
-            context["max_drawdown"] = round(float(report['Risk']['Max Drawdown']), 2)
-            context["val_at_risk"] = round(float(report['Risk']['Value at Risk (95%) (Base)']), 2)
-            context["symbols"] = report['Symbols']
+            context["total_trades"] = report["Summary"]["Total Trades"]
+            context["total_buys"] = report["Summary"]["Total Buys"]
+            context["total_sells"] = report["Summary"]["Total Sells"]
+            context["total_volume"] = report["Summary"]["Total Volume"]
+            context["win_rate"] = report["Performance"]["Win Rate %"]
+            context["total_trade_value"] = round(
+                float(report["Summary"]["Total Trade Value (Base)"]), 2
+            )
+            context["avg_win"] = round(
+                float(report["Performance"]["Average Win (Base)"]), 2
+            )
+            context["avg_loss"] = round(
+                abs(float(report["Performance"]["Average Loss (Base)"])), 2
+            )
+            context["largest_win"] = round(
+                float(report["Performance"]["Largest Win (Base)"]), 2
+            )
+            context["largest_loss"] = round(
+                float(report["Performance"]["Largest Loss (Base)"]), 2
+            )
+            context["profit_factor"] = round(
+                float(report["Performance"]["Profit Factor"]), 2
+            )
+            context["expectancy"] = round(
+                float(report["Performance"]["Expectancy (Base)"]), 2
+            )
+            context["sharpe_ratio"] = round(
+                float(report["Performance"]["Sharpe Ratio"]), 2
+            )
+            context["max_drawdown"] = round(float(report["Risk"]["Max Drawdown"]), 2)
+            context["val_at_risk"] = round(
+                float(report["Risk"]["Value at Risk (95%) (Base)"]), 2
+            )
+            context["symbols"] = report["Symbols"]
 
             # Calculate Avg Win/Loss ratio
-            context["avg_win_loss"] = round(context["avg_win"] / context["avg_loss"], 2) if context["avg_loss"] != 0 else "N/A"
+            context["avg_win_loss"] = (
+                round(context["avg_win"] / context["avg_loss"], 2)
+                if context["avg_loss"] != 0
+                else "N/A"
+            )
 
         except Exception as e:
             logger.error(f"Error processing CSV file: {str(e)}")
@@ -169,7 +210,9 @@ def download_report_view(request, file_type):
         analyzer.export_report(filename, file_type)
         with open(filename, "rb") as f:
             response = HttpResponse(f.read(), content_type="application/octet-stream")
-            response["Content-Disposition"] = f"attachment; filename=performance_metrics.{file_type}"
+            response["Content-Disposition"] = (
+                f"attachment; filename=performance_metrics.{file_type}"
+            )
             return response
     except Exception as e:
         logger.error(f"Error generating download file: {e}", exc_info=True)
@@ -180,28 +223,7 @@ def screener_view(request):
     context = {}
     return render(request, "copilot/screener.html", context)
 
+
 def repo_view(request):
     context = {}
     return render(request, "copilot/repo.html", context)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

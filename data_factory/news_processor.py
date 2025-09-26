@@ -8,33 +8,101 @@ logger = logging.getLogger(__name__)
 # Expanded keyword mapping
 ASSET_KEYWORDS = {
     "forex": [
-        "usd", "eur", "jpy", "gbp", "cny", "forex", "currency",
-        "exchange rate", "foreign exchange", "yen", "euro", "pound", "dollar"
+        "usd",
+        "eur",
+        "jpy",
+        "gbp",
+        "cny",
+        "forex",
+        "currency",
+        "exchange rate",
+        "foreign exchange",
+        "yen",
+        "euro",
+        "pound",
+        "dollar",
     ],
     "stocks": [
-        "stock", "shares", "nasdaq", "dow jones", "s&p", "sp500", "equity",
-        "ipo", "earnings", "guidance", "sector", "dividend", "index",
-        "ftse", "dax", "nikkei", "russell 2000"
+        "stock",
+        "shares",
+        "nasdaq",
+        "dow jones",
+        "s&p",
+        "sp500",
+        "equity",
+        "ipo",
+        "earnings",
+        "guidance",
+        "sector",
+        "dividend",
+        "index",
+        "ftse",
+        "dax",
+        "nikkei",
+        "russell 2000",
     ],
     "crypto": [
-        "bitcoin", "btc", "ethereum", "eth", "crypto", "cryptocurrency",
-        "blockchain", "binance", "coinbase", "altcoin", "defi", "nft",
-        "stablecoin", "token", "exchange", "wallet"
+        "bitcoin",
+        "btc",
+        "ethereum",
+        "eth",
+        "crypto",
+        "cryptocurrency",
+        "blockchain",
+        "binance",
+        "coinbase",
+        "altcoin",
+        "defi",
+        "nft",
+        "stablecoin",
+        "token",
+        "exchange",
+        "wallet",
     ],
     "commodities": [
-        "oil", "brent", "wti", "crude", "gas", "energy",
-        "gold", "silver", "copper", "platinum", "commodity"
+        "oil",
+        "brent",
+        "wti",
+        "crude",
+        "gas",
+        "energy",
+        "gold",
+        "silver",
+        "copper",
+        "platinum",
+        "commodity",
     ],
     "bonds": [
-        "bond", "bonds", "treasury", "yield", "gilts", "fixed income",
-        "sovereign debt", "corporate bond", "10-year", "30-year"
+        "bond",
+        "bonds",
+        "treasury",
+        "yield",
+        "gilts",
+        "fixed income",
+        "sovereign debt",
+        "corporate bond",
+        "10-year",
+        "30-year",
     ],
     "macro": [
-        "inflation", "deflation", "recession", "economy", "growth", "gdp",
-        "central bank", "fed", "federal reserve", "ecb", "boj", "interest rate",
-        "monetary policy", "fiscal policy", "stimulus"
-    ]
+        "inflation",
+        "deflation",
+        "recession",
+        "economy",
+        "growth",
+        "gdp",
+        "central bank",
+        "fed",
+        "federal reserve",
+        "ecb",
+        "boj",
+        "interest rate",
+        "monetary policy",
+        "fiscal policy",
+        "stimulus",
+    ],
 }
+
 
 def categorize_news(news_data):
     """
@@ -64,4 +132,3 @@ def categorize_news(news_data):
             f_news["general"].append(article)
 
     return f_news
-

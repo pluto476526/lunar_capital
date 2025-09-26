@@ -7,26 +7,33 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='MarketData',
+            name="MarketData",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('status', models.CharField(default='Bullish', max_length=20)),
-                ('volatility', models.FloatField(default=18.5)),
-                ('active_alerts', models.IntegerField(default=14)),
-                ('session_activity', models.CharField(default='High', max_length=20)),
-                ('trending_up', models.IntegerField(default=72)),
-                ('volatility_change', models.IntegerField(default=12)),
-                ('alerts_change', models.IntegerField(default=3)),
-                ('current_session', models.CharField(default='London', max_length=20)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                ("status", models.CharField(default="Bullish", max_length=20)),
+                ("volatility", models.FloatField(default=18.5)),
+                ("active_alerts", models.IntegerField(default=14)),
+                ("session_activity", models.CharField(default="High", max_length=20)),
+                ("trending_up", models.IntegerField(default=72)),
+                ("volatility_change", models.IntegerField(default=12)),
+                ("alerts_change", models.IntegerField(default=3)),
+                ("current_session", models.CharField(default="London", max_length=20)),
             ],
             options={
-                'ordering': ['-timestamp'],
+                "ordering": ["-timestamp"],
             },
         ),
     ]

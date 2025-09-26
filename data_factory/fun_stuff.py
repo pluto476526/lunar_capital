@@ -1,4 +1,3 @@
-
 # ORACLE_QUOTES = [
 #     "The trend is your friend. Until it betrays you and takes all your money.",
 #     "I'd give you trading advice, but then we'd both be wrong.",
@@ -60,22 +59,21 @@
 # ]
 
 
-
-
-
+import logging
+import random
 from datetime import date
-from typing import List, Optional, Dict, Any
-from groq import Groq
-from django.core.cache import cache
+from typing import Any, Dict, List, Optional
+
 from django.conf import settings
-import random, logging
+from django.core.cache import cache
+from groq import Groq
 
 logger = logging.getLogger(__name__)
 
 
 class FunFeatures:
     """A class for generating humorous, witty trading-related content."""
-    
+
     # Content pools for fallback when LLM is unavailable
     ORACLE_QUOTES = [
         "The trend is your friend. Until it betrays you and takes all your money.",
@@ -87,15 +85,42 @@ class FunFeatures:
         "If I knew what would happen tomorrow, I wouldn't be talking to you.",
         "The market can stay irrational longer than you can stay solvent. Especially you.",
     ]
-    
+
     HOROSCOPE_ASSETS = ["shitcoin", "blue chip", "meme stock", "penny stock", "ETF"]
     HOROSCOPE_ACTIONS = ["hodl", "panic sell", "YOLO", "average down", "take profits"]
     HOROSCOPE_STRATEGIES = ["long", "short", "scalp", "swing", "inverse"]
-    
-    STRATEGY_ADJECTIVES = ["Lunar", "Quantum", "Inverse", "Alpha", "Beta", "Gamma", "Delta", "Omega", "Hyper"]
-    STRATEGY_NOUNS = ["Fibonacci", "Turtle", "Wombat", "Gorilla", "Eagle", "Shark", "Dragon", "Phoenix"]
-    STRATEGY_CONCEPTS = ["Retracement", "Oscillator", "Momentum", "Hedging", "Algorithm", "Protocol", "Indicator"]
-    
+
+    STRATEGY_ADJECTIVES = [
+        "Lunar",
+        "Quantum",
+        "Inverse",
+        "Alpha",
+        "Beta",
+        "Gamma",
+        "Delta",
+        "Omega",
+        "Hyper",
+    ]
+    STRATEGY_NOUNS = [
+        "Fibonacci",
+        "Turtle",
+        "Wombat",
+        "Gorilla",
+        "Eagle",
+        "Shark",
+        "Dragon",
+        "Phoenix",
+    ]
+    STRATEGY_CONCEPTS = [
+        "Retracement",
+        "Oscillator",
+        "Momentum",
+        "Hedging",
+        "Algorithm",
+        "Protocol",
+        "Indicator",
+    ]
+
     COPING_RESPONSES = [
         "Breathe. It's only pretend money.",
         "This is fine. Everything is fine...OR NOT!",
@@ -105,7 +130,7 @@ class FunFeatures:
         "Maybe just walk away from the computer for a while.",
         "Have you tried turning it off and on again?",
     ]
-    
+
     JOURNAL_ENTRIES = [
         "2:47 AM: Convinced the VIX is controlled by a single algo running in a basement in Cleveland. No proof. Just a feeling.",
         "2:49 AM: Added a 'YOLO' button to the UI. For... testing purposes.",
@@ -113,48 +138,50 @@ class FunFeatures:
         "2:54 AM: The Fed is definitely watching my portfolio and making decisions based on it. I can feel it.",
         "2:55 AM: Just realized all my trading ideas come from my cat walking across the keyboard. She might be a genius.",
         "2:57 AM: Added more confirmation bias to the algorithm. Now it only shows me what I want to see.",
-        "2:59 AM: My trading strategy is based on the alignment of Jupiter's moons. Backtest shows 100% accuracy (sample size: 1)."
+        "2:59 AM: My trading strategy is based on the alignment of Jupiter's moons. Backtest shows 100% accuracy (sample size: 1).",
     ]
 
     def __init__(self):
         self.groq_api_key = getattr(settings, "GROQ_API_KEY")
         self.groq_available = self.groq_api_key is not None
-        self.llm_enabled = getattr(settings, 'FUN_STUFF_LLM_ENABLED', True)
-        self.llm_fallback_probability = getattr(settings, 'FUN_STUFF_FALLBACK_PROBABILITY', 0.3)
+        self.llm_enabled = getattr(settings, "FUN_STUFF_LLM_ENABLED", True)
+        self.llm_fallback_probability = getattr(
+            settings, "FUN_STUFF_FALLBACK_PROBABILITY", 0.3
+        )
 
     def _call_llm(self, prompt: str, max_tokens: int = 100) -> Optional[str]:
         """
         Call the LLM with a prompt and return the response.
-        
+
         Args:
             prompt: The prompt to send to the LLM
             max_tokens: Maximum number of tokens to generate
-            
+
         Returns:
             The LLM response or None if the call fails
         """
         if not self.groq_available or not self.llm_enabled:
             return None
-            
+
         cache_key = f"fun_features_{hash(prompt)}"
         cached_response = cache.get(cache_key)
         if cached_response:
             return cached_response
-            
+
         try:
             client = Groq(api_key=self.groq_api_key)
             response = client.chat.completions.create(
-                model=getattr(settings, 'GROQ_MODEL', "llama-3.3-70b-versatile"),
+                model=getattr(settings, "GROQ_MODEL", "llama-3.3-70b-versatile"),
                 messages=[
                     {
-                        "role": "system", 
+                        "role": "system",
                         "content": (
                             "You are a sarcastic, witty financial advisor with a dark sense of humor. "
                             "Your responses should be funny, slightly cynical, and entertaining. "
                             "Include trading/market themes and dark comedy elements."
-                        )
+                        ),
                     },
-                    {"role": "user", "content": prompt}
+                    {"role": "user", "content": prompt},
                 ],
                 max_tokens=max_tokens,
                 temperature=0.7,
@@ -173,22 +200,22 @@ class FunFeatures:
     def _get_dynamic_content(self, llm_prompt: str, fallback_pool: List[str]) -> str:
         """
         Get content either from LLM or fallback pool based on availability and probability.
-        
+
         Args:
             llm_prompt: The prompt to send to the LLM
             fallback_pool: List of fallback content if LLM is unavailable
-            
+
         Returns:
             Generated content
         """
         # Use LLM with probability 1 - fallback_probability, or if fallback is disabled
         use_llm = (random.random() > self.llm_fallback_probability) and self.llm_enabled
-        
+
         if use_llm and self.openai_available:
             llm_content = self._call_llm(llm_prompt)
             if llm_content:
                 return llm_content
-        
+
         return self._get_fallback_content(fallback_pool)
 
     def get_oracle_quote(self) -> str:
@@ -207,7 +234,7 @@ class FunFeatures:
             "Make it market-themed with a dark comedic twist. "
             "Example: 'Mercury is in retrograde over the shitcoin market. Expect confusing commentary and whipsaws. Trust nothing.'"
         )
-        
+
         # Fallback horoscope generation
         templates = [
             f"The moons are aligning with a {{}}. Your risk of FOMO is critical. Stay strong.",
@@ -216,10 +243,10 @@ class FunFeatures:
             f"Saturn is opposing your portfolio today. Time to {{}}.",
             f"Venus enters the house of {{}}. Perfect day for {{}} trades.",
         ]
-        
+
         template = random.choice(templates)
         count = template.count("{}")
-        
+
         if count == 1:
             replacement = random.choice(self.HOROSCOPE_ASSETS + self.HOROSCOPE_ACTIONS)
             fallback = template.format(replacement)
@@ -229,47 +256,49 @@ class FunFeatures:
             fallback = template.format(replacement1, replacement2)
         else:
             fallback = template
-        
+
         return self._get_dynamic_content(prompt, [fallback])
 
     def get_historical_events(self, count: int = 3) -> List[str]:
         """
         Get historical trading events from LLM only.
-        
+
         Args:
             count: Number of events to return
-            
+
         Returns:
             List of historical events
         """
         if not self.openai_available or not self.llm_enabled:
             return ["Historical events feature requires LLM integration."]
-        
+
         prompt = (
             f"Share {count} interesting, funny, or ironic events from financial history. "
             "For each event, include the date and a humorous, darkly comedic lesson. "
             "Format each event on a separate line with a consistent style. "
             "Example: 'On this day in 1637, a single tulip bulb could buy a house. Never forget that markets can be... irrational.'"
         )
-        
+
         cache_key = f"historical_events_{date.today().strftime('%Y-%m-%d')}_{count}"
         cached_events = cache.get(cache_key)
-        
+
         if cached_events:
             return cached_events
-        
+
         llm_response = self._call_llm(prompt, max_tokens=200)
-        
+
         if not llm_response:
-            return ["Failed to generate historical events. The market historians are on strike."]
-        
+            return [
+                "Failed to generate historical events. The market historians are on strike."
+            ]
+
         # Process the LLM response
-        events = [event.strip() for event in llm_response.split('\n') if event.strip()]
+        events = [event.strip() for event in llm_response.split("\n") if event.strip()]
         events = events[:count]  # Ensure we return only the requested number
-        
+
         # Cache for the rest of the day
         cache.set(cache_key, events, timeout=86400)
-        
+
         return events
 
     def generate_strategy_name(self) -> str:
@@ -279,10 +308,10 @@ class FunFeatures:
             "jargon, animals, and celestial bodies. Make it sound impressively meaningless. "
             "Example: 'The Quantum Wombat Retracement Protocol'"
         )
-        
+
         # Fallback strategy name generation
         fallback = f"The {random.choice(self.STRATEGY_ADJECTIVES)} {random.choice(self.STRATEGY_NOUNS)} {random.choice(self.STRATEGY_CONCEPTS)}"
-        
+
         return self._get_dynamic_content(prompt, [fallback])
 
     def get_coping_response(self) -> str:

@@ -1,9 +1,9 @@
 import json
 import logging
+
+from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.cache import cache
-from asgiref.sync import sync_to_async
-
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
     async def connect(self) -> None:
         """Handle new WebSocket connection."""
         # Get symbol from URL route
-        self.symbol = self.scope['url_route']['kwargs']['symbol']
+        self.symbol = self.scope["url_route"]["kwargs"]["symbol"]
         self.group_name = f"symbol_data_{self.symbol}"
 
         # Join group for this symbol
@@ -30,10 +30,12 @@ class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
         # Send welcome message
-        await self.send_json({
-            "type": "connection_established",
-            "message": f"Connected to symbol data feed",
-        })
+        await self.send_json(
+            {
+                "type": "connection_established",
+                "message": f"Connected to symbol data feed",
+            }
+        )
 
         # Send cached data for selected asset
         if self.symbol:
@@ -42,10 +44,12 @@ class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
             message_type = f"cached_{self.symbol}_data"
 
             if cached_data:
-                await self.send_json({
-                    "type": message_type,
-                    "payload": cached_data,
-                })
+                await self.send_json(
+                    {
+                        "type": message_type,
+                        "payload": cached_data,
+                    }
+                )
 
     async def disconnect(self, close_code: int) -> None:
         """Handle WebSocket disconnection."""
@@ -58,7 +62,9 @@ class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
         if close_code == 1000:
             logger.info(f"Normal disconnect from symbol data feed.")
         else:
-            logger.warning(f"Unexpected disconnect from symbol data feed, code: {close_code}")
+            logger.warning(
+                f"Unexpected disconnect from symbol data feed, code: {close_code}"
+            )
 
     async def receive(self, text_data: str) -> None:
         """Handle incoming WebSocket messages from the client."""
@@ -72,11 +78,13 @@ class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
             if message_type == "request_symbol_details":
                 payload = cache.get(key) or {}
 
-                await self.send_json({
-                    "type": "symbol_details",
-                    "asset_class": asset_class,
-                    "payload": payload,
-                })
+                await self.send_json(
+                    {
+                        "type": "symbol_details",
+                        "asset_class": asset_class,
+                        "payload": payload,
+                    }
+                )
 
         except Exception as e:
             logger.error(f"Error processing WebSocket message: {e}")
@@ -85,11 +93,13 @@ class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
         """Handle symbol-specific intelligence data broadcast from Celery tasks."""
         try:
             message = event.get("message")
-            await self.send_json({
-                "type": "symbol_intelligence",
-                "payload": message,
-                "timestamp": event.get("timestamp", ""),
-            })
+            await self.send_json(
+                {
+                    "type": "symbol_intelligence",
+                    "payload": message,
+                    "timestamp": event.get("timestamp", ""),
+                }
+            )
 
         except Exception as e:
             logger.error(f"Error sending symbol data: {e}")
@@ -97,5 +107,3 @@ class SymbolIntelligenceConsumer(AsyncWebsocketConsumer):
     async def send_json(self, content: dict) -> None:
         """Helper to send JSON messages safely to the client."""
         await self.send(text_data=json.dumps(content))
-
-

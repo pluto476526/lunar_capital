@@ -3,8 +3,8 @@
 
 
 from django.urls import path
-from copilot import views
 
+from copilot import views
 
 urlpatterns = [
     path("", views.copilot_view, name="copilot"),
@@ -22,16 +22,11 @@ urlpatterns = [
     path("test_strategy/", views.strategy_tester_view, name="strategy_tester"),
     path("plan_trade/", views.trade_planner_view, name="trade_planner"),
     path("performance/", views.performance_metrics_view, name="performance_metrics"),
-    path("download-report/<str:file_type>/", views.download_report_view, name='download_report'),
+    path(
+        "download-report/<str:file_type>/",
+        views.download_report_view,
+        name="download_report",
+    ),
     path("screener/", views.screener_view, name="screener"),
     path("repo/", views.repo_view, name="repo"),
 ]
-
-
-
-
-
-
-
-
-

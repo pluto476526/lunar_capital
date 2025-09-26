@@ -1,5 +1,6 @@
 from .source_object import Source
 
+
 class CNBC(Source):
 
     def __init__(self, topics=[], save_feeds=True):
@@ -9,7 +10,7 @@ class CNBC(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('CNBC', save_feeds)
+        super().__init__("CNBC", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -22,7 +23,7 @@ class SeekingAlpha(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('Seeking Alpha', save_feeds)
+        super().__init__("Seeking Alpha", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -35,7 +36,7 @@ class Investing(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('Investing.com', save_feeds)
+        super().__init__("Investing.com", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -48,7 +49,7 @@ class WSJ(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('WSJ', save_feeds)
+        super().__init__("WSJ", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -61,7 +62,7 @@ class Yahoo(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('Yahoo Finance', save_feeds)
+        super().__init__("Yahoo Finance", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -74,7 +75,7 @@ class FT(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('FT', save_feeds)
+        super().__init__("FT", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -87,7 +88,7 @@ class Fortune(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('Fortune', save_feeds)
+        super().__init__("Fortune", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -100,7 +101,7 @@ class MarketWatch(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('MarketWatch', save_feeds)
+        super().__init__("MarketWatch", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -113,7 +114,7 @@ class Zacks(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('Zacks', save_feeds)
+        super().__init__("Zacks", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -126,7 +127,7 @@ class Nasdaq(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('Nasdaq', save_feeds)
+        super().__init__("Nasdaq", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -139,7 +140,7 @@ class Reddit(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('Reddit', save_feeds)
+        super().__init__("Reddit", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -152,7 +153,7 @@ class CNNMoney(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('CNN Money', save_feeds)
+        super().__init__("CNN Money", save_feeds)
         self.add_topics(list(set(topics)))
 
 
@@ -165,5 +166,5 @@ class Reuters(Source):
             You can leave the list blank and call CNBC.get_possible_topics() and then add topics using CNBC.add_topics()
         save_feeds: Feed objects can save all previous news entries if this is True, otherwise the object will only the newest entries
         """
-        super().__init__('Reuters', save_feeds)
+        super().__init__("Reuters", save_feeds)
         self.add_topics(list(set(topics)))

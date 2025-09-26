@@ -1,13 +1,19 @@
-import psycopg2
 import pandas as pd
+import psycopg2
+
 
 class FinancialAnalyzer:
-    def __init__(self, dbname='financial_data', user='finance_user', 
-                 password='your_secure_password', host='localhost'):
+    def __init__(
+        self,
+        dbname="financial_data",
+        user="finance_user",
+        password="your_secure_password",
+        host="localhost",
+    ):
         self.conn = psycopg2.connect(
             dbname=dbname, user=user, password=password, host=host
         )
-    
+
     def get_price_history(self, symbol, start_date, end_date):
         """Get price history for a symbol"""
         query = """
@@ -16,8 +22,10 @@ class FinancialAnalyzer:
         WHERE symbol = %s AND time BETWEEN %s AND %s
         ORDER BY time DESC
         """
-        return pd.read_sql_query(query, self.conn, params=(symbol, start_date, end_date))
-    
+        return pd.read_sql_query(
+            query, self.conn, params=(symbol, start_date, end_date)
+        )
+
     def calculate_moving_averages(self, symbol, window=20):
         """Calculate moving averages using TimescaleDB hyperfunctions"""
         query = """
@@ -33,7 +41,7 @@ class FinancialAnalyzer:
         ORDER BY bucket DESC
         """
         return pd.read_sql_query(query, self.conn, params=(window, symbol))
-    
+
     def get_strategy_metrics(self, strategy_name):
         """Get metrics for a trading strategy"""
         query = """
@@ -44,6 +52,6 @@ class FinancialAnalyzer:
         LIMIT 1000
         """
         return pd.read_sql_query(query, self.conn, params=(strategy_name,))
-    
+
     def close(self):
         self.conn.close()

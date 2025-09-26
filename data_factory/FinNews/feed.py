@@ -1,8 +1,10 @@
-import feedparser
-import time
-import pandas as pd
-import sqlite3
 import json
+import sqlite3
+import time
+
+import feedparser
+import pandas as pd
+
 
 class Feed(object):
 
@@ -27,39 +29,34 @@ class Feed(object):
         self.__all_entries = []
         self.__all_feeds = []
 
-
     def get_news(self):
         """Returns a list of dictionaries, each of which refers to an entry from the RSS feed"""
         self.__feed = feedparser.parse(self.__url)
-        self.__newest_entries = self.__feed['entries']
+        self.__newest_entries = self.__feed["entries"]
         try:
-            self.__updated = self.__feed['feed']['updated_parsed']
+            self.__updated = self.__feed["feed"]["updated_parsed"]
         except:
             self.__updated = None
 
-
         for i in self.__newest_entries:
             # Add topic to each entry
-            i['topic'] = self.get_feed_topic()
+            i["topic"] = self.get_feed_topic()
 
             # get tag terms and add to list, convert list to string
             try:
                 tags = []
-                for tag in i['tags']:
-                    tags.append(tag['term'])
-                i['tag_terms'] = ','.join(tags)
+                for tag in i["tags"]:
+                    tags.append(tag["term"])
+                i["tag_terms"] = ",".join(tags)
             except:
                 pass
 
-
-
         if self.__save_feeds:
-            self.__all_entries.extend(self.__feed['entries'])
+            self.__all_entries.extend(self.__feed["entries"])
             self.__all_feeds.append(self.__feed)
         else:
             self.__all_entries = self.__newest_entries
             self.__all_feeds = self.__feed
-
 
         return self.__newest_entries
 
@@ -168,18 +165,27 @@ class Feed(object):
             df = pd.DataFrame(self.__newest_entries)
 
         if remove_duplicates:
-            df.drop_duplicates(subset=['link'], inplace=True)
+            df.drop_duplicates(subset=["link"], inplace=True)
 
-        if self.get_feed_source() != 'Reddit':
-            df['timestamp'] = df['published_parsed'].apply(self.time_to_timestamp)
+        if self.get_feed_source() != "Reddit":
+            df["timestamp"] = df["published_parsed"].apply(self.time_to_timestamp)
         else:
-            df['timestamp'] = df['updated_parsed'].apply(self.time_to_timestamp)
+            df["timestamp"] = df["updated_parsed"].apply(self.time_to_timestamp)
 
-        df['topic'] = self.__feed_topic
+        df["topic"] = self.__feed_topic
 
         return df
 
-    def to_sqlite3(self, db_path, table_name, all_entries=True, if_exists="append", remove_duplicates=True, update_before=True, convert_to_string=True):
+    def to_sqlite3(
+        self,
+        db_path,
+        table_name,
+        all_entries=True,
+        if_exists="append",
+        remove_duplicates=True,
+        update_before=True,
+        convert_to_string=True,
+    ):
         """Converts entries into an sqlite3 table using pandas.DataFrame.to_sql function"""
 
         conn = sqlite3.connect(db_path)
@@ -187,7 +193,24 @@ class Feed(object):
         df = self.to_pandas(all_entries, remove_duplicates, update_before)
 
         # turn possible columns into an outer join funtion to get the list
-        possible_columns = ['links','title_detail','summary_detail', 'source', 'media_content', 'media_text', 'media_credit', 'published_parsed', 'updated_parsed', 'tags', 'authors', 'author_detail', 'post-id', 'content', 'nasdaq_partnerlink', 'media_thumbnail']
+        possible_columns = [
+            "links",
+            "title_detail",
+            "summary_detail",
+            "source",
+            "media_content",
+            "media_text",
+            "media_credit",
+            "published_parsed",
+            "updated_parsed",
+            "tags",
+            "authors",
+            "author_detail",
+            "post-id",
+            "content",
+            "nasdaq_partnerlink",
+            "media_thumbnail",
+        ]
         for col in possible_columns:
             try:
                 if convert_to_string:
@@ -201,16 +224,30 @@ class Feed(object):
 
         if remove_duplicates:
             c = conn.cursor()
-            c.execute("DELETE FROM {} WHERE ROWID not in (SELECT rowid FROM {} GROUP BY link)".format(table_name, table_name))
-            c.execute("DELETE FROM {} WHERE ROWID not in (SELECT rowid FROM {} GROUP BY title)".format(table_name, table_name))
+            c.execute(
+                "DELETE FROM {} WHERE ROWID not in (SELECT rowid FROM {} GROUP BY link)".format(
+                    table_name, table_name
+                )
+            )
+            c.execute(
+                "DELETE FROM {} WHERE ROWID not in (SELECT rowid FROM {} GROUP BY title)".format(
+                    table_name, table_name
+                )
+            )
 
         conn.commit()
         conn.close()
 
-
         return True
 
-    def to_json(self, file_path, all_entries=True, remove_duplicates=True, orient='index', update_before=True):
+    def to_json(
+        self,
+        file_path,
+        all_entries=True,
+        remove_duplicates=True,
+        orient="index",
+        update_before=True,
+    ):
         """Converts entries to a json file using pandas to_json function"""
         # TODO update before converting?
         df = self.to_pandas(all_entries, remove_duplicates, update_before)
