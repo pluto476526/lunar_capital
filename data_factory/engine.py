@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 from cachetools import LRUCache
 from django.conf import settings
 from data_factory.narrative_generator import get_narrative_generator
+from data_factory.database import DataIngestor as di
 from data_factory import news_processor
 from pathlib import Path
 
@@ -1016,6 +1017,7 @@ def process_asset_data(asset_data: Dict[str, Any], asset_class: str, timeframe: 
     }
     
     return result
+
 
 
 
