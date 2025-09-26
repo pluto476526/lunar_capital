@@ -1,0 +1,178 @@
+TRADING PERFORMANCE REPORT
+==================================================
+
+Base Currency:
+-------------
+  GBP
+
+Summary:
+-------
+  Total Trades: 15
+  Total Buys: 9
+  Total Sells: 6
+  Total Volume: -7.0
+  Total Trade Value (Base): 116214.3978119581
+
+Performance:
+-----------
+  Win Rate %: 60.0
+  Average Win (Base): 578973.8319295993
+  Average Loss (Base): -134.32287852343634
+  Largest Win (Base): 2283152.5272920164
+  Largest Loss (Base): -182.45576811197427
+  Profit Factor: 6465.471537247259
+  Expectancy (Base): 347330.57000635023
+  Sharpe Ratio: 0.49387957319479814
+
+Risk:
+----
+  Max Drawdown: -1.3615206866183487
+  Value at Risk (95%) (Base): -179.9514732555354
+
+Symbols:
+-------
+  - Item 1:
+      symbol: GBP/JPY
+      trade_count: 4
+      total_pnl: 5210271.152025371
+      avg_pnl: 1302567.7880063427
+      best_trade: 2283152.5272920164
+      worst_trade: 482974.57308100344
+      progress_class: bg-success
+      progress_width: 100.0
+  - Item 2:
+      symbol: GBP/CAD
+      trade_count: 3
+      total_pnl: 155.18428527428904
+      avg_pnl: 51.72809509142968
+      best_trade: 139.31316518941858
+      worst_trade: -105.8074672324698
+      progress_class: bg-success
+      progress_width: 0.002978430119015299
+  - Item 3:
+      symbol: EUR/GBP
+      trade_count: 3
+      total_pnl: -51.0
+      avg_pnl: -17.0
+      best_trade: 22.0
+      worst_trade: -83.0
+      progress_class: bg-danger
+      progress_width: 0.0009788358131836371
+  - Item 4:
+      symbol: GBP/AUD
+      trade_count: 5
+      total_pnl: -416.78621539303924
+      avg_pnl: -83.35724307860785
+      best_trade: 200.343588515109
+      worst_trade: -182.45576811197427
+      progress_class: bg-danger
+      progress_width: 0.00799931909937208
+
+EquityCurve:
+-----------
+  - Item 1:
+      date: 2025-07-23 15:11:14
+      pnl_base: 28.569999999948777
+      cumulative_pnl: 28.569999999948777
+      equity: 10028.569999999949
+      return: 0.0
+      cumulative_return: 0.0
+  - Item 2:
+      date: 2025-07-23 15:23:18
+      pnl_base: 16.539999999979045
+      cumulative_pnl: 45.10999999992782
+      equity: 10045.109999999928
+      return: 0.0016492879842269215
+      cumulative_return: 0.0016492879842269215
+  - Item 3:
+      date: 2025-07-23 15:41:40
+      pnl_base: 10.0
+      cumulative_pnl: 55.10999999992782
+      equity: 10055.109999999928
+      return: 0.0009955092577382807
+      cumulative_return: 0.0026464391234222173
+  - Item 4:
+      date: 2025-07-23 15:57:06
+      pnl_base: 22.0
+      cumulative_pnl: 77.10999999992782
+      equity: 10077.109999999928
+      return: 0.0021879422502588675
+      cumulative_return: 0.004840171629652001
+  - Item 5:
+      date: 2025-07-23 16:21:34
+      pnl_base: 55.10000000009313
+      cumulative_pnl: 132.21000000002095
+      equity: 10132.210000000021
+      return: 0.005467837505008344
+      cumulative_return: 0.010334474406627603
+  - Item 6:
+      date: 2025-07-23 16:55:06
+      pnl_base: 78.12000000011176
+      cumulative_pnl: 210.3300000001327
+      equity: 10210.330000000133
+      return: 0.007710065227636509
+      cumulative_return: 0.018124219106032458
+  - Item 7:
+      date: 2025-07-23 16:56:07
+      pnl_base: -83.0
+      cumulative_pnl: 127.33000000013271
+      equity: 10127.330000000133
+      return: -0.008129022274500297
+      cumulative_return: 0.009847864650711191
+  - Item 8:
+      date: 2025-07-24 07:07:57
+      pnl_base: -37.73
+      cumulative_pnl: 89.60000000013272
+      equity: 10089.600000000133
+      return: -0.0037255624137851884
+      cumulative_return: 0.0060856134025273345
+  - Item 9:
+      date: 2025-07-24 07:14:21
+      pnl_base: -32.34
+      cumulative_pnl: 57.26000000013272
+      equity: 10057.260000000133
+      return: -0.003205280685061873
+      cumulative_return: 0.0028608266183696163
+  - Item 10:
+      date: 2025-07-24 07:40:11
+      pnl_base: -49.97
+      cumulative_pnl: 7.290000000132721
+      equity: 10007.290000000132
+      return: -0.004968550082229184
+      cumulative_return: -0.0021219376241895516
+  - Item 11:
+      date: 2025-07-24 07:52:18
+      pnl_base: -32.66
+      cumulative_pnl: -25.369999999867275
+      equity: 9974.630000000132
+      return: -0.003263620820421864
+      cumulative_return: -0.005378633244801478
+  - Item 12:
+      date: 2025-07-24 08:36:38
+      pnl_base: 37.21000000000001
+      cumulative_pnl: 11.840000000132733
+      equity: 10011.840000000133
+      return: 0.0037304641876441114
+      cumulative_return: -0.001668233855855572
+  - Item 13:
+      date: 2025-07-24 09:12:41
+      pnl_base: -48.98
+      cumulative_pnl: -37.139999999867264
+      equity: 9962.860000000133
+      return: -0.004892207626170486
+      cumulative_return: -0.0065522801356342475
+  - Item 14:
+      date: 2025-07-24 09:30:45
+      pnl_base: 54.379999999999995
+      cumulative_pnl: 17.24000000013273
+      equity: 10017.240000000133
+      return: 0.0054582720222906556
+      cumulative_return: -0.0011297722406901078
+  - Item 15:
+      date: 2025-07-24 09:30:56
+      pnl_base: 42.63
+      cumulative_pnl: 59.870000000132734
+      equity: 10059.870000000134
+      return: 0.0042556632365802205
+      cumulative_return: 0.0031210830656998034
+

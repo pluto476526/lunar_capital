@@ -8,7 +8,208 @@
 <!--start content-->
 <main class="page-content">
 
+    
 
+{% if win_rate %}
+<div class="card">
+    <div class="card-body">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="card-title mb-0">Trading Performance Analytics</h5>
+                <small class="text-muted">Deep analysis of your trading performance</small>
+                <h6 class="mt-2">Report ID: <span class="text-purple">{{ report_id }}</span></h6>
+            </div>
+            <div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary btn-sm">Last 30 Days</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm">Last 90 Days</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm">Year to Date</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm active">All Time</button>
+                </div>
+
+                <div class="btn-group" role="group">
+                    <a href="{% url 'download_report' 'txt' %}" class="btn btn-outline-primary btn-sm">Download Text</a>
+                    <a href="{% url 'download_report' 'json' %}" class="btn btn-outline-primary btn-sm active">Download JSON</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics Grid -->
+        <div class="card mb-4">
+            <div class="card-header bg-light py-2">
+                <h6 class="mb-0">Key Metrics</h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6 col-md-2 mb-3">
+                        <div class="border-end">
+                            <h4 class="{% if win_rate > 50 %}text-success{% else %}text-danger{% endif %} mb-0">{{ win_rate }}%</h4>
+                            <small class="text-muted">Win Rate</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 mb-3">
+                        <div class="border-end">
+                            <h4 class="mb-0">{{ profit_factor }}</h4>
+                            <small class="text-muted">Profit Factor</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 mb-3">
+                        <div class="border-end">
+                            <h4 class="mb-0">{{ sharpe_ratio }}</h4>
+                            <small class="text-muted">Sharpe Ratio</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 mb-3">
+                        <div class="border-end">
+                            <h4 class="{% if max_drawdown > -5 %}text-success{% else %}text-danger{% endif %} mb-0">{{ max_drawdown }}%</h4>
+                            <small class="text-muted">Max Drawdown</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 mb-3">
+                        <div class="border-end">
+                            <h4 class="mb-0">{{ avg_win_loss }}</h4>
+                            <small class="text-muted">Avg Win/Loss</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 mb-3">
+                        <h4 class="mb-0">{{ total_trades }}</h4>
+                        <small class="text-muted">Total Trades</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Equity Curve by Time -->
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">Equity Curve</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs mb-3" id="equityTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="daily-tab" data-bs-toggle="tab" data-bs-target="#daily" type="button" role="tab">Daily</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="weekly-tab" data-bs-toggle="tab" data-bs-target="#weekly" type="button" role="tab">Weekly</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="monthly-tab" data-bs-toggle="tab" data-bs-target="#monthly" type="button" role="tab">Monthly</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="equityTabsContent">
+                            <div class="tab-pane fade show active" id="daily" role="tabpanel">
+                                <!-- Example daily equity curve data -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>[DATE_1] <!-- e.g., 2025-07-23 --></span>
+                                        <span class="[PNL_CLASS_1]">[PNL_BASE_1] <!-- e.g., +25.05 --></span>
+                                    </div>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar [PROGRESS_CLASS_1]" role="progressbar" style="width: [PROGRESS_WIDTH_1]%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>[DATE_2] <!-- e.g., 2025-07-24 --></span>
+                                        <span class="[PNL_CLASS_2]">[PNL_BASE_2] <!-- e.g., -33.08 --></span>
+                                    </div>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar [PROGRESS_CLASS_2]" role="progressbar" style="width: [PROGRESS_WIDTH_2]%"></div>
+                                    </div>
+                                </div>
+                                <!-- Add more daily entries as needed -->
+                            </div>
+                            <div class="tab-pane fade" id="weekly" role="tabpanel">
+                                <p class="text-center text-muted py-4">Weekly equity curve data will be displayed here</p>
+                            </div>
+                            <div class="tab-pane fade" id="monthly" role="tabpanel">
+                                <p class="text-center text-muted py-4">Monthly equity curve data will be displayed here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">Other Available Metrics</h6>
+                    </div>
+                  <div class="card-body">
+                    <ul class="list-group">
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Total Trade Value <span class="badge bg-primary">{{ total_trade_value }}</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Total Buys <span class="badge bg-primary">{{ total_buys }}</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Total Sells <span class="badge bg-secondary">{{ total_sells }}</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Average Win <span class="badge bg-success">{{ avg_win }}</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Average Loss <span class="badge bg-orange">{{ avg_loss }}</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Largest Win  <span class="badge bg-purple">{{ largest_win }}</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Largest Loss  <span class="badge bg-danger">{{ largest_loss }}</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Expectancy <span class="badge bg-info">{{ expectancy }}</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Value at Risk (95%) <span class="badge bg-dark">{{ val_at_risk }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <!-- Symbol Performance -->
+        <div class="card">
+            <div class="card-header bg-light py-2">
+                <h6 class="mb-0">Symbol Performance</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Trade Count</th>
+                                <th>Total P&L</th>
+                                <th>Avg P&L</th>
+                                <th>Best Trade</th>
+                                <th>Worst Trade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for s in symbols %}
+                            <tr>
+                                <td>{{ s.symbol }}</td>
+                                <td>{{ s.trade_count }}</td>
+                                <td>{{ s.total_pnl }}</td>
+                                <td>{{ s.avg_pnl }}</td>
+                                <td>{{ s.best_trade }}</td>
+                                <td>{{ s.worst_trade }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% else %}
     <!-- CSV Upload & Analysis -->
     <div class="card">
         <div class="card-header py-2 d-flex justify-content-between align-items-center">
@@ -87,519 +288,7 @@ Transaction Date,Serial,Action,Description,Amount,Open date,Opening,Closing,P/L,
         </div>
     </div>
 
-
-<div class="card">
-    <div class="card-body">
-        <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h5 class="card-title mb-0">Trading Performance Analytics</h5>
-                <small class="text-muted">Deep analysis of your trading performance</small>
-            </div>
-            <div>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-primary btn-sm">Last 30 Days</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm active">Last 90 Days</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm">Year to Date</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm">All Time</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Key Metrics Grid -->
-        <div class="card mb-4">
-            <div class="card-header bg-light py-2">
-                <h6 class="mb-0">Key Metrics</h6>
-            </div>
-            <div class="card-body">
-                <div class="row text-center">
-                    <div class="col-6 col-md-2 mb-3">
-                        <div class="border-end">
-                            <h4 class="text-success mb-0">[WIN_RATE]% <!-- e.g., 60.0% --></h4>
-                            <small class="text-muted">Win Rate</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-2 mb-3">
-                        <div class="border-end">
-                            <h4 class="mb-0">[PROFIT_FACTOR] <!-- e.g., 6465.47 --></h4>
-                            <small class="text-muted">Profit Factor</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-2 mb-3">
-                        <div class="border-end">
-                            <h4 class="mb-0">[SHARPE_RATIO] <!-- e.g., 0.49 --></h4>
-                            <small class="text-muted">Sharpe Ratio</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-2 mb-3">
-                        <div class="border-end">
-                            <h4 class="text-danger mb-0">[MAX_DRAWDOWN] <!-- e.g., -1.36 --></h4>
-                            <small class="text-muted">Max Drawdown</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-2 mb-3">
-                        <div class="border-end">
-                            <h4 class="mb-0">[AVG_WIN_LOSS] <!-- e.g., 4310.67 --></h4>
-                            <small class="text-muted">Avg Win/Loss</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-2 mb-3">
-                        <h4 class="mb-0">[TOTAL_TRADES] <!-- e.g., 15 --></h4>
-                        <small class="text-muted">Total Trades</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- Equity Curve by Time -->
-            <div class="col-lg-8">
-                <div class="card mb-4">
-                    <div class="card-header bg-light py-2">
-                        <h6 class="mb-0">Equity Curve</h6>
-                    </div>
-                    <div class="card-body">
-                        <ul class="nav nav-tabs mb-3" id="equityTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="daily-tab" data-bs-toggle="tab" data-bs-target="#daily" type="button" role="tab">Daily</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="weekly-tab" data-bs-toggle="tab" data-bs-target="#weekly" type="button" role="tab">Weekly</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="monthly-tab" data-bs-toggle="tab" data-bs-target="#monthly" type="button" role="tab">Monthly</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="equityTabsContent">
-                            <div class="tab-pane fade show active" id="daily" role="tabpanel">
-                                <!-- Example daily equity curve data -->
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span>[DATE_1] <!-- e.g., 2025-07-23 --></span>
-                                        <span class="[PNL_CLASS_1]">[PNL_BASE_1] <!-- e.g., +25.05 --></span>
-                                    </div>
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar [PROGRESS_CLASS_1]" role="progressbar" style="width: [PROGRESS_WIDTH_1]%"></div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span>[DATE_2] <!-- e.g., 2025-07-24 --></span>
-                                        <span class="[PNL_CLASS_2]">[PNL_BASE_2] <!-- e.g., -33.08 --></span>
-                                    </div>
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar [PROGRESS_CLASS_2]" role="progressbar" style="width: [PROGRESS_WIDTH_2]%"></div>
-                                    </div>
-                                </div>
-                                <!-- Add more daily entries as needed -->
-                            </div>
-                            <div class="tab-pane fade" id="weekly" role="tabpanel">
-                                <p class="text-center text-muted py-4">Weekly equity curve data will be displayed here</p>
-                            </div>
-                            <div class="tab-pane fade" id="monthly" role="tabpanel">
-                                <p class="text-center text-muted py-4">Monthly equity curve data will be displayed here</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- P&L Distribution -->
-            <div class="col-lg-4">
-                <div class="card mb-4">
-                    <div class="card-header bg-light py-2">
-                        <h6 class="mb-0">P&L Distribution by Symbol</h6>
-                    </div>
-                    <div class="card-body">
-                        <!-- Example P&L distribution data -->
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>[SYMBOL_1] <!-- e.g., GBP/JPY --></span>
-                                <span>[TRADE_COUNT_1] trades <!-- e.g., 4 trades --></span>
-                            </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar [SYMBOL_CLASS_1]" role="progressbar" style="width: [SYMBOL_WIDTH_1]%"></div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>[SYMBOL_2] <!-- e.g., GBP/CAD --></span>
-                                <span>[TRADE_COUNT_2] trades <!-- e.g., 3 trades --></span>
-                            </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar [SYMBOL_CLASS_2]" role="progressbar" style="width: [SYMBOL_WIDTH_2]%"></div>
-                            </div>
-                        </div>
-                        <!-- Add more symbol entries as needed -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Symbol Performance -->
-        <div class="card">
-            <div class="card-header bg-light py-2">
-                <h6 class="mb-0">Symbol Performance</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Symbol</th>
-                                <th>Trade Count</th>
-                                <th>Total P&L</th>
-                                <th>Avg P&L</th>
-                                <th>Best Trade</th>
-                                <th>Worst Trade</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>[SYMBOL_1] <!-- e.g., GBP/JPY --></td>
-                                <td>[TRADE_COUNT_1] <!-- e.g., 4 --></td>
-                                <td class="[PNL_CLASS_1]">[TOTAL_PNL_1] <!-- e.g., +4567480.00 --></td>
-                                <td>[AVG_PNL_1] <!-- e.g., 1141870.00 --></td>
-                                <td>[BEST_TRADE_1] <!-- e.g., 2001480.00 --></td>
-                                <td>[WORST_TRADE_1] <!-- e.g., 423390.00 --></td>
-                            </tr>
-                            <tr>
-                                <td>[SYMBOL_2] <!-- e.g., GBP/CAD --></td>
-                                <td>[TRADE_COUNT_2] <!-- e.g., 3 --></td>
-                                <td class="[PNL_CLASS_2]">[TOTAL_PNL_2] <!-- e.g., +136.04 --></td>
-                                <td>[AVG_PNL_2] <!-- e.g., 45.35 --></td>
-                                <td>[BEST_TRADE_2] <!-- e.g., 122.13 --></td>
-                                <td>[WORST_TRADE_2] <!-- e.g., -92.75 --></td>
-                            </tr>
-                            <!-- Add more symbol rows as needed -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-<div class="card">
-    <div class="card-body">
-        <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h5 class="card-title mb-0">Performance Analytics</h5>
-                <small class="text-muted">Deep analysis of your trading performance</small>
-            </div>
-            <div>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-primary btn-sm">Last 30 Days</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm active">Last 90 Days</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm">Year to Date</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm">All Time</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Key Metrics Grid -->
-        <div class="card mb-4">
-            <div class="card-header bg-light py-2">
-                <h6 class="mb-0">Performance Metrics</h6>
-            </div>
-            <div class="card-body">
-                <div class="row text-center">
-                    <div class="col-6 col-md-2 mb-3">
-                        <div class="border-end">
-                            <h4 class="text-success mb-0">63.2%</h4>
-                            <small class="text-muted">Win Rate</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-2 mb-3">
-                        <div class="border-end">
-                            <h4 class="mb-0">1.84</h4>
-                            <small class="text-muted">Profit Factor</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-2 mb-3">
-                        <div class="border-end">
-                            <h4 class="mb-0">0.87</h4>
-                            <small class="text-muted">Sharpe Ratio</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-2 mb-3">
-                        <div class="border-end">
-                            <h4 class="text-danger mb-0">-$1,240</h4>
-                            <small class="text-muted">Max Drawdown</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-2 mb-3">
-                        <div class="border-end">
-                            <h4 class="mb-0">2.3</h4>
-                            <small class="text-muted">Avg Win/Loss</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-2 mb-3">
-                        <h4 class="mb-0">3.2 days</h4>
-                        <small class="text-muted">Avg Hold Time</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- Performance by Time -->
-            <div class="col-lg-8">
-                <div class="card mb-4">
-                    <div class="card-header bg-light py-2">
-                        <h6 class="mb-0">Performance by Time Period</h6>
-                    </div>
-                    <div class="card-body">
-                        <ul class="nav nav-tabs mb-3" id="performanceTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="daily-tab" data-bs-toggle="tab" data-bs-target="#daily" type="button" role="tab">Daily</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="weekly-tab" data-bs-toggle="tab" data-bs-target="#weekly" type="button" role="tab">Weekly</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="monthly-tab" data-bs-toggle="tab" data-bs-target="#monthly" type="button" role="tab">Monthly</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="performanceTabsContent">
-                            <div class="tab-pane fade show active" id="daily" role="tabpanel">
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span>Monday</span>
-                                        <span class="text-success">+$892</span>
-                                    </div>
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 85%"></div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span>Tuesday</span>
-                                        <span class="text-danger">-$245</span>
-                                    </div>
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 25%"></div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span>Wednesday</span>
-                                        <span class="text-success">+$1,532</span>
-                                    </div>
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span>Thursday</span>
-                                        <span class="text-success">+$768</span>
-                                    </div>
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 70%"></div>
-                                    </div>
-                                </div>
-                                <div class="mb-0">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span>Friday</span>
-                                        <span class="text-success">+$1,245</span>
-                                    </div>
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 95%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="weekly" role="tabpanel">
-                                <!-- Weekly content would go here -->
-                                <p class="text-center text-muted py-4">Weekly performance data will be displayed here</p>
-                            </div>
-                            <div class="tab-pane fade" id="monthly" role="tabpanel">
-                                <!-- Monthly content would go here -->
-                                <p class="text-center text-muted py-4">Monthly performance data will be displayed here</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- P&L Distribution Chart -->
-            <div class="col-lg-4">
-                <div class="card mb-4">
-                    <div class="card-header bg-light py-2">
-                        <h6 class="mb-0">P&L Distribution</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>-$500 to -$400</span>
-                                <span>2 trades</span>
-                            </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 10%"></div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>-$400 to -$300</span>
-                                <span>3 trades</span>
-                            </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 15%"></div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>-$300 to -$200</span>
-                                <span>5 trades</span>
-                            </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 25%"></div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>-$200 to -$100</span>
-                                <span>7 trades</span>
-                            </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 35%"></div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>-$100 to $0</span>
-                                <span>10 trades</span>
-                            </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%"></div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>$0 to $100</span>
-                                <span>15 trades</span>
-                            </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>$100 to $200</span>
-                                <span>12 trades</span>
-                            </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 60%"></div>
-                            </div>
-                        </div>
-                        <div class="mb-0">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>$200 to $300</span>
-                                <span>8 trades</span>
-                            </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 40%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Strategy Comparison -->
-        <div class="card">
-            <div class="card-header bg-light py-2">
-                <h6 class="mb-0">Strategy Comparison</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Strategy</th>
-                                <th>Win Rate</th>
-                                <th>Avg. P&L</th>
-                                <th>Profit Factor</th>
-                                <th>Trades</th>
-                                <th>Success Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Moving Average Crossover</td>
-                                <td>68%</td>
-                                <td class="text-success">+$142</td>
-                                <td>2.1</td>
-                                <td>45</td>
-                                <td>
-                                    <div class="progress" style="height: 10px; width: 100px;">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 85%"></div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>RSI Reversal</td>
-                                <td>59%</td>
-                                <td class="text-success">+$87</td>
-                                <td>1.5</td>
-                                <td>32</td>
-                                <td>
-                                    <div class="progress" style="height: 10px; width: 100px;">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Breakout Trading</td>
-                                <td>72%</td>
-                                <td class="text-success">+$215</td>
-                                <td>2.4</td>
-                                <td>28</td>
-                                <td>
-                                    <div class="progress" style="height: 10px; width: 100px;">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 90%"></div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>News Trading</td>
-                                <td>42%</td>
-                                <td class="text-danger">-$35</td>
-                                <td>0.8</td>
-                                <td>19</td>
-                                <td>
-                                    <div class="progress" style="height: 10px; width: 100px;">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 30%"></div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Options Strategies</td>
-                                <td>55%</td>
-                                <td class="text-success">+$178</td>
-                                <td>1.7</td>
-                                <td>23</td>
-                                <td>
-                                    <div class="progress" style="height: 10px; width: 100px;">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 70%"></div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
+{% endif %}
 
 </main>
 

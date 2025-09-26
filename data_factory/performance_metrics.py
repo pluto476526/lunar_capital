@@ -8,30 +8,32 @@ import json, logging
 logger = logging.getLogger(__name__)
 
 class TradingPerformanceAnalyzer:
-    def __init__(self, csv_path, initial_capital=10000, base_currency="GBP"):
+    def __init__(self, csv=None, initial_capital=10000, base_currency="GBP", report_data=None):
         """
         Analyzer for trading performance with optional base currency conversion.
-
         fx_rates: dict of conversion rates to base currency, e.g. {"CAD": 0.54, "AUD": 0.49, "GBP": 1.0}
         """
-        self.csv_path = csv_path
+        self.csv = csv
+        self.report_data = report_data
         self.initial_capital = initial_capital
         self.base_currency = base_currency
         self.fx_rates = {"USD":"1.1648","JPY":"128.30","GBP":"0.87663","CHF":"1.1534","AUD":"1.5681","CAD":"1.5459","MXN":"23.5466","NZD":"1.6880","ZAR":"15.7165"}
         self.df = None
 
-        self.load_data()
-        self.preprocess_data()
-        # self.extract_fx_rates() from a json external file
-        self.convert_to_base_currency()
-        self.calculate_equity_curve()
-        self.calculate_metrics()
+        if self.csv:
+            self.load_data()
+            self.preprocess_data()
+            # self.extract_fx_rates() from a json external file
+            self.convert_to_base_currency()
+            self.calculate_equity_curve()
+            self.calculate_metrics()
 
     def load_data(self):
         try:
-            self.df = pd.read_csv(self.csv_path, encoding='utf-16')
+            self.df = pd.read_csv(self.csv, encoding='utf-16')
         except UnicodeDecodeError:
-            self.df = pd.read_csv(self.csv_path, encoding='ISO-8859-1')
+            self.df = pd.read_csv(self.csv, encoding='ISO-8859-1')
+
 
     def preprocess_data(self):
         """Normalize ledger data into structured format."""
@@ -183,6 +185,9 @@ class TradingPerformanceAnalyzer:
         """
         Return dictionary with all metrics and symbol-level performance in base currency
         """
+        if self.report_data:
+            return self.report_data
+
         return {
             "Base Currency": self.base_currency,
             "Summary": {
@@ -210,16 +215,14 @@ class TradingPerformanceAnalyzer:
             "EquityCurve": self.equity_curve.to_dict(orient='records'),
         }
 
-    def export_report(self, filename="trading_performance_report.txt", fmt="txt"):
+    def export_report(self, filename, filetype):
         """
         Export the performance report to a file (txt or json)
         """
         report = self.generate_report()
-
-        if fmt == "json":
-            with open(filename.replace(".txt", ".json"), "w") as f:
+        if filetype == "json":
+            with open(filename, "w") as f:
                 json.dump(report, f, indent=4, default=str)
-            print(f"Report exported to {filename.replace('.txt', '.json')}")
             return
 
         # Default = text format
@@ -248,8 +251,6 @@ class TradingPerformanceAnalyzer:
                 f.write("-" * len(section) + "\n")
                 write_section(f, section, metrics, indent=2)
                 f.write("\n")
-
-        print(f"Report exported to {filename}")
 
 
 
