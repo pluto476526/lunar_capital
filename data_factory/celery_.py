@@ -23,19 +23,19 @@ app.conf.beat_schedule = {
         "task": "data_factory.tasks.fetch_and_process_forex_data",
         "schedule": 60.0,
     },
-    "process-and-broadcast-stock-data": {
-        "task": "data_factory.tasks.fetch_and_process_stock_data",
-        "schedule": 60.0,
-    },
-    "process-and-broadcast-crypto-data": {
-        "task": "data_factory.tasks.fetch_and_process_crypto_data",
-        "schedule": 60.0,
-    },
+    # "process-and-broadcast-stock-data": {
+    #     "task": "data_factory.tasks.fetch_and_process_stock_data",
+    #     "schedule": 60.0,
+    # },
+    # "process-and-broadcast-crypto-data": {
+    #     "task": "data_factory.tasks.fetch_and_process_crypto_data",
+    #     "schedule": 60.0,
+    # },
     # # Fetch extra yfinance data (indices, sectors)
-    "fetch-extra-yfinance-data": {
-        "task": "data_factory.tasks.fetch_extra_yfinance_data",
-        "schedule": 180.0,
-    },
+    # "fetch-extra-yfinance-data": {
+    #     "task": "data_factory.tasks.fetch_extra_yfinance_data",
+    #     "schedule": 180.0,
+    # },
     "fetch-news-data": {
         "task": "data_factory.tasks.fetch_news_data",
         "schedule": 180.0,

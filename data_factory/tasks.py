@@ -22,6 +22,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from data_factory import FinNews as fn
+from data_factory.database.ingestor import DataIngestor
 from data_factory import engine
 
 CACHE_TIMEOUT = getattr(settings, "NEWS_CACHE_TIMEOUT", 300)
@@ -475,6 +476,7 @@ def fetch_and_process_market_data(self, asset_class: str):
     """
     Fetch, process, and broadcast market data for a specific asset class
     """
+    db = DataIngestor()
     # Get symbols based on asset class
     if asset_class == "forex":
         symbols = json.loads(
@@ -503,13 +505,19 @@ def fetch_and_process_market_data(self, asset_class: str):
         logger.error(f"Unsupported asset class: {asset_class}")
         return None
 
-    # Fetch data based on the data source
+    # Fetch data based on the data source and save to db
     if data_source == "polygon":
         raw_data = fetch_polygon_data(asset_class, symbols)
+        db.insert_fx_ohlcv_data(raw_data)
+
     elif data_source == "yfinance":
         raw_data = fetch_yfinance_stock_data(symbols)
+        # db.insert_stock_ohlcv_data(raw_data)
+
     elif data_source == "binance":
         raw_data = fetch_binance_data(symbols)
+        # db.insert_crypto_ohlcv_data(raw_data)
+
     else:
         logger.error(f"Unsupported data source for {asset_class}: {data_source}")
         return None
@@ -539,11 +547,10 @@ def fetch_and_process_market_data(self, asset_class: str):
             }
         )
 
-        # Save to cache
+        # Save to cache and DB
         cache_key = f"{asset_class}_market_data"
         cache.set(cache_key, processed_data, 3000)
-
-        logger.info(f"Processed {asset_class} data")
+        db.insert_market_metrics_data(processed_data)
 
         # If a single symbol is requested, get its overview
         symbol_data = None
@@ -557,10 +564,9 @@ def fetch_and_process_market_data(self, asset_class: str):
                 # Sanitize symbol name
                 s_symbol = f"symbol_data_{re.sub(r'[^a-zA-Z0-9._-]', '', symbol)}"
 
-                # Save to cache
+                # Save to cache and DB
                 cache.set(s_symbol, symbol_data, 3000)
-
-                logger.info(f"Processed symbol : {symbol} for {asset_class}")
+                db.insert_symbol_metrics_data(symbol_data)
 
                 # Broadcast to symbol data WebSocket channel
                 try:
@@ -569,9 +575,10 @@ def fetch_and_process_market_data(self, asset_class: str):
                         s_symbol,
                         {"type": "symbol.intelligence", "message": symbol_data},
                     )
-                    logger.info(f"Symbol intelligence broadcasted for {symbol}")
+
                 except Exception as e:
                     logger.error(f"Failed to broadcast symbol intelligence: {e}")
+
             except Exception as e:
                 logger.error(f"Error processing single symbol {symbol}: {e}")
 
@@ -582,7 +589,7 @@ def fetch_and_process_market_data(self, asset_class: str):
                 f"market_intelligence",
                 {"type": "market.intelligence", "message": processed_data},
             )
-            logger.info(f"Market intelligence broadcasted to WebSocket channel")
+
         except Exception as e:
             logger.error(f"Failed to broadcast to WebSocket: {e}")
 

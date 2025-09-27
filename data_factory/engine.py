@@ -17,7 +17,6 @@ from cachetools import LRUCache
 from django.conf import settings
 
 from data_factory import news_processor
-from data_factory.database import DataIngestor as di
 from data_factory.narrative_generator import get_narrative_generator
 
 logger = logging.getLogger(__name__)
@@ -31,63 +30,48 @@ _CACHE_TTL = int(getattr(settings, "METRICS_CACHE_TTL", 300))
 CATEGORIZED_NEWS_CACHE_KEY = "categorized_market_news"
 MAJOR_INDICES = getattr(settings, "MAJOR_INDICES")
 
-# Cache setup with Redis connection pooling and LRU in-memory cache
-_redis = None
-_USE_REDIS = False
-_IN_MEMORY_CACHE = LRUCache(maxsize=1000)  # Limit to 1000 items
-
+# Redis connection setup
 try:
     redis_pool = redis.ConnectionPool.from_url(REDIS_URL, decode_responses=True)
     _redis = redis.Redis(connection_pool=redis_pool)
-    _redis.ping()
-    _USE_REDIS = True
+    _redis.ping()  # test connection
+    logger.info("Connected to Redis.")
 except Exception as exc:
-    logger.warning(f"Redis unavailable: {exc}. Falling back to in-memory cache.")
+    logger.error(f"Failed to connect to Redis: {exc}")
+    _redis = None
 
 
-def cache_set(key: str, value: Any, ttl: Optional[int] = _CACHE_TTL) -> None:
+def cache_set(key: str, value: Any, ttl: Optional[int] = None) -> None:
     """
-    Store a value in cache with an optional TTL.
-
-    Args:
-        key: Cache key.
-        value: Value to cache.
-        ttl: Time-to-live in seconds (optional).
+    Store a value in Redis with an optional TTL.
     """
+    if not _redis:
+        return
+
     try:
         payload = json.dumps(value)
-        if _USE_REDIS and _redis:
-            _redis.set(key, payload, ex=ttl)
-        else:
-            _IN_MEMORY_CACHE[key] = (datetime.utcnow(), value, ttl)
+        _redis.set(key, payload, ex=ttl)
     except Exception as e:
         logger.error(f"cache_set failed for key {key}: {e}")
 
 
-def cache_get(key: str, default=None) -> Any:
+def cache_get(key: str, default: Any = None) -> Any:
     """
-    Retrieve a value from cache.
+    Retrieve a value from Redis.
 
     Args:
         key: Cache key.
         default: Default value if key is not found.
 
     Returns:
-        Cached value or default if not found/expired.
+        Cached value or default if not found.
     """
+    if not _redis:
+        return default
+
     try:
-        if _USE_REDIS and _redis:
-            raw = _redis.get(key)
-            return json.loads(raw) if raw is not None else default
-        else:
-            item = _IN_MEMORY_CACHE.get(key)
-            if not item:
-                return default
-            ts, value, ttl = item
-            if ttl is not None and (datetime.utcnow() - ts).total_seconds() > ttl:
-                _IN_MEMORY_CACHE.pop(key, None)
-                return default
-            return value
+        raw = _redis.get(key)
+        return json.loads(raw) if raw is not None else default
     except Exception as e:
         logger.error(f"cache_get failed for key {key}: {e}")
         return default

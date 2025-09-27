@@ -1,78 +1,167 @@
+-- schema_setup.sql
+-- pkibuka@milky-way.space
+
 -- Enable TimescaleDB extension
 CREATE EXTENSION IF NOT EXISTS timescaledb;
 
 ------------------------------
--- 1. Market Data Table
+-- 1. FX OHLCV Data Table
 ------------------------------
-CREATE TABLE market_data (
+CREATE TABLE fx_ohlcv_data (
+    symbol TEXT NOT NULL,
+    time  TIMESTAMPTZ NOT NULL,
+    open DOUBLE PRECISION NOT NULL,
+    high DOUBLE PRECISION NOT NULL,
+    low DOUBLE PRECISION NOT NULL,
+    close DOUBLE PRECISION NOT NULL,
+    volume BIGINT NOT NULL,
+    vwap DOUBLE PRECISION,
+    transactions BIGINT,
+    PRIMARY KEY (symbol, time)
+);
+
+SELECT create_hypertable('fx_ohlcv_data', 'time', 'symbol', number_partitions => 4);
+
+CREATE INDEX idx_fx_ohlcv_symbol_time ON fx_ohlcv_data (symbol, time DESC);
+
+ALTER TABLE fx_ohlcv_data SET (
+    timescaledb.compress,
+    timescaledb.compress_orderby = 'time DESC',
+    timescaledb.compress_segmentby = 'symbol'
+);
+
+SELECT add_compression_policy('fx_ohlcv_data', INTERVAL '7 days');
+SELECT add_retention_policy('fx_ohlcv_data', INTERVAL '1 year');
+
+
+------------------------------
+-- 2. Crypto OHLCV Data Table
+------------------------------
+CREATE TABLE crypto_ohlcv_data (
+    symbol TEXT NOT NULL,
+    time  TIMESTAMPTZ NOT NULL,
+    open DOUBLE PRECISION NOT NULL,
+    high DOUBLE PRECISION NOT NULL,
+    low DOUBLE PRECISION NOT NULL,
+    close DOUBLE PRECISION NOT NULL,
+    volume BIGINT NOT NULL,
+    PRIMARY KEY (symbol, time)
+);
+
+SELECT create_hypertable('crypto_ohlcv_data', 'time', 'symbol', number_partitions => 4);
+
+CREATE INDEX idx_crypto_ohlcv_symbol_time ON crypto_ohlcv_data (symbol, time DESC);
+
+ALTER TABLE crypto_ohlcv_data SET (
+    timescaledb.compress,
+    timescaledb.compress_orderby = 'time DESC',
+    timescaledb.compress_segmentby = 'symbol'
+);
+
+SELECT add_compression_policy('crypto_ohlcv_data', INTERVAL '7 days');
+SELECT add_retention_policy('crypto_ohlcv_data', INTERVAL '1 year');
+
+
+------------------------------
+-- 3. Stock OHLCV Data Table
+------------------------------
+CREATE TABLE stock_ohlcv_data (
+    symbol TEXT NOT NULL,
+    time  TIMESTAMPTZ NOT NULL,
+    open DOUBLE PRECISION NOT NULL,
+    high DOUBLE PRECISION NOT NULL,
+    low DOUBLE PRECISION NOT NULL,
+    close DOUBLE PRECISION NOT NULL,
+    volume BIGINT NOT NULL,
+    PRIMARY KEY (symbol, time)
+);
+
+SELECT create_hypertable('stock_ohlcv_data', 'time', 'symbol', number_partitions => 4);
+
+CREATE INDEX idx_stock_ohlcv_symbol_time ON stock_ohlcv_data (symbol, time DESC);
+
+ALTER TABLE stock_ohlcv_data SET (
+    timescaledb.compress,
+    timescaledb.compress_orderby = 'time DESC',
+    timescaledb.compress_segmentby = 'symbol'
+);
+
+SELECT add_compression_policy('stock_ohlcv_data', INTERVAL '7 days');
+SELECT add_retention_policy('stock_ohlcv_data', INTERVAL '1 year');
+
+
+------------------------------
+-- 4. Symbol Metrics Data Table
+------------------------------
+CREATE TABLE symbol_metrics_data (
     time TIMESTAMPTZ NOT NULL,
     symbol TEXT NOT NULL,
-    open DECIMAL(15,6),
-    high DECIMAL(15,6),
-    low DECIMAL(15,6),
-    close DECIMAL(15,6),
+    open DOUBLE PRECISION,
+    high DOUBLE PRECISION,
+    low DOUBLE PRECISION,
+    close DOUBLE PRECISION,
     volume BIGINT,
 
     -- Metrics
-    gap_pct DECIMAL(15,6),
-    price_change_pct DECIMAL(15,6),
-    sma_5 DECIMAL(15,6),
-    sma_10 DECIMAL(15,6),
-    sma_20 DECIMAL(15,6),
-    rsi DECIMAL(15,6),
-    macd DECIMAL(15,6),
-    macd_signal DECIMAL(15,6),
-    macd_histogram DECIMAL(15,6),
-    bb_upper DECIMAL(15,6),
-    bb_middle DECIMAL(15,6),
-    bb_lower DECIMAL(15,6),
-    adx DECIMAL(15,6),
-    obv DECIMAL(15,6),
+    gap_pct DOUBLE PRECISION,
+    price_change_pct DOUBLE PRECISION,
+    sma_5 DOUBLE PRECISION,
+    sma_10 DOUBLE PRECISION,
+    sma_20 DOUBLE PRECISION,
+    rsi DOUBLE PRECISION,
+    macd DOUBLE PRECISION,
+    macd_signal DOUBLE PRECISION,
+    macd_histogram DOUBLE PRECISION,
+    bb_upper DOUBLE PRECISION,
+    bb_middle DOUBLE PRECISION,
+    bb_lower DOUBLE PRECISION,
+    adx DOUBLE PRECISION,
+    obv DOUBLE PRECISION,
     trend_direction TEXT,
-    trend_strength DECIMAL(15,6),
-    support_level DECIMAL(15,6),
-    resistance_level DECIMAL(15,6),
-    price_proximity DECIMAL(15,6),
-    volume_ratio DECIMAL(15,6),
-    atr DECIMAL(15,6),
-    atr_ratio DECIMAL(15,6),
+    trend_strength DOUBLE PRECISION,
+    support_level DOUBLE PRECISION,
+    resistance_level DOUBLE PRECISION,
+    price_proximity DOUBLE PRECISION,
+    volume_ratio DOUBLE PRECISION,
+    atr DOUBLE PRECISION,
+    atr_ratio DOUBLE PRECISION,
     pivot_points JSONB,
-    vwap DECIMAL(15,6),
-    opening_range_high DECIMAL(15,6),
-    opening_range_low DECIMAL(15,6),
-    or_breakout TEXT
+    vwap DOUBLE PRECISION,
+    opening_range_high DOUBLE PRECISION,
+    opening_range_low DOUBLE PRECISION,
+    or_breakout TEXT,
+    PRIMARY KEY (time, symbol)
 );
 
--- Convert to hypertable
 SELECT create_hypertable(
-    'market_data', 
+    'symbol_metrics_data', 
     'time',
     chunk_time_interval => INTERVAL '1 day'
 );
 
--- Indexes
-CREATE INDEX idx_market_data_symbol_time ON market_data (symbol, time DESC);
-CREATE INDEX idx_market_data_time ON market_data (time DESC);
+CREATE INDEX idx_symbol_metrics_symbol_time ON symbol_metrics_data (symbol, time DESC);
+CREATE INDEX idx_symbol_metrics_time ON symbol_metrics_data (time DESC);
 
--- Compression (older than 1 month)
-ALTER TABLE market_data SET (
+ALTER TABLE symbol_metrics_data SET (
     timescaledb.compress,
     timescaledb.compress_segmentby = 'symbol'
 );
-SELECT add_compression_policy('market_data', INTERVAL '1 month');
-SELECT add_retention_policy('market_data', INTERVAL '5 years');
+
+SELECT add_compression_policy('symbol_metrics_data', INTERVAL '1 month');
+SELECT add_retention_policy('symbol_metrics_data', INTERVAL '5 years');
+
 
 ------------------------------
--- 2. Market Metrics Table
+-- 5. Market Metrics Table
 ------------------------------
-CREATE TABLE market_metrics (
+CREATE TABLE market_metrics_data (
     time TIMESTAMPTZ NOT NULL,
-    market TEXT NOT NULL,
+    asset_class TEXT NOT NULL,
     symbols JSONB,
     market_status TEXT,
-    breadth_pct DECIMAL(15,6),
+    breadth_pct DOUBLE PRECISION,
     breadth_series JSONB,
-    volatility_index DECIMAL(15,6),
+    volatility_index DOUBLE PRECISION,
     market_liquidity JSONB,
     current_session TEXT,
     session_activity TEXT,
@@ -81,72 +170,41 @@ CREATE TABLE market_metrics (
     corr_matrix JSONB,
     index_returns JSONB,
     news JSONB,
-    narrative JSONB
+    narrative JSONB,
+    PRIMARY KEY (time, asset_class)
 );
 
--- Convert to hypertable
 SELECT create_hypertable(
-    'market_metrics', 
+    'market_metrics_data', 
     'time',
     chunk_time_interval => INTERVAL '7 days'
 );
 
--- Indexes
-CREATE INDEX idx_market_metrics_market_time ON market_metrics (market, time DESC);
+CREATE INDEX idx_market_metrics_market_time ON market_metrics_data (asset_class, time DESC);
 
--- JSONB GIN indexes for faster queries
-CREATE INDEX idx_market_metrics_top_movers ON market_metrics USING gin (top_movers jsonb_path_ops);
-CREATE INDEX idx_market_metrics_tech_indicators ON market_metrics USING gin (tech_indicators jsonb_path_ops);
-CREATE INDEX idx_market_metrics_corr_matrix ON market_metrics USING gin (corr_matrix jsonb_path_ops);
+-- JSONB GIN indexes
+CREATE INDEX idx_market_metrics_top_movers ON market_metrics_data USING gin (top_movers jsonb_path_ops);
+CREATE INDEX idx_market_metrics_tech_indicators ON market_metrics_data USING gin (tech_indicators jsonb_path_ops);
+CREATE INDEX idx_market_metrics_corr_matrix ON market_metrics_data USING gin (corr_matrix jsonb_path_ops);
 
-------------------------------
--- 3. Performance Metrics Table
-------------------------------
-CREATE TABLE performance_metrics (
-    time TIMESTAMPTZ NOT NULL,
-    report_id TEXT NOT NULL,
-    base_currency TEXT NOT NULL,
-    total_trades INT,
-    total_buys INT,
-    total_sells INT,
-    total_volume DECIMAL(10,6),
-    trade_value DECIMAL(10,6),
-    win_rate DECIMAL(10,6),
-    avg_win DECIMAL(10,6),
-    avg_loss DECIMAL(10,6),
-    largest_win DECIMAL(10,6),
-    largest_loss DECIMAL(10,6),
-    profit_factor DECIMAL(10,6),
-    expectancy DECIMAL(10,6),
-    sharpe_ratio DECIMAL(10,6),
-    max_drawdown FLOAT8,
-    val_at_risk FLOAT8,
-    symbols JSONB,
-    equity_curve JSONB,
+ALTER TABLE market_metrics_data SET (
+    timescaledb.compress,
+    timescaledb.compress_segmentby = 'asset_class'
 );
 
--- Convert to hypertable
-SELECT create_hypertable(
-    'performance_metrics', 
-    'time',
-    chunk_time_interval => INTERVAL '1 month'
-);
+SELECT add_compression_policy('market_metrics_data', INTERVAL '1 month');
+SELECT add_retention_policy('market_metrics_data', INTERVAL '5 years');
 
--- Index
-CREATE INDEX idx_performance_metrics_id_time ON performance_metrics (report_id, time DESC);
 
 ------------------------------
--- 4. Permissions
+-- 6. Permissions
 ------------------------------
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO pluto;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO pluto;
-
-
-
-
+GRANT USAGE ON SCHEMA public TO pluto;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO pluto;
+GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public TO pluto;
 
 
 
 -- psql -U your_username -d your_database -f your_schema.sql
--- psql -U pluto -d ohlcv_data -f schema_setup.sql
+-- psql -U pluto -d lunar_capital -f schema_setup.sql
 
